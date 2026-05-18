@@ -1713,7 +1713,7 @@ window.addEventListener('scroll',()=>{
 });
 
 /* ─── EMAILJS ────────────────────────────────────── */
-emailjs.init('w2pKrH3klkmxpD0Iq');
+emailjs.init({ publicKey: 'w2pKrH3klkmxpD0Iq' });
 
 function enviarCotizacion(e) {
   e.preventDefault();
@@ -1724,12 +1724,10 @@ function enviarCotizacion(e) {
   var btn      = document.getElementById('btnEnviar');
   var btnTexto = document.getElementById('btnEnviarTexto');
 
-  /* Validación básica */
   errorEl.textContent = '';
   if (!nombre) { errorEl.textContent = 'Por favor ingresa tu nombre.'; return false; }
   if (!email)  { errorEl.textContent = 'Por favor ingresa tu email.'; return false; }
 
-  /* Loading */
   btn.disabled = true;
   btnTexto.textContent = 'Enviando…';
 
@@ -1743,9 +1741,12 @@ function enviarCotizacion(e) {
     detalles:    document.getElementById('f-detalles').value.trim()
   };
 
+  console.log('[EmailJS] Enviando con params:', params);
+
   emailjs.send('service_snoqhio', 'template_c9j4is8', params)
-    .then(function() {
-      /* Éxito */
+    .then(function(response) {
+      console.log('[EmailJS] Éxito:', response.status, response.text);
+
       document.getElementById('formSuccess').classList.add('visible');
       document.getElementById('cotizacionForm').reset();
 
@@ -1762,11 +1763,15 @@ function enviarCotizacion(e) {
       }, 6000);
     })
     .catch(function(err) {
-      /* Error */
-      errorEl.textContent = 'No se pudo enviar. Escríbenos directamente por WhatsApp.';
+      /* Diagnóstico completo del error */
+      var status  = err && err.status  ? err.status  : '—';
+      var texto   = err && err.text    ? err.text    : (typeof err === 'string' ? err : JSON.stringify(err));
+      console.error('[EmailJS] Error completo:', err);
+      console.error('[EmailJS] status:', status, '| text:', texto);
+
+      errorEl.textContent = 'Error ' + status + ': ' + texto;
       btn.disabled = false;
       btnTexto.textContent = 'Solicitar cotización';
-      console.error('EmailJS error:', err);
     });
 
   return false;

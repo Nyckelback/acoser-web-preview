@@ -1485,11 +1485,11 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
     </div>
     <div class="contact-right r-right">
       <div class="section-label">Formulario de cotización</div>
-      <form class="c-form" id="cotizacionForm" action="https://formsubmit.co/aljafugo2003@gmail.com" method="POST" enctype="multipart/form-data" onsubmit="submitForm(event)">
-        <input type="hidden" name="_subject" value="Nueva cotización — ACOSER Taller Textil">
+      <form class="c-form" id="cotizacionForm" action="https://formsubmit.co/aljafugo2003@gmail.com" method="POST" enctype="multipart/form-data" onsubmit="return handleSubmit(this)">
+        <input type="hidden" name="_subject" value="Nueva cotización ACOSER">
         <input type="hidden" name="_template" value="table">
         <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="about:blank">
+        <input type="hidden" name="_next" id="formNext" value="">
         <div class="c-form-row">
           <div class="c-field"><label class="c-label">Nombre completo</label><input type="text" name="nombre" class="c-input" placeholder="Tu nombre" required></div>
           <div class="c-field"><label class="c-label">Empresa</label><input type="text" name="empresa" class="c-input" placeholder="Nombre de empresa"></div>
@@ -1517,10 +1517,10 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
           <div class="c-upload-inner">
             <span class="c-upload-text" id="uploadLabel">Adjuntar diseño &mdash; PNG, JPG, PDF hasta 10MB</span>
           </div>
-          <input type="file" id="adjuntoInput" name="adjunto" accept=".png,.jpg,.jpeg,.pdf" style="display:none">
+          <input type="file" id="adjuntoInput" name="attachment" accept=".png,.jpg,.jpeg,.pdf" style="display:none">
         </label>
         <div class="c-form-actions">
-          <button type="submit" class="btn-send" id="btnSend"><span id="btnSendText">Solicitar cotización</span></button>
+          <button type="submit" class="btn-send"><span>Solicitar cotización</span></button>
           <a href="https://wa.me/573005206285?text=Hola%21%20Quiero%20cotizar" class="btn-wa-link" target="_blank">
             <span class="btn-wa-line"></span>WhatsApp
           </a>
@@ -1719,44 +1719,47 @@ window.addEventListener('scroll',()=>{
 });
 
 /* ─── FORM ───────────────────────────────────────── */
-document.getElementById('adjuntoInput').addEventListener('change', function(){
-  const label = document.getElementById('uploadLabel');
-  label.textContent = this.files.length ? this.files[0].name : 'Adjuntar diseño — PNG, JPG, PDF hasta 10MB';
-});
-
-async function submitForm(e){
-  e.preventDefault();
-  const form = e.target;
-  const btn = document.getElementById('btnSend');
-  const btnText = document.getElementById('btnSendText');
-
-  btn.disabled = true;
-  btnText.textContent = 'Enviando...';
-
-  const data = new FormData(form);
-
-  try {
-    const res = await fetch('https://formsubmit.co/ajax/aljafugo2003@gmail.com', {
-      method: 'POST',
-      body: data,
-      headers: { 'Accept': 'application/json' }
-    });
-
-    if (res.ok) {
-      document.getElementById('formSuccess').classList.add('visible');
-      const nombre = data.get('nombre') || '';
-      const msg = encodeURIComponent('Hola! Acabo de enviar una cotización a través de la web' + (nombre ? ' — soy ' + nombre : '') + '. ¿Pueden confirmar que la recibieron?');
-      setTimeout(() => window.open('https://wa.me/573005206285?text=' + msg, '_blank'), 1500);
-    } else {
-      btnText.textContent = 'Error — intenta de nuevo';
-      btn.disabled = false;
-      setTimeout(() => { btnText.textContent = 'Solicitar cotización'; }, 3000);
-    }
-  } catch(err) {
-    btnText.textContent = 'Error — intenta de nuevo';
-    btn.disabled = false;
-    setTimeout(() => { btnText.textContent = 'Solicitar cotización'; }, 3000);
+(function(){
+  /* Set _next to current page + ?enviado=1 so FormSubmit redirects back here */
+  const nextInput = document.getElementById('formNext');
+  if(nextInput){
+    nextInput.value = window.location.origin + window.location.pathname + '?enviado=1';
   }
+
+  /* Update upload label with filename */
+  const fileInput = document.getElementById('adjuntoInput');
+  if(fileInput){
+    fileInput.addEventListener('change', function(){
+      const lbl = document.getElementById('uploadLabel');
+      lbl.textContent = this.files.length ? this.files[0].name : 'Adjuntar diseño — PNG, JPG, PDF hasta 10MB';
+    });
+  }
+
+  /* Show success overlay if redirected back after submission */
+  if(new URLSearchParams(window.location.search).get('enviado') === '1'){
+    const overlay = document.getElementById('formSuccess');
+    if(overlay){
+      overlay.classList.add('visible');
+      /* Scroll to contact section */
+      const section = document.getElementById('contact');
+      if(section) section.scrollIntoView({ behavior: 'smooth' });
+    }
+    /* Open WhatsApp after short delay */
+    setTimeout(function(){
+      window.open('https://wa.me/573005206285?text=' + encodeURIComponent('Hola! Acabo de enviar una cotización a través de la web de ACOSER. ¿Pueden confirmar que la recibieron?'), '_blank');
+    }, 1200);
+    /* Clean URL without reloading */
+    history.replaceState(null, '', window.location.pathname);
+  }
+})();
+
+function handleSubmit(form){
+  /* Open WhatsApp in advance (triggered by user gesture — browsers allow this) */
+  const nombre = form.querySelector('[name="nombre"]') ? form.querySelector('[name="nombre"]').value : '';
+  const msg = 'Hola! Acabo de enviar una cotización a través de la web de ACOSER' + (nombre ? ' — soy ' + nombre : '') + '. ¿Pueden confirmar que la recibieron?';
+  window.open('https://wa.me/573005206285?text=' + encodeURIComponent(msg), '_blank');
+  /* Return true → form submits natively to FormSubmit → email arrives → redirects to ?enviado=1 */
+  return true;
 }
 </script>
 </body>

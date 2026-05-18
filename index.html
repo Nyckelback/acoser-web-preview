@@ -1485,10 +1485,11 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
     </div>
     <div class="contact-right r-right">
       <div class="section-label">Formulario de cotización</div>
-      <form class="c-form" id="cotizacionForm" onsubmit="submitForm(event)">
+      <form class="c-form" id="cotizacionForm" action="https://formsubmit.co/aljafugo2003@gmail.com" method="POST" enctype="multipart/form-data" onsubmit="submitForm(event)">
         <input type="hidden" name="_subject" value="Nueva cotización — ACOSER Taller Textil">
         <input type="hidden" name="_template" value="table">
         <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="about:blank">
         <div class="c-form-row">
           <div class="c-field"><label class="c-label">Nombre completo</label><input type="text" name="nombre" class="c-input" placeholder="Tu nombre" required></div>
           <div class="c-field"><label class="c-label">Empresa</label><input type="text" name="empresa" class="c-input" placeholder="Nombre de empresa"></div>

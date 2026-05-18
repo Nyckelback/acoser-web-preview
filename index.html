@@ -158,21 +158,24 @@ nav.solid .nav-inner { padding: .85rem 4rem; }
   flex-shrink: 0;
 }
 .nav-logo-img {
-  height: 72px;
+  height: 88px;
   width: auto;
-  opacity: 0.94;
+  opacity: 0.96;
   display: block;
-  filter: drop-shadow(0 2px 16px rgba(0,0,0,0.28));
+  filter: brightness(1.06) contrast(1.04) drop-shadow(0 2px 18px rgba(0,0,0,0.32));
   transition: height 0.5s cubic-bezier(.4,0,.2,1), opacity 0.35s ease, filter 0.35s ease;
 }
-.nav-logo-img:hover { opacity: 1; filter: drop-shadow(0 2px 20px rgba(184,151,90,0.15)); }
-nav.solid .nav-logo-img { height: 56px; }
+.nav-logo-img:hover {
+  opacity: 1;
+  filter: brightness(1.1) contrast(1.06) drop-shadow(0 2px 22px rgba(184,151,90,0.22));
+}
+nav.solid .nav-logo-img { height: 66px; }
 [data-theme="light"] .nav-logo-img {
   opacity: 1;
-  filter: drop-shadow(0 2px 10px rgba(0,0,0,0.1));
+  filter: brightness(0.96) contrast(1.05) drop-shadow(0 2px 10px rgba(0,0,0,0.12));
 }
 [data-theme="light"] .nav-logo-img:hover {
-  filter: drop-shadow(0 2px 14px rgba(154,122,62,0.18));
+  filter: brightness(0.93) contrast(1.08) drop-shadow(0 2px 14px rgba(154,122,62,0.2));
 }
 
 .nav-links {
@@ -770,11 +773,6 @@ nav.solid .nav-logo-img { height: 56px; }
 .c-input::placeholder, .c-textarea::placeholder { color: var(--ash); }
 .c-select option { background: var(--ink2); color: var(--linen); }
 .c-textarea { resize: none; height: 100px; line-height: 1.7; }
-.c-upload { display: block; padding: 2rem 0; border-bottom: 1px solid var(--dust); cursor: pointer; transition: opacity .35s; }
-.c-upload:hover { opacity: .7; }
-.c-upload-inner { border: 1px dashed var(--dust); padding: 2rem; text-align: center; transition: border-color .35s; }
-.c-upload:hover .c-upload-inner { border-color: var(--gold); }
-.c-upload-text { font-family: 'Barlow Condensed', sans-serif; font-size: .58rem; letter-spacing: .35em; color: var(--ash); text-transform: uppercase; }
 /* Form success overlay */
 .contact-right { position: relative; }
 .form-success {
@@ -785,26 +783,35 @@ nav.solid .nav-logo-img { height: 56px; }
   z-index: 10;
 }
 .form-success.visible { opacity: 1; pointer-events: auto; }
-.form-success-inner { text-align: center; padding: 3rem 2rem; }
-.form-success-icon { display: flex; justify-content: center; margin-bottom: 1.8rem; }
+.form-success-inner { text-align: center; padding: 3rem 2.5rem; }
+.form-success-icon { display: flex; justify-content: center; margin-bottom: 2rem; }
 .form-success-title {
-  font-family: 'Playfair Display', serif; font-size: 1.5rem;
-  color: var(--linen); margin-bottom: .8rem; font-style: italic;
+  font-family: 'Playfair Display', serif; font-size: 1.6rem;
+  color: var(--linen); margin-bottom: .9rem; font-style: italic;
 }
 .form-success-sub {
-  font-family: 'Barlow Condensed', sans-serif; font-size: .65rem;
-  letter-spacing: .2em; text-transform: uppercase; color: var(--ash); line-height: 1.8;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .62rem;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--ash); line-height: 2;
 }
+.form-success-close {
+  margin-top: 2.2rem;
+  background: none; border: 1px solid var(--dust);
+  font-family: 'Barlow Condensed', sans-serif; font-size: .55rem; letter-spacing: .35em;
+  text-transform: uppercase; color: var(--ash); padding: .8rem 2rem; cursor: pointer;
+  transition: border-color .35s, color .35s;
+}
+.form-success-close:hover { border-color: var(--gold); color: var(--gold); }
 .c-form-actions { display: flex; gap: 1.5rem; padding-top: 2.5rem; }
 .c-form-error { font-family: 'Barlow Condensed', sans-serif; font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: #c0614a; margin-top: 1.2rem; min-height: 1rem; transition: opacity .3s; }
 .btn-send {
   flex: 1; background: var(--gold); color: var(--ink); border: none;
   font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .3em;
   text-transform: uppercase; padding: 1.2rem 2rem; cursor: none; font-weight: 500;
-  position: relative; overflow: hidden; transition: color .4s ease;
+  position: relative; overflow: hidden; transition: color .4s ease, opacity .3s ease;
 }
 .btn-send::before { content: ''; position: absolute; inset: 0; background: var(--gold2); transform: scaleX(0); transform-origin: left; transition: transform .5s cubic-bezier(.77,0,.175,1); }
-.btn-send:hover::before { transform: scaleX(1); }
+.btn-send:not(:disabled):hover::before { transform: scaleX(1); }
+.btn-send:disabled { opacity: 0.68; cursor: not-allowed; }
 .btn-send span { position: relative; }
 .btn-wa-link {
   display: inline-flex; align-items: center; gap: .8rem;
@@ -820,7 +827,8 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
 .footer-top { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 5rem; padding-bottom: 6vh; border-bottom: 1px solid var(--dust); }
 .footer-brand-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; letter-spacing: .32em; color: var(--cream); font-weight: 400; text-transform: uppercase; display: block; margin-bottom: .3rem; }
 .footer-brand-sub { font-family: 'Barlow Condensed', sans-serif; font-size: .48rem; letter-spacing: .55em; color: var(--gold); text-transform: uppercase; font-weight: 300; display: block; margin-bottom: 1.5rem; }
-.footer-brand-desc { font-size: .82rem; color: var(--ash); line-height: 1.9; font-weight: 300; max-width: 260px; }
+.footer-brand-desc { font-size: .82rem; color: var(--ash); line-height: 1.9; font-weight: 300; max-width: 300px; }
+.footer-links a { word-break: break-word; }
 .footer-col-head { font-family: 'Barlow Condensed', sans-serif; font-size: .56rem; letter-spacing: .45em; text-transform: uppercase; color: var(--bone); font-weight: 400; display: block; margin-bottom: 2rem; }
 .footer-links { list-style: none; display: flex; flex-direction: column; gap: .8rem; }
 .footer-links a { font-size: .82rem; color: var(--ash); text-decoration: none; font-weight: 300; transition: color .35s ease; }
@@ -890,11 +898,14 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
   /* ── NAV ── */
   .nav-inner { padding: .9rem 1.5rem; }
   nav.solid .nav-inner { padding: .6rem 1.5rem; }
-  .nav-logo-img { height: 52px; }
-  nav.solid .nav-logo-img { height: 42px; }
+  .nav-logo-img { height: 62px; }
+  nav.solid .nav-logo-img { height: 50px; }
   .nav-links { display: none; }
   .burger { display: flex; cursor: pointer; }
   .theme-btn { width: 42px; height: 42px; cursor: pointer; }
+  .mob-close { cursor: pointer; padding: 1rem 1.2rem; font-size: .65rem; }
+  .btn-send, .tc-btn, .pf-btn, .c-channel, .brand-feat, .service-row { cursor: pointer; }
+  .btn-send:disabled { cursor: not-allowed; }
 
   /* ── OVERFLOW: kill lateral transforms before .in fires ── */
   .r-left { transform: translateY(24px); }
@@ -982,8 +993,8 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
 }
 
 @media (max-width: 480px) {
-  .nav-logo-img { height: 44px; }
-  nav.solid .nav-logo-img { height: 36px; }
+  .nav-logo-img { height: 52px; }
+  nav.solid .nav-logo-img { height: 42px; }
   .hero-h1 { font-size: clamp(2rem, 9vw, 2.8rem); }
   .hero-tag { font-size: .5rem; letter-spacing: .2em; }
   .hero-actions { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
@@ -1527,6 +1538,7 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
           </div>
           <p class="form-success-title">Cotización enviada correctamente.</p>
           <p class="form-success-sub">Nuestro equipo responderá pronto.</p>
+          <button class="form-success-close" onclick="cerrarExito()">Enviar otra</button>
         </div>
       </div>
     </div>
@@ -1616,17 +1628,20 @@ themeBtn.addEventListener('click', () => {
 /* ─── CURSOR ─────────────────────────────────────── */
 const dot = document.getElementById('curDot');
 const ring = document.getElementById('curRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
-(function animRing(){
-  rx+=(mx-rx)*.1; ry+=(my-ry)*.1;
-  ring.style.left=rx+'px'; ring.style.top=ry+'px';
-  requestAnimationFrame(animRing);
-})();
-document.querySelectorAll('a,button,.p-item,.ws-item,.about-media-item,.brand-feat,.service-row,.test-card,.brands-photo-item').forEach(el=>{
-  el.addEventListener('mouseenter',()=>ring.classList.add('expand'));
-  el.addEventListener('mouseleave',()=>ring.classList.remove('expand'));
-});
+const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+if (!isTouch) {
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
+  (function animRing(){
+    rx+=(mx-rx)*.1; ry+=(my-ry)*.1;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(animRing);
+  })();
+  document.querySelectorAll('a,button,.p-item,.ws-item,.about-media-item,.brand-feat,.service-row,.test-card,.brands-photo-item').forEach(el=>{
+    el.addEventListener('mouseenter',()=>ring.classList.add('expand'));
+    el.addEventListener('mouseleave',()=>ring.classList.remove('expand'));
+  });
+}
 
 /* ─── NAVBAR ─────────────────────────────────────── */
 const nav = document.getElementById('nav');
@@ -1715,6 +1730,10 @@ window.addEventListener('scroll',()=>{
 /* ─── EMAILJS ────────────────────────────────────── */
 emailjs.init({ publicKey: 'w2pKrH3klkmxpD0Iq' });
 
+function cerrarExito() {
+  document.getElementById('formSuccess').classList.remove('visible');
+}
+
 function enviarCotizacion(e) {
   e.preventDefault();
 
@@ -1725,13 +1744,13 @@ function enviarCotizacion(e) {
   var btnTexto = document.getElementById('btnEnviarTexto');
 
   errorEl.textContent = '';
-  if (!nombre) { errorEl.textContent = 'Por favor ingresa tu nombre.'; return false; }
-  if (!email)  { errorEl.textContent = 'Por favor ingresa tu email.'; return false; }
+  if (!nombre) { errorEl.textContent = 'Por favor ingresa tu nombre completo.'; return false; }
+  if (!email)  { errorEl.textContent = 'Por favor ingresa tu correo electrónico.'; return false; }
 
   btn.disabled = true;
   btnTexto.textContent = 'Enviando…';
 
-  var params = {
+  emailjs.send('service_snoqhio', 'template_c9j4is8', {
     nombre:      nombre,
     empresa:     document.getElementById('f-empresa').value.trim(),
     whatsapp:    document.getElementById('f-whatsapp').value.trim(),
@@ -1739,40 +1758,25 @@ function enviarCotizacion(e) {
     tipo_prenda: document.getElementById('f-tipo').value,
     cantidad:    document.getElementById('f-cantidad').value.trim(),
     detalles:    document.getElementById('f-detalles').value.trim()
-  };
+  })
+  .then(function() {
+    document.getElementById('formSuccess').classList.add('visible');
+    document.getElementById('cotizacionForm').reset();
+    btn.disabled = false;
+    btnTexto.textContent = 'Solicitar cotización';
 
-  console.log('[EmailJS] Enviando con params:', params);
-
-  emailjs.send('service_snoqhio', 'template_c9j4is8', params)
-    .then(function(response) {
-      console.log('[EmailJS] Éxito:', response.status, response.text);
-
-      document.getElementById('formSuccess').classList.add('visible');
-      document.getElementById('cotizacionForm').reset();
-
-      var msg = 'Hola! Acabo de enviar una cotización en la web de ACOSER'
-              + (nombre ? ' — soy ' + nombre : '')
-              + '. ¿Pueden confirmar que la recibieron?';
-      setTimeout(function() {
-        window.open('https://wa.me/573005206285?text=' + encodeURIComponent(msg), '_blank');
-      }, 1400);
-
-      setTimeout(function() {
-        btn.disabled = false;
-        btnTexto.textContent = 'Solicitar cotización';
-      }, 6000);
-    })
-    .catch(function(err) {
-      /* Diagnóstico completo del error */
-      var status  = err && err.status  ? err.status  : '—';
-      var texto   = err && err.text    ? err.text    : (typeof err === 'string' ? err : JSON.stringify(err));
-      console.error('[EmailJS] Error completo:', err);
-      console.error('[EmailJS] status:', status, '| text:', texto);
-
-      errorEl.textContent = 'Error ' + status + ': ' + texto;
-      btn.disabled = false;
-      btnTexto.textContent = 'Solicitar cotización';
-    });
+    var msg = 'Hola! Acabo de enviar una cotización en la web de ACOSER'
+            + (nombre ? ' — soy ' + nombre : '')
+            + '. ¿Pueden confirmar que la recibieron?';
+    setTimeout(function() {
+      window.open('https://wa.me/573005206285?text=' + encodeURIComponent(msg), '_blank');
+    }, 1400);
+  })
+  .catch(function() {
+    errorEl.textContent = 'No se pudo enviar la cotización. Por favor escríbenos directamente por WhatsApp.';
+    btn.disabled = false;
+    btnTexto.textContent = 'Solicitar cotización';
+  });
 
   return false;
 }

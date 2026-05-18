@@ -796,6 +796,7 @@ nav.solid .nav-logo-img { height: 56px; }
   letter-spacing: .2em; text-transform: uppercase; color: var(--ash); line-height: 1.8;
 }
 .c-form-actions { display: flex; gap: 1.5rem; padding-top: 2.5rem; }
+.c-form-error { font-family: 'Barlow Condensed', sans-serif; font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: #c0614a; margin-top: 1.2rem; min-height: 1rem; transition: opacity .3s; }
 .btn-send {
   flex: 1; background: var(--gold); color: var(--ink); border: none;
   font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .3em;
@@ -1485,46 +1486,37 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
     </div>
     <div class="contact-right r-right">
       <div class="section-label">Formulario de cotización</div>
-      <form class="c-form" id="cotizacionForm" action="https://formsubmit.co/aljafugo2003@gmail.com" method="POST" enctype="multipart/form-data" onsubmit="return handleSubmit(this)">
-        <input type="hidden" name="_subject" value="Nueva cotización ACOSER">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" id="formNext" value="">
+      <form class="c-form" id="cotizacionForm" onsubmit="return enviarCotizacion(event)" novalidate>
         <div class="c-form-row">
-          <div class="c-field"><label class="c-label">Nombre completo</label><input type="text" name="nombre" class="c-input" placeholder="Tu nombre" required></div>
-          <div class="c-field"><label class="c-label">Empresa</label><input type="text" name="empresa" class="c-input" placeholder="Nombre de empresa"></div>
+          <div class="c-field"><label class="c-label">Nombre completo</label><input type="text" id="f-nombre" class="c-input" placeholder="Tu nombre" required></div>
+          <div class="c-field"><label class="c-label">Empresa</label><input type="text" id="f-empresa" class="c-input" placeholder="Nombre de empresa"></div>
         </div>
         <div class="c-form-row">
-          <div class="c-field"><label class="c-label">WhatsApp</label><input type="tel" name="whatsapp" class="c-input" placeholder="+57 300 520 6285"></div>
-          <div class="c-field"><label class="c-label">Email</label><input type="email" name="email" class="c-input" placeholder="tu@email.com" required></div>
+          <div class="c-field"><label class="c-label">WhatsApp</label><input type="tel" id="f-whatsapp" class="c-input" placeholder="+57 300 520 6285"></div>
+          <div class="c-field"><label class="c-label">Email</label><input type="email" id="f-email" class="c-input" placeholder="tu@email.com" required></div>
         </div>
         <div class="c-form-row">
           <div class="c-field">
             <label class="c-label">Tipo de prenda</label>
-            <select name="tipo_prenda" class="c-select">
+            <select id="f-tipo" class="c-select">
               <option value="">Seleccionar...</option>
               <option>Camisetas</option><option>Uniformes</option><option>Hoodies</option>
               <option>Dotaciones</option><option>Disfraces</option><option>Estampados DTF</option>
               <option>Bordados</option><option>Otro</option>
             </select>
           </div>
-          <div class="c-field"><label class="c-label">Cantidad</label><input type="number" name="cantidad" class="c-input" placeholder="Ej: 50 unidades" min="1"></div>
+          <div class="c-field"><label class="c-label">Cantidad</label><input type="number" id="f-cantidad" class="c-input" placeholder="Ej: 50 unidades" min="1"></div>
         </div>
         <div class="c-form-row single">
-          <div class="c-field"><label class="c-label">Detalles del pedido</label><textarea name="detalles" class="c-textarea" placeholder="Cuéntanos sobre tela, colores, tallas, diseño, plazos..."></textarea></div>
+          <div class="c-field"><label class="c-label">Detalles del pedido</label><textarea id="f-detalles" class="c-textarea" placeholder="Cuéntanos sobre tela, colores, tallas, diseño, plazos..."></textarea></div>
         </div>
-        <label class="c-upload" for="adjuntoInput">
-          <div class="c-upload-inner">
-            <span class="c-upload-text" id="uploadLabel">Adjuntar diseño &mdash; PNG, JPG, PDF hasta 10MB</span>
-          </div>
-          <input type="file" id="adjuntoInput" name="attachment" accept=".png,.jpg,.jpeg,.pdf" style="display:none">
-        </label>
         <div class="c-form-actions">
-          <button type="submit" class="btn-send"><span>Solicitar cotización</span></button>
+          <button type="submit" class="btn-send" id="btnEnviar"><span id="btnEnviarTexto">Solicitar cotización</span></button>
           <a href="https://wa.me/573005206285?text=Hola%21%20Quiero%20cotizar" class="btn-wa-link" target="_blank">
             <span class="btn-wa-line"></span>WhatsApp
           </a>
         </div>
+        <p class="c-form-error" id="formError"></p>
       </form>
 
       <!-- Success overlay -->
@@ -1533,8 +1525,8 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
           <div class="form-success-icon">
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="var(--gold)" stroke-width="1.2"/><polyline points="10,18 15.5,24 26,12" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <p class="form-success-title">Cotización enviada</p>
-          <p class="form-success-sub">Te respondemos en menos de 24 horas. Abriendo WhatsApp para continuar&hellip;</p>
+          <p class="form-success-title">Cotización enviada correctamente.</p>
+          <p class="form-success-sub">Nuestro equipo responderá pronto.</p>
         </div>
       </div>
     </div>
@@ -1589,6 +1581,8 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
   </div>
 </footer>
 
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 /* ─── LOADER ─────────────────────────────────────── */
 window.addEventListener('load', () => {
@@ -1718,48 +1712,64 @@ window.addEventListener('scroll',()=>{
   }
 });
 
-/* ─── FORM ───────────────────────────────────────── */
-(function(){
-  /* Set _next to current page + ?enviado=1 so FormSubmit redirects back here */
-  const nextInput = document.getElementById('formNext');
-  if(nextInput){
-    nextInput.value = window.location.origin + window.location.pathname + '?enviado=1';
-  }
+/* ─── EMAILJS ────────────────────────────────────── */
+emailjs.init('w2pKrH3klkmxpD0Iq');
 
-  /* Update upload label with filename */
-  const fileInput = document.getElementById('adjuntoInput');
-  if(fileInput){
-    fileInput.addEventListener('change', function(){
-      const lbl = document.getElementById('uploadLabel');
-      lbl.textContent = this.files.length ? this.files[0].name : 'Adjuntar diseño — PNG, JPG, PDF hasta 10MB';
+function enviarCotizacion(e) {
+  e.preventDefault();
+
+  var nombre   = document.getElementById('f-nombre').value.trim();
+  var email    = document.getElementById('f-email').value.trim();
+  var errorEl  = document.getElementById('formError');
+  var btn      = document.getElementById('btnEnviar');
+  var btnTexto = document.getElementById('btnEnviarTexto');
+
+  /* Validación básica */
+  errorEl.textContent = '';
+  if (!nombre) { errorEl.textContent = 'Por favor ingresa tu nombre.'; return false; }
+  if (!email)  { errorEl.textContent = 'Por favor ingresa tu email.'; return false; }
+
+  /* Loading */
+  btn.disabled = true;
+  btnTexto.textContent = 'Enviando…';
+
+  var params = {
+    nombre:      nombre,
+    empresa:     document.getElementById('f-empresa').value.trim(),
+    whatsapp:    document.getElementById('f-whatsapp').value.trim(),
+    email:       email,
+    tipo_prenda: document.getElementById('f-tipo').value,
+    cantidad:    document.getElementById('f-cantidad').value.trim(),
+    detalles:    document.getElementById('f-detalles').value.trim()
+  };
+
+  emailjs.send('service_snoqhio', 'template_c9j4is8', params)
+    .then(function() {
+      /* Éxito */
+      document.getElementById('formSuccess').classList.add('visible');
+      document.getElementById('cotizacionForm').reset();
+
+      var msg = 'Hola! Acabo de enviar una cotización en la web de ACOSER'
+              + (nombre ? ' — soy ' + nombre : '')
+              + '. ¿Pueden confirmar que la recibieron?';
+      setTimeout(function() {
+        window.open('https://wa.me/573005206285?text=' + encodeURIComponent(msg), '_blank');
+      }, 1400);
+
+      setTimeout(function() {
+        btn.disabled = false;
+        btnTexto.textContent = 'Solicitar cotización';
+      }, 6000);
+    })
+    .catch(function(err) {
+      /* Error */
+      errorEl.textContent = 'No se pudo enviar. Escríbenos directamente por WhatsApp.';
+      btn.disabled = false;
+      btnTexto.textContent = 'Solicitar cotización';
+      console.error('EmailJS error:', err);
     });
-  }
 
-  /* Show success overlay if redirected back after submission */
-  if(new URLSearchParams(window.location.search).get('enviado') === '1'){
-    const overlay = document.getElementById('formSuccess');
-    if(overlay){
-      overlay.classList.add('visible');
-      /* Scroll to contact section */
-      const section = document.getElementById('contact');
-      if(section) section.scrollIntoView({ behavior: 'smooth' });
-    }
-    /* Open WhatsApp after short delay */
-    setTimeout(function(){
-      window.open('https://wa.me/573005206285?text=' + encodeURIComponent('Hola! Acabo de enviar una cotización a través de la web de ACOSER. ¿Pueden confirmar que la recibieron?'), '_blank');
-    }, 1200);
-    /* Clean URL without reloading */
-    history.replaceState(null, '', window.location.pathname);
-  }
-})();
-
-function handleSubmit(form){
-  /* Open WhatsApp in advance (triggered by user gesture — browsers allow this) */
-  const nombre = form.querySelector('[name="nombre"]') ? form.querySelector('[name="nombre"]').value : '';
-  const msg = 'Hola! Acabo de enviar una cotización a través de la web de ACOSER' + (nombre ? ' — soy ' + nombre : '') + '. ¿Pueden confirmar que la recibieron?';
-  window.open('https://wa.me/573005206285?text=' + encodeURIComponent(msg), '_blank');
-  /* Return true → form submits natively to FormSubmit → email arrives → redirects to ?enviado=1 */
-  return true;
+  return false;
 }
 </script>
 </body>

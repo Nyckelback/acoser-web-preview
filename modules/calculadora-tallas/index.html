@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía y Calculadora de Tallas — ACOSER Taller Textil</title>
+<meta name="description" content="Encuentra tu talla exacta para camisetas, polos y uniformes. Calculadora de tallas y tabla de medidas de ACOSER Taller Textil Colombia.">
+<script>(function(){var t=localStorage.getItem('acoser-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/base.css">
+<link rel="stylesheet" href="../../css/modules.css">
+<style>
+.size-table { width: 100%; border-collapse: collapse; }
+.size-table th { font-family: 'Barlow Condensed', sans-serif; font-size: .52rem; letter-spacing: .38em; text-transform: uppercase; color: var(--ash); font-weight: 300; padding: 1rem 1.2rem; text-align: center; border-bottom: 1px solid var(--dust); border-right: 1px solid var(--dust); }
+.size-table th:first-child { text-align: left; }
+.size-table td { padding: .9rem 1.2rem; font-size: .85rem; color: var(--fog); text-align: center; border-bottom: 1px solid rgba(58,55,48,.4); border-right: 1px solid rgba(58,55,48,.3); transition: background .2s; }
+.size-table td:first-child { font-family: 'Barlow Condensed', sans-serif; letter-spacing: .2em; font-size: .7rem; font-weight: 600; color: var(--cream); text-align: left; text-transform: uppercase; }
+.size-table tr:hover td { background: rgba(184,151,90,.04); }
+.size-table tr.highlighted td { background: rgba(184,151,90,.1); color: var(--cream); }
+.size-table tr.highlighted td:first-child { color: var(--gold2); }
+.calc-inputs { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-bottom: 2rem; }
+.result-tag { display: inline-flex; align-items: center; gap: 1rem; padding: 1.2rem 2rem; border: 1px solid rgba(184,151,90,.35); background: rgba(184,151,90,.06); }
+.result-tag-size { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--gold2); font-weight: 400; line-height: 1; }
+.result-tag-info { font-size: .78rem; color: var(--ash); line-height: 1.6; }
+.how-to-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--dust); }
+.how-item { background: var(--ink2); padding: 2rem 1.8rem; }
+.how-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: rgba(184,151,90,.25); font-style: italic; margin-bottom: .8rem; }
+@media(max-width:900px){ .calc-inputs{grid-template-columns:1fr 1fr;} .how-to-grid{grid-template-columns:1fr;} }
+@media(max-width:600px){ .calc-inputs{grid-template-columns:1fr;} .size-table th, .size-table td{padding:.7rem .6rem;font-size:.75rem;} }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="cur-dot" id="curDot"></div>
+<div class="cur-ring" id="curRing"></div>
+<div id="loader"><div class="loader-word"><span>ACOSER</span></div><div class="loader-line-wrap"><div class="loader-line-inner"></div></div></div>
+<a href="https://wa.me/573005206285" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+<div class="mob-overlay" id="mobOverlay" onclick="closeMob()"></div>
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" onclick="closeMob()">Cerrar</button>
+  <ul class="mob-nav-links">
+    <li><a href="../../index.html#services" onclick="closeMob()">Servicios</a></li>
+    <li><a href="../calculadora-dtf/" onclick="closeMob()">Calculadora DTF</a></li>
+    <li><a href="../mockup/" onclick="closeMob()">Mockup</a></li>
+    <li><a href="../empresas/" onclick="closeMob()">Empresas</a></li>
+    <li><a href="../recursos/" onclick="closeMob()">Recursos</a></li>
+    <li><a href="../../index.html#contact" onclick="closeMob()">Cotizar</a></li>
+  </ul>
+</div>
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-logo"><img src="../../imagenes/logo.png" alt="ACOSER" class="nav-logo-img"></a>
+    <ul class="nav-links">
+      <li><a href="../../index.html#services">Servicios</a></li>
+      <li><a href="../calculadora-dtf/">Calculadora DTF</a></li>
+      <li><a href="../mockup/">Mockup</a></li>
+      <li><a href="../empresas/">Empresas</a></li>
+      <li><a href="../recursos/">Recursos</a></li>
+      <li><a href="../../index.html#contact" class="nav-cta-btn"><span>Cotizar</span></a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" id="themeIcon"></svg></button>
+      <button class="burger" id="burger" onclick="openMob()" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div style="padding:calc(88px + 6vh) 4rem 4vh;background:var(--ink2);border-bottom:1px solid var(--dust);">
+  <div class="section-label">Guía de medidas</div>
+  <h1 class="sec-h2">Calculadora de<br><em>Tallas ACOSER</em></h1>
+  <p style="font-size:.88rem;color:var(--fog);line-height:1.9;max-width:500px;margin-top:1.5rem;font-weight:300;">Ingresa tus medidas corporales y te diremos qué talla elegir. Disponible para camisetas, polos y uniformes en nuestra producción estándar.</p>
+</div>
+
+<div style="padding:6vh 4rem;max-width:1100px;margin:0 auto;">
+
+  <!-- CALCULADORA -->
+  <div class="r" style="margin-bottom:6vh;">
+    <div class="section-label">Encuentra tu talla</div>
+    <div class="calc-inputs">
+      <div class="input-group">
+        <label class="input-label">Contorno de pecho (cm)</label>
+        <input class="input-field input-field--box" type="number" id="medPecho" placeholder="Ej: 96" min="70" max="140" oninput="calcTalla()">
+        <small style="font-size:.7rem;color:var(--ash);margin-top:.3rem;">Mide la parte más ancha del pecho</small>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Contorno de cintura (cm)</label>
+        <input class="input-field input-field--box" type="number" id="medCintura" placeholder="Ej: 82" min="55" max="130" oninput="calcTalla()">
+        <small style="font-size:.7rem;color:var(--ash);margin-top:.3rem;">Mide a la altura del ombligo</small>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Tipo de prenda</label>
+        <select class="input-select" id="tipoPrenda" onchange="calcTalla()">
+          <option value="regular">Camiseta regular fit</option>
+          <option value="slim">Camiseta slim fit</option>
+          <option value="polo">Polo / Camisa</option>
+          <option value="uniforme">Uniforme corporativo</option>
+        </select>
+      </div>
+    </div>
+    <div id="tallaResultado" style="display:none;margin-top:1rem;">
+      <div class="result-tag r">
+        <div class="result-tag-size" id="tallaValor">—</div>
+        <div class="result-tag-info">
+          <strong style="color:var(--cream);display:block;font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;">Tu talla recomendada</strong>
+          <span id="tallaDetalle" style="color:var(--ash);font-size:.78rem;"></span>
+        </div>
+      </div>
+      <div style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;">
+        <button class="btn-module-primary" onclick="cotizarTalla()"><span>Cotizar con esta talla</span></button>
+        <a href="../../index.html#contact" class="btn-module-secondary">Ver todos los servicios</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLA DE TALLAS HOMBRE -->
+  <div class="r" style="margin-bottom:4vh;">
+    <div class="section-label">Tabla de tallas — Hombre</div>
+    <div style="overflow-x:auto;">
+      <table class="size-table" id="tablasHombre">
+        <thead>
+          <tr>
+            <th>Talla</th>
+            <th>Pecho (cm)</th>
+            <th>Cintura (cm)</th>
+            <th>Largo prenda (cm)</th>
+            <th>Ancho hombro (cm)</th>
+            <th>Manga (cm)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="sz-XS"><td>XS</td><td>82–86</td><td>70–74</td><td>68</td><td>42</td><td>61</td></tr>
+          <tr id="sz-S"><td>S</td><td>87–92</td><td>75–80</td><td>70</td><td>44</td><td>62</td></tr>
+          <tr id="sz-M"><td>M</td><td>93–99</td><td>81–87</td><td>72</td><td>46</td><td>63</td></tr>
+          <tr id="sz-L"><td>L</td><td>100–107</td><td>88–95</td><td>74</td><td>48</td><td>64</td></tr>
+          <tr id="sz-XL"><td>XL</td><td>108–116</td><td>96–104</td><td>76</td><td>50</td><td>65</td></tr>
+          <tr id="sz-2XL"><td>2XL</td><td>117–126</td><td>105–114</td><td>78</td><td>52</td><td>66</td></tr>
+          <tr id="sz-3XL"><td>3XL</td><td>127–136</td><td>115–124</td><td>80</td><td>54</td><td>67</td></tr>
+          <tr id="sz-4XL"><td>4XL</td><td>137+</td><td>125+</td><td>82</td><td>56</td><td>68</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TABLA MUJER -->
+  <div class="r d2" style="margin-bottom:6vh;">
+    <div class="section-label">Tabla de tallas — Mujer</div>
+    <div style="overflow-x:auto;">
+      <table class="size-table">
+        <thead>
+          <tr>
+            <th>Talla</th>
+            <th>Busto (cm)</th>
+            <th>Cintura (cm)</th>
+            <th>Cadera (cm)</th>
+            <th>Largo prenda (cm)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>XS</td><td>78–82</td><td>62–66</td><td>86–90</td><td>60</td></tr>
+          <tr><td>S</td><td>83–87</td><td>67–71</td><td>91–95</td><td>62</td></tr>
+          <tr><td>M</td><td>88–93</td><td>72–77</td><td>96–101</td><td>64</td></tr>
+          <tr><td>L</td><td>94–100</td><td>78–84</td><td>102–108</td><td>66</td></tr>
+          <tr><td>XL</td><td>101–108</td><td>85–92</td><td>109–116</td><td>68</td></tr>
+          <tr><td>2XL</td><td>109–117</td><td>93–101</td><td>117–125</td><td>70</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CÓMO MEDIRSE -->
+  <div class="r">
+    <div class="section-label">Cómo medirse correctamente</div>
+    <div class="how-to-grid">
+      <div class="how-item">
+        <div class="how-num">01</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:.6rem;">Pecho / Busto</div>
+        <p style="font-size:.8rem;color:var(--ash);line-height:1.7;font-weight:300;">Pasa la cinta métrica por la parte más prominente del pecho, manteniéndola horizontal y sin apretar. Exhala normalmente antes de medir.</p>
+      </div>
+      <div class="how-item">
+        <div class="how-num">02</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:.6rem;">Cintura</div>
+        <p style="font-size:.8rem;color:var(--ash);line-height:1.7;font-weight:300;">Mide a la altura del ombligo o la parte más estrecha del torso. La cinta debe ser horizontal y cómoda, ni apretada ni suelta.</p>
+      </div>
+      <div class="how-item">
+        <div class="how-num">03</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:.6rem;">Tip importante</div>
+        <p style="font-size:.8rem;color:var(--ash);line-height:1.7;font-weight:300;">Si estás entre dos tallas, elige la más grande para mayor comodidad. Para uniformes corporativos, consulta con ACOSER para ajuste personalizado.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTA PERSONALIZACIÓN -->
+  <div style="background:rgba(184,151,90,.06);border:1px solid rgba(184,151,90,.2);padding:2.5rem;margin-top:4vh;" class="r d2">
+    <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--cream);font-style:italic;margin-bottom:1rem;">¿Necesitas tallas personalizadas o fuera de tabla?</div>
+    <p style="font-size:.85rem;color:var(--fog);line-height:1.85;font-weight:300;max-width:580px;">En ACOSER trabajamos con patronaje personalizado. Si tienes empleados con medidas especiales, confeccionamos a la medida exacta. Contáctanos para asesoría sin costo.</p>
+    <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap;">
+      <a href="https://wa.me/573005206285?text=Hola%2C+necesito+asesoría+sobre+tallas+para+uniformes" class="btn-wa-module" target="_blank">Consultar por WhatsApp</a>
+      <a href="../empresas/" class="btn-module-secondary">Portal Empresas</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div><span class="footer-brand-name">ACOSER</span><span class="footer-brand-sub">Taller Textil</span><p class="footer-brand-desc">Confección personalizada · Uniformes · DTF · Bordados · Sublimación · Colombia</p></div>
+    <div><span class="footer-col-head">Herramientas</span><ul class="footer-links"><li><a href="../calculadora-dtf/">Calculadora DTF</a></li><li><a href="../mockup/">Mockup Generator</a></li><li><a href="../calculadora-tallas/">Guía de Tallas</a></li><li><a href="../telas/">Comparador de Telas</a></li><li><a href="../recursos/">Centro de Recursos</a></li></ul></div>
+    <div><span class="footer-col-head">Plataforma</span><ul class="footer-links"><li><a href="../../index.html">Inicio</a></li><li><a href="../../index.html#services">Servicios</a></li><li><a href="../empresas/">Empresas</a></li><li><a href="../casos/">Casos de Éxito</a></li></ul></div>
+    <div><span class="footer-col-head">Contacto</span><ul class="footer-links"><li><a href="tel:+573005206285">+57 300 520 6285</a></li><li><a href="mailto:acosertallertextilinfo@gmail.com">acosertallertextilinfo@gmail.com</a></li><li><a href="https://instagram.com/acoser_tallertextil" target="_blank">@acoser_tallertextil</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">&copy; 2025 <span>ACOSER Taller Textil</span> &mdash; Hecho en Colombia</span>
+    <div class="footer-social"><a href="https://instagram.com/acoser_tallertextil" target="_blank" class="f-social-link">Instagram</a><a href="https://wa.me/573005206285" target="_blank" class="f-social-link">WhatsApp</a></div>
+  </div>
+</footer>
+
+<script src="../../js/whatsapp.js"></script>
+<script src="../../js/leads.js"></script>
+<script src="../../js/core.js"></script>
+<script>
+const TALLAS_HOMBRE = [
+  { talla:'XS', pechoMin:70,  pechoMax:86,  cinturaMin:55, cinturaMax:74,  desc:'Extra pequeño — 70 a 86 cm de pecho' },
+  { talla:'S',  pechoMin:87,  pechoMax:92,  cinturaMin:75, cinturaMax:80,  desc:'Pequeño — 87 a 92 cm de pecho' },
+  { talla:'M',  pechoMin:93,  pechoMax:99,  cinturaMin:81, cinturaMax:87,  desc:'Mediano — 93 a 99 cm de pecho' },
+  { talla:'L',  pechoMin:100, pechoMax:107, cinturaMin:88, cinturaMax:95,  desc:'Grande — 100 a 107 cm de pecho' },
+  { talla:'XL', pechoMin:108, pechoMax:116, cinturaMin:96, cinturaMax:104, desc:'Extra grande — 108 a 116 cm de pecho' },
+  { talla:'2XL',pechoMin:117, pechoMax:126, cinturaMin:105,cinturaMax:114, desc:'Doble XL — 117 a 126 cm de pecho' },
+  { talla:'3XL',pechoMin:127, pechoMax:136, cinturaMin:115,cinturaMax:124, desc:'Triple XL — 127 a 136 cm de pecho' },
+  { talla:'4XL',pechoMin:137, pechoMax:200, cinturaMin:125,cinturaMax:200, desc:'Cuádruple XL — más de 137 cm de pecho' },
+];
+
+function calcTalla() {
+  const pecho   = parseInt(document.getElementById('medPecho').value)   || 0;
+  const cintura = parseInt(document.getElementById('medCintura').value) || 0;
+  if (!pecho) { document.getElementById('tallaResultado').style.display='none'; return; }
+
+  /* Ajuste según tipo (slim fit reduce 1 talla) */
+  const tipo = document.getElementById('tipoPrenda').value;
+  const ajuste = (tipo === 'slim') ? 1 : 0;
+
+  let match = TALLAS_HOMBRE.find(t => pecho >= t.pechoMin && pecho <= t.pechoMax);
+  if (!match) match = TALLAS_HOMBRE[TALLAS_HOMBRE.length - 1];
+
+  let idx = TALLAS_HOMBRE.indexOf(match) + ajuste;
+  idx = Math.max(0, Math.min(idx, TALLAS_HOMBRE.length - 1));
+  const talla = TALLAS_HOMBRE[idx];
+
+  document.getElementById('tallaValor').textContent    = talla.talla;
+  document.getElementById('tallaDetalle').textContent  = talla.desc;
+  document.getElementById('tallaResultado').style.display = 'block';
+
+  /* Highlight en tabla */
+  document.querySelectorAll('.size-table tr').forEach(r => r.classList.remove('highlighted'));
+  const row = document.getElementById('sz-' + talla.talla);
+  if (row) { row.classList.add('highlighted'); row.scrollIntoView({ behavior:'smooth', block:'nearest' }); }
+
+  window._tallaData = { talla: talla.talla, pecho, cintura, tipo };
+}
+
+function cotizarTalla() {
+  const d = window._tallaData || {};
+  const msg = `👕 *Consulta de tallas — ACOSER*\n━━━━━━━━━━━━━━\n📐 Talla calculada: ${d.talla}\n↔️ Pecho: ${d.pecho} cm\n🔵 Cintura: ${d.cintura || '—'} cm\n👕 Tipo: ${d.tipo}\n━━━━━━━━━━━━━━\nNecesito cotizar prendas en esta talla.`;
+  window.open('https://wa.me/573005206285?text=' + encodeURIComponent(msg), '_blank');
+}
+</script>
+</body>
+</html>

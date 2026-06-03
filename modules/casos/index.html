@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casos de Éxito — ACOSER Taller Textil</title>
+<meta name="description" content="Conoce los proyectos textiles de ACOSER. Uniformes corporativos, camisetas personalizadas, bordados y dotaciones para empresas e instituciones de Colombia.">
+<script>(function(){var t=localStorage.getItem('acoser-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/base.css">
+<link rel="stylesheet" href="../../css/modules.css">
+<style>
+.filter-bar { display: flex; gap: 0; flex-wrap: wrap; border-bottom: 1px solid var(--dust); margin-bottom: 4vh; }
+.filter-btn { font-family: 'Barlow Condensed', sans-serif; font-size: .56rem; letter-spacing: .3em; text-transform: uppercase; background: none; border: none; border-bottom: 2px solid transparent; color: var(--ash); padding: .8rem 1.4rem; cursor: pointer; transition: all .3s; font-weight: 300; margin-bottom: -1px; }
+.filter-btn.on, .filter-btn:hover { color: var(--gold); border-bottom-color: var(--gold); }
+.casos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--dust); }
+.caso-card { background: var(--ink2); position: relative; overflow: hidden; cursor: pointer; transition: background .35s; }
+.caso-card:hover { background: var(--ink3); }
+.caso-img { aspect-ratio: 4/3; background: var(--ink3); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.caso-img-bg { position: absolute; inset: 0; transition: transform .8s cubic-bezier(.4,0,.2,1); }
+.caso-card:hover .caso-img-bg { transform: scale(1.05); }
+.caso-img-num { font-family: 'Playfair Display', serif; font-size: 4rem; color: rgba(184,151,90,.08); font-style: italic; line-height: 1; }
+.caso-body { padding: 2rem; }
+.caso-tag { font-family: 'Barlow Condensed', sans-serif; font-size: .48rem; letter-spacing: .4em; text-transform: uppercase; color: var(--gold); font-weight: 300; display: block; margin-bottom: .7rem; }
+.caso-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--cream); font-weight: 400; margin-bottom: .8rem; line-height: 1.3; }
+.caso-desc { font-size: .78rem; color: var(--ash); line-height: 1.7; font-weight: 300; margin-bottom: 1.2rem; }
+.caso-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+.caso-badge { font-family: 'Barlow Condensed', sans-serif; font-size: .48rem; letter-spacing: .2em; text-transform: uppercase; border: 1px solid var(--dust); color: var(--ash); padding: .3rem .8rem; }
+.testimonio-card { background: var(--ink2); border: 1px solid var(--dust); padding: 2.5rem; position: relative; transition: border-color .35s; }
+.testimonio-card:hover { border-color: rgba(184,151,90,.2); }
+.testimonio-card::before { content:'\201C'; position:absolute; top:1.5rem; right:2rem; font-family:'Playfair Display',serif; font-size:3.5rem; color:rgba(184,151,90,.08); line-height:1; }
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--dust); }
+.stat-box { background: var(--ink); padding: 2.5rem 2rem; text-align: center; }
+@media(max-width:900px){ .casos-grid{grid-template-columns:1fr 1fr;} .stats-row{grid-template-columns:1fr 1fr;} }
+@media(max-width:600px){ .casos-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="cur-dot" id="curDot"></div>
+<div class="cur-ring" id="curRing"></div>
+<div id="loader"><div class="loader-word"><span>ACOSER</span></div><div class="loader-line-wrap"><div class="loader-line-inner"></div></div></div>
+<a href="https://wa.me/573005206285" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+<div class="mob-overlay" id="mobOverlay" onclick="closeMob()"></div>
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" onclick="closeMob()">Cerrar</button>
+  <ul class="mob-nav-links">
+    <li><a href="../../index.html#services" onclick="closeMob()">Servicios</a></li>
+    <li><a href="../calculadora-dtf/" onclick="closeMob()">Calculadora DTF</a></li>
+    <li><a href="../mockup/" onclick="closeMob()">Mockup</a></li>
+    <li><a href="../empresas/" onclick="closeMob()">Empresas</a></li>
+    <li><a href="../recursos/" onclick="closeMob()">Recursos</a></li>
+    <li><a href="../../index.html#contact" onclick="closeMob()">Cotizar</a></li>
+  </ul>
+</div>
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-logo"><img src="../../imagenes/logo.png" alt="ACOSER" class="nav-logo-img"></a>
+    <ul class="nav-links">
+      <li><a href="../../index.html#services">Servicios</a></li>
+      <li><a href="../calculadora-dtf/">Calculadora DTF</a></li>
+      <li><a href="../mockup/">Mockup</a></li>
+      <li><a href="../empresas/">Empresas</a></li>
+      <li><a href="../recursos/">Recursos</a></li>
+      <li><a href="../../index.html#contact" class="nav-cta-btn"><span>Cotizar</span></a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" id="themeIcon"></svg></button>
+      <button class="burger" id="burger" onclick="openMob()" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div style="padding:calc(88px + 6vh) 4rem 4vh;background:var(--ink2);border-bottom:1px solid var(--dust);">
+  <div class="section-label">Proyectos realizados</div>
+  <h1 class="sec-h2">Casos de <em>Éxito</em><br>y Portafolio.</h1>
+  <p style="font-size:.88rem;color:var(--fog);line-height:1.9;max-width:540px;margin-top:1.5rem;font-weight:300;">Cada prenda tiene una historia. Conoce los proyectos que hemos realizado para marcas, empresas e instituciones de toda Colombia.</p>
+</div>
+
+<!-- STATS -->
+<div style="padding:0 4rem;background:var(--ink);">
+  <div class="stats-row r">
+    <div class="stat-box"><span class="w-stat-num counter" data-target="500" data-prefix="+">0</span><div class="w-stat-lbl">Prendas entregadas</div></div>
+    <div class="stat-box"><span class="w-stat-num">10+</span><div class="w-stat-lbl">Empresas aliadas</div></div>
+    <div class="stat-box"><span class="w-stat-num">100%</span><div class="w-stat-lbl">Clientes satisfechos</div></div>
+    <div class="stat-box"><span class="w-stat-num">4</span><div class="w-stat-lbl">Departamentos de Col.</div></div>
+  </div>
+</div>
+
+<div style="padding:6vh 4rem;max-width:1200px;margin:0 auto;">
+
+  <!-- FILTROS -->
+  <div class="r">
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn on" onclick="filterCasos('todos',this)">Todos</button>
+      <button class="filter-btn" onclick="filterCasos('uniformes',this)">Uniformes</button>
+      <button class="filter-btn" onclick="filterCasos('camisetas',this)">Camisetas</button>
+      <button class="filter-btn" onclick="filterCasos('bordados',this)">Bordados</button>
+      <button class="filter-btn" onclick="filterCasos('dtf',this)">Estampados DTF</button>
+      <button class="filter-btn" onclick="filterCasos('empresas',this)">Empresas</button>
+    </div>
+  </div>
+
+  <!-- GRID DE CASOS -->
+  <div class="casos-grid r d2" id="casosGrid">
+    <div class="caso-card" data-cat="uniformes empresas">
+      <div class="caso-img"><div class="caso-img-bg" style="background:linear-gradient(150deg,#161411,#201d16 60%,#141210)"></div><div class="caso-img-num">01</div></div>
+      <div class="caso-body">
+        <span class="caso-tag">Uniformes · Empresas</span>
+        <div class="caso-title">Constructora del Caribe — 200 uniformes</div>
+        <p class="caso-desc">Producción de 200 uniformes completos para el equipo de campo y oficina. Camisa manga larga, chaleco reflectivo y gorra con logo bordado.</p>
+        <div class="caso-meta"><span class="caso-badge">200 uds</span><span class="caso-badge">Bordado + Confección</span><span class="caso-badge">Barranquilla</span></div>
+      </div>
+    </div>
+    <div class="caso-card" data-cat="camisetas dtf">
+      <div class="caso-img"><div class="caso-img-bg" style="background:linear-gradient(210deg,#1a1712,#141210 55%,#1e1b14)"></div><div class="caso-img-num">02</div></div>
+      <div class="caso-body">
+        <span class="caso-tag">Camisetas · DTF</span>
+        <div class="caso-title">Run Series — Colección deportiva</div>
+        <p class="caso-desc">150 camisetas técnicas para evento de running. Estampado DTF full color con degradado, resistente al sudor y múltiples lavados.</p>
+        <div class="caso-meta"><span class="caso-badge">150 uds</span><span class="caso-badge">DTF Premium</span><span class="caso-badge">Bogotá</span></div>
+      </div>
+    </div>
+    <div class="caso-card" data-cat="bordados empresas">
+      <div class="caso-img"><div class="caso-img-bg" style="background:linear-gradient(120deg,#181512,#1c1914 50%,#201d16)"></div><div class="caso-img-num">03</div></div>
+      <div class="caso-body">
+        <span class="caso-tag">Bordados · Institucional</span>
+        <div class="caso-title">Institución educativa — Uniformes escolares</div>
+        <p class="caso-desc">Uniformes completos para institución educativa de 300 estudiantes. Camiseta polo piqué con escudo bordado en alta definición.</p>
+        <div class="caso-meta"><span class="caso-badge">300 uds</span><span class="caso-badge">Bordado</span><span class="caso-badge">Corozal</span></div>
+      </div>
+    </div>
+    <div class="caso-card" data-cat="camisetas dtf">
+      <div class="caso-img"><div class="caso-img-bg" style="background:linear-gradient(170deg,#141210,#1a1712 60%,#1e1b15)"></div><div class="caso-img-num">04</div></div>
+      <div class="caso-body">
+        <span class="caso-tag">Marca · DTF</span>
+        <div class="caso-title">Marca urbana — Colección primavera-verano</div>
+        <p class="caso-desc">Private label para marca de moda urbana emergente. 80 unidades de camisetas oversized con estampados DTF fotorrealistas.</p>
+        <div class="caso-meta"><span class="caso-badge">80 uds</span><span class="caso-badge">Private Label</span><span class="caso-badge">Medellín</span></div>
+      </div>
+    </div>
+    <div class="caso-card" data-cat="uniformes empresas">
+      <div class="caso-img"><div class="caso-img-bg" style="background:linear-gradient(200deg,#1c1915,#161310 55%,#1a1713)"></div><div class="caso-img-num">05</div></div>
+      <div class="caso-body">
+        <span class="caso-tag">Uniformes · Industrial</span>
+        <div class="caso-title">Planta industrial — Dotación de seguridad</div>
+        <p class="caso-desc">Dotación industrial semestral para 120 operarios. Overol, camiseta, gorra y chaleco con normas de seguridad. Bordado en pecho y espalda.</p>
+        <div class="caso-meta"><span class="caso-badge">120 personas</span><span class="caso-badge">Dotación</span><span class="caso-badge">Sincelejo</span></div>
+      </div>
+    </div>
+    <div class="caso-card" data-cat="bordados dtf">
+      <div class="caso-img"><div class="caso-img-bg" style="background:linear-gradient(130deg,#181512,#201d16 65%,#141210)"></div><div class="caso-img-num">06</div></div>
+      <div class="caso-body">
+        <span class="caso-tag">Eventos · DTF</span>
+        <div class="caso-title">Agencia de eventos — Uniformes de staff</div>
+        <p class="caso-desc">60 uniformes de staff para evento corporativo en Bogotá. Camiseta negra con DTF de alta definición y nombre impreso en manga.</p>
+        <div class="caso-meta"><span class="caso-badge">60 uds</span><span class="caso-badge">Urgente (5 días)</span><span class="caso-badge">Bogotá</span></div>
+      </div>
+    </div>
+    <div class="caso-card" data-cat="camisetas empresas">
+      <div class="caso-img"><div class="caso-img-bg" style="background:linear-gradient(160deg,#1a1713,#141210 50%,#1e1c15)"></div><div class="caso-img-num">07</div></div>
+      <div class="caso-body">
+        <span class="caso-tag">Empresa · Camisetas</span>
+        <div class="caso-title">Fintech Startup — Kit de bienvenida</div>
+        <p class="caso-desc">Kit onboarding para 40 empleados: camiseta premium + hoodie con logo sutil bordado. Empaque individual personalizado.</p>
+        <div class="caso-meta"><span class="caso-badge">40 kits</span><span class="caso-badge">Bordado Premium</span><span class="caso-badge">Bogotá</span></div>
+      </div>
+    </div>
+    <div class="caso-card" data-cat="dtf">
+      <div class="caso-img"><div class="caso-img-bg" style="background:linear-gradient(190deg,#161412,#1c1914 60%,#181612)"></div><div class="caso-img-num">08</div></div>
+      <div class="caso-body">
+        <span class="caso-tag">Activación · DTF Masivo</span>
+        <div class="caso-title">Marca nacional — Lanzamiento de producto</div>
+        <p class="caso-desc">500 camisetas con estampado DTF para activación BTL en 5 ciudades. Colores exactos Pantone, entrega en 10 días hábiles.</p>
+        <div class="caso-meta"><span class="caso-badge">500 uds</span><span class="caso-badge">DTF Masivo</span><span class="caso-badge">Nacional</span></div>
+      </div>
+    </div>
+    <div class="caso-card" data-cat="bordados uniformes">
+      <div class="caso-img"><div class="caso-img-bg" style="background:linear-gradient(145deg,#141412,#1e1b14 55%,#181511)"></div><div class="caso-img-num">09</div></div>
+      <div class="caso-body">
+        <span class="caso-tag">Hotelería · Uniformes</span>
+        <div class="caso-title">Hotel boutique — Uniformes de servicio</div>
+        <p class="caso-desc">Uniformes premium para recepción, restaurante y housekeeping de hotel boutique. Telas de alta calidad y bordado refinado en 3 colores.</p>
+        <div class="caso-meta"><span class="caso-badge">50 uds</span><span class="caso-badge">Premium</span><span class="caso-badge">Cartagena</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIOS -->
+  <div style="margin-top:8vh;">
+    <div class="r" style="margin-bottom:3vh;"><div class="section-label">Lo que dicen nuestros clientes</div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;" class="r d2">
+      <div class="testimonio-card">
+        <p style="font-family:'Playfair Display',serif;font-size:.95rem;font-style:italic;color:var(--linen);line-height:1.8;margin-bottom:1.5rem;">"ACOSER superó todas mis expectativas. Los uniformes quedaron perfectos, el bordado impecable y entregaron antes del plazo. Los contrataremos siempre."</p>
+        <div style="border-top:1px solid var(--dust);padding-top:1.2rem;display:flex;justify-content:space-between;">
+          <div><span style="font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cream);display:block;font-weight:500;">Carlos Herrera</span><span style="font-size:.75rem;color:var(--ash);">Gerente — Constructora del Caribe</span></div>
+          <span style="color:var(--gold);font-size:.62rem;">★★★★★</span>
+        </div>
+      </div>
+      <div class="testimonio-card">
+        <p style="font-family:'Playfair Display',serif;font-size:.95rem;font-style:italic;color:var(--linen);line-height:1.8;margin-bottom:1.5rem;">"Los estampados DTF tienen una calidad increíble. Los colores se mantienen lavada tras lavada. Para el próximo evento volvemos con ACOSER sin dudarlo."</p>
+        <div style="border-top:1px solid var(--dust);padding-top:1.2rem;display:flex;justify-content:space-between;">
+          <div><span style="font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cream);display:block;font-weight:500;">Miguel Torres</span><span style="font-size:.75rem;color:var(--ash);">Director Creativo — Agencia Eventos</span></div>
+          <span style="color:var(--gold);font-size:.62rem;">★★★★★</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA FINAL -->
+  <div style="text-align:center;padding:6vh 0;border-top:1px solid var(--dust);margin-top:6vh;" class="r">
+    <div class="section-label" style="justify-content:center;">¿Tu empresa puede ser el próximo caso de éxito?</div>
+    <h2 class="sec-h2" style="text-align:center;margin-bottom:2rem;">Hablemos de tu<br><em>próximo proyecto.</em></h2>
+    <div style="display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;">
+      <a href="../empresas/" class="btn-module-primary"><span>Solicitar propuesta empresarial</span></a>
+      <a href="../../index.html#contact" class="btn-module-secondary">Formulario de cotización</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div><span class="footer-brand-name">ACOSER</span><span class="footer-brand-sub">Taller Textil</span><p class="footer-brand-desc">Confeccionamos tus ideas a medida. Producción textil personalizada para marcas y empresas en Colombia.</p></div>
+    <div><span class="footer-col-head">Herramientas</span><ul class="footer-links"><li><a href="../calculadora-dtf/">Calculadora DTF</a></li><li><a href="../mockup/">Mockup Generator</a></li><li><a href="../calculadora-tallas/">Guía de Tallas</a></li></ul></div>
+    <div><span class="footer-col-head">Plataforma</span><ul class="footer-links"><li><a href="../../index.html">Inicio</a></li><li><a href="../empresas/">Empresas</a></li><li><a href="../casos/">Casos de Éxito</a></li></ul></div>
+    <div><span class="footer-col-head">Contacto</span><ul class="footer-links"><li><a href="tel:+573005206285">+57 300 520 6285</a></li><li><a href="mailto:acosertallertextilinfo@gmail.com">Email</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">&copy; 2025 <span>ACOSER Taller Textil</span></span>
+    <div class="footer-social"><a href="https://instagram.com/acoser_tallertextil" target="_blank" class="f-social-link">Instagram</a><a href="https://wa.me/573005206285" target="_blank" class="f-social-link">WhatsApp</a></div>
+  </div>
+</footer>
+
+<script src="../../js/whatsapp.js"></script>
+<script src="../../js/leads.js"></script>
+<script src="../../js/core.js"></script>
+<script>
+function filterCasos(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.caso-card').forEach(card => {
+    const cats = card.dataset.cat || '';
+    const show = cat === 'todos' || cats.includes(cat);
+    card.style.opacity    = show ? '1' : '0.1';
+    card.style.pointerEvents = show ? 'auto' : 'none';
+  });
+}
+</script>
+</body>
+</html>

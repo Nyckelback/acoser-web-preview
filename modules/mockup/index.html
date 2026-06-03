@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup Generator — ACOSER Taller Textil</title>
+<meta name="description" content="Sube tu logo o diseño y visualízalo sobre camisetas, polos y hoodies. Mockup generator gratuito de ACOSER Taller Textil.">
+<script>(function(){var t=localStorage.getItem('acoser-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/base.css">
+<link rel="stylesheet" href="../../css/modules.css">
+<style>
+.mockup-layout { display: grid; grid-template-columns: 320px 1fr; gap: 0; min-height: calc(100vh - 88px); }
+.mockup-sidebar { background: var(--ink2); border-right: 1px solid var(--dust); padding: 3rem 2rem; display: flex; flex-direction: column; gap: 2rem; overflow-y: auto; }
+.mockup-canvas-area { background: var(--ink); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2rem; padding: 4rem; position: relative; }
+.garment-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.garment-btn { background: var(--ink3); border: 1px solid var(--dust); padding: 1.2rem .8rem; cursor: pointer; transition: all .3s ease; display: flex; flex-direction: column; align-items: center; gap: .6rem; }
+.garment-btn.active { border-color: var(--gold); background: rgba(184,151,90,.08); }
+.garment-btn svg { width: 36px; height: 36px; }
+.garment-label { font-family: 'Barlow Condensed', sans-serif; font-size: .5rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ash); }
+.garment-btn.active .garment-label { color: var(--gold); }
+.color-selector { display: flex; gap: 8px; flex-wrap: wrap; }
+.color-dot { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color .2s ease; }
+.color-dot.active { border-color: var(--gold); }
+.upload-zone { border: 1px dashed rgba(184,151,90,.35); padding: 2rem; text-align: center; cursor: pointer; transition: all .35s ease; background: rgba(184,151,90,.02); }
+.upload-zone:hover { border-color: var(--gold); background: rgba(184,151,90,.06); }
+.upload-label { font-family: 'Barlow Condensed', sans-serif; font-size: .6rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ash); }
+.upload-label span { color: var(--gold); }
+.canvas-wrapper { position: relative; display: inline-block; }
+canvas#mockupCanvas { display: block; max-width: 100%; border: 1px solid var(--dust); }
+.design-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ctrl-btn { background: var(--ink3); border: 1px solid var(--dust); padding: .7rem .5rem; cursor: pointer; transition: all .25s ease; font-family: 'Barlow Condensed', sans-serif; font-size: .52rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ash); }
+.ctrl-btn:hover { border-color: var(--gold); color: var(--gold); }
+.sidebar-label { font-family: 'Barlow Condensed', sans-serif; font-size: .52rem; letter-spacing: .45em; text-transform: uppercase; color: var(--gold); font-weight: 300; display: block; margin-bottom: .8rem; }
+.no-design { text-align: center; color: var(--ash); }
+.no-design-icon { font-family: 'Playfair Display', serif; font-size: 4rem; color: rgba(184,151,90,.1); line-height: 1; margin-bottom: 1rem; }
+@media(max-width:900px){ .mockup-layout{grid-template-columns:1fr;} .mockup-canvas-area{padding:2rem;} .mockup-sidebar{padding:1.5rem;} }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="cur-dot" id="curDot"></div>
+<div class="cur-ring" id="curRing"></div>
+<div id="loader"><div class="loader-word"><span>ACOSER</span></div><div class="loader-line-wrap"><div class="loader-line-inner"></div></div></div>
+
+<a href="https://wa.me/573005206285" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<div class="mob-overlay" id="mobOverlay" onclick="closeMob()"></div>
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" onclick="closeMob()">Cerrar</button>
+  <ul class="mob-nav-links">
+    <li><a href="../../index.html#services" onclick="closeMob()">Servicios</a></li>
+    <li><a href="../calculadora-dtf/" onclick="closeMob()">Calculadora DTF</a></li>
+    <li><a href="../mockup/" onclick="closeMob()">Mockup</a></li>
+    <li><a href="../empresas/" onclick="closeMob()">Empresas</a></li>
+    <li><a href="../recursos/" onclick="closeMob()">Recursos</a></li>
+    <li><a href="../../index.html#contact" onclick="closeMob()">Cotizar</a></li>
+  </ul>
+</div>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-logo"><img src="../../imagenes/logo.png" alt="ACOSER" class="nav-logo-img"></a>
+    <ul class="nav-links">
+      <li><a href="../../index.html#services">Servicios</a></li>
+      <li><a href="../calculadora-dtf/">Calculadora DTF</a></li>
+      <li><a href="../mockup/" style="color:var(--gold)">Mockup</a></li>
+      <li><a href="../empresas/">Empresas</a></li>
+      <li><a href="../recursos/">Recursos</a></li>
+      <li><a href="../../index.html#contact" class="nav-cta-btn"><span>Cotizar</span></a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" id="themeIcon"></svg></button>
+      <button class="burger" id="burger" onclick="openMob()" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<div style="padding: calc(88px + 4vh) 4rem 3vh; border-bottom: 1px solid var(--dust); background: var(--ink2);">
+  <div class="section-label">Herramienta visual gratuita</div>
+  <h1 class="sec-h2">Mockup Generator<br><em>Visualiza tu diseño.</em></h1>
+  <p style="font-size:.85rem;color:var(--fog);margin-top:1rem;font-weight:300;max-width:520px;line-height:1.85;">Sube tu logo o diseño y míralo sobre diferentes prendas. Selecciona el color, ajusta el tamaño y comparte el resultado para cotizar.</p>
+</div>
+
+<!-- TOOL -->
+<div class="mockup-layout">
+
+  <!-- SIDEBAR CONTROLES -->
+  <div class="mockup-sidebar">
+
+    <!-- PRENDA -->
+    <div>
+      <span class="sidebar-label">Tipo de prenda</span>
+      <div class="garment-selector">
+        <button class="garment-btn active" onclick="setGarment('tshirt-front',this)" title="Camiseta frente">
+          <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 3l-9 6 4 4 2-1v20h18V12l2 1 4-4-9-6c0 0-2 3-6 3s-6-3-6-3z"/></svg>
+          <span class="garment-label">Camiseta</span>
+        </button>
+        <button class="garment-btn" onclick="setGarment('polo',this)" title="Polo">
+          <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M13 3l-10 7 4 3 2-1v20h18V12l2 1 4-3-10-7c0 0-1 4-5 4s-5-4-5-4z"/><path d="M15 3v8M21 3v8M15 3h6"/></svg>
+          <span class="garment-label">Polo</span>
+        </button>
+        <button class="garment-btn" onclick="setGarment('hoodie',this)" title="Hoodie">
+          <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M13 4l-10 8 4 3 2-2v19h18V13l2 2 4-3-10-8c0 0-1 5-5 7-4-2-5-7-5-7z"/><path d="M13 4c2 4 4 6 5 6s3-2 5-6"/><path d="M14 13h8v3l-1 1h-6l-1-1z"/></svg>
+          <span class="garment-label">Hoodie</span>
+        </button>
+        <button class="garment-btn" onclick="setGarment('uniform',this)" title="Uniforme">
+          <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 3l-9 6 4 4 2-1v20h18V12l2 1 4-4-9-6c0 0-1 2-4 2s-4-2-4-2z"/><path d="M18 10v5M15 13h6"/></svg>
+          <span class="garment-label">Uniforme</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- COLOR -->
+    <div>
+      <span class="sidebar-label">Color de prenda</span>
+      <div class="color-selector">
+        <div class="color-dot active" style="background:#1a1a1a;border-color:rgba(255,255,255,.2);" onclick="setColor('#1a1a1a','Negra',this)" title="Negra"></div>
+        <div class="color-dot" style="background:#f5f5f5;border-color:rgba(0,0,0,.1);" onclick="setColor('#f5f5f5','Blanca',this)" title="Blanca"></div>
+        <div class="color-dot" style="background:#3a3a3a;" onclick="setColor('#3a3a3a','Gris oscuro',this)" title="Gris oscuro"></div>
+        <div class="color-dot" style="background:#8a8a8a;" onclick="setColor('#8a8a8a','Gris claro',this)" title="Gris claro"></div>
+        <div class="color-dot" style="background:#1a3a5c;" onclick="setColor('#1a3a5c','Azul marino',this)" title="Azul marino"></div>
+        <div class="color-dot" style="background:#2563a8;" onclick="setColor('#2563a8','Azul',this)" title="Azul"></div>
+        <div class="color-dot" style="background:#8b1a1a;" onclick="setColor('#8b1a1a','Rojo oscuro',this)" title="Rojo oscuro"></div>
+        <div class="color-dot" style="background:#166534;" onclick="setColor('#166534','Verde',this)" title="Verde"></div>
+        <div class="color-dot" style="background:#b8975a;" onclick="setColor('#b8975a','Dorado',this)" title="Dorado"></div>
+        <div class="color-dot" style="background:#5b21b6;" onclick="setColor('#5b21b6','Morado',this)" title="Morado"></div>
+      </div>
+    </div>
+
+    <!-- UPLOAD -->
+    <div>
+      <span class="sidebar-label">Tu diseño o logo</span>
+      <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--gold)" stroke-width="1.2" style="display:block;margin:0 auto 1rem;opacity:.6;"><path d="M14 4v14M9 9l5-5 5 5M4 22h20"/></svg>
+        <p class="upload-label">Click para subir · <span>PNG, JPG, SVG</span></p>
+        <p style="font-size:.7rem;color:var(--ash);margin-top:.4rem;">Máximo 5MB · Fondo transparente recomendado</p>
+      </div>
+      <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="uploadDesign(this)">
+    </div>
+
+    <!-- CONTROLES DISEÑO -->
+    <div id="designControls" style="display:none;">
+      <span class="sidebar-label">Ajustar diseño</span>
+      <div style="margin-bottom:1rem;">
+        <label class="upload-label" style="margin-bottom:.5rem;display:block;">Tamaño</label>
+        <input type="range" id="sizeSlider" min="20" max="90" value="40" oninput="adjustDesign()" style="width:100%;accent-color:var(--gold);">
+      </div>
+      <div style="margin-bottom:1rem;">
+        <label class="upload-label" style="margin-bottom:.5rem;display:block;">Posición vertical</label>
+        <input type="range" id="posYSlider" min="15" max="70" value="35" oninput="adjustDesign()" style="width:100%;accent-color:var(--gold);">
+      </div>
+      <div class="design-controls">
+        <button class="ctrl-btn" onclick="centerDesign()">Centrar</button>
+        <button class="ctrl-btn" onclick="removeDesign()">Quitar diseño</button>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div style="margin-top:auto;padding-top:2rem;border-top:1px solid var(--dust);">
+      <button class="btn-module-primary" style="width:100%;justify-content:center;margin-bottom:.8rem;" onclick="cotizarMockup()">Cotizar este diseño</button>
+      <button class="btn-module-secondary" style="width:100%;justify-content:center;" onclick="downloadMockup()">Descargar imagen</button>
+    </div>
+
+  </div>
+
+  <!-- ÁREA CANVAS -->
+  <div class="mockup-canvas-area">
+    <div id="noDesignMsg" class="no-design">
+      <div class="no-design-icon">✦</div>
+      <p style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--linen);font-style:italic;margin-bottom:.5rem;">Sube tu diseño para comenzar.</p>
+      <p style="font-size:.8rem;color:var(--ash);font-weight:300;">El mockup aparecerá aquí instantáneamente.</p>
+    </div>
+    <div class="canvas-wrapper" id="canvasWrapper" style="display:none;">
+      <canvas id="mockupCanvas" width="480" height="560"></canvas>
+    </div>
+    <div id="canvasInfo" style="display:none;text-align:center;">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.35em;text-transform:uppercase;color:var(--ash);" id="canvasInfoText">Camiseta Negra · Tu diseño</p>
+    </div>
+  </div>
+</div>
+
+<!-- INFO SECTION -->
+<div style="background:var(--ink2);padding:8vh 4rem;border-top:1px solid var(--dust);">
+  <div style="max-width:900px;margin:0 auto;">
+    <div class="r" style="margin-bottom:4vh;"><div class="section-label">¿Cómo funciona?</div></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--dust);" class="r d2">
+      <div style="background:var(--ink);padding:2rem 1.5rem;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);font-style:italic;margin-bottom:1rem;">01</div>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:.6rem;">Elige prenda</p>
+        <p style="font-size:.75rem;color:var(--ash);line-height:1.6;">Selecciona el tipo y color de prenda que deseas visualizar.</p>
+      </div>
+      <div style="background:var(--ink);padding:2rem 1.5rem;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);font-style:italic;margin-bottom:1rem;">02</div>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:.6rem;">Sube tu diseño</p>
+        <p style="font-size:.75rem;color:var(--ash);line-height:1.6;">Sube tu logo o diseño en PNG (fondo transparente ideal).</p>
+      </div>
+      <div style="background:var(--ink);padding:2rem 1.5rem;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);font-style:italic;margin-bottom:1rem;">03</div>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:.6rem;">Ajusta</p>
+        <p style="font-size:.75rem;color:var(--ash);line-height:1.6;">Escala y posiciona tu diseño exactamente como lo quieres.</p>
+      </div>
+      <div style="background:var(--ink);padding:2rem 1.5rem;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);font-style:italic;margin-bottom:1rem;">04</div>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:.6rem;">Cotiza</p>
+        <p style="font-size:.75rem;color:var(--ash);line-height:1.6;">Envía el resultado por WhatsApp y recibe tu cotización.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div><span class="footer-brand-name">ACOSER</span><span class="footer-brand-sub">Taller Textil</span><p class="footer-brand-desc">Confeccionamos tus ideas a medida. Producción textil personalizada para marcas, empresas y proyectos en toda Colombia.</p></div>
+    <div><span class="footer-col-head">Herramientas</span><ul class="footer-links"><li><a href="../calculadora-dtf/">Calculadora DTF</a></li><li><a href="../mockup/">Mockup Generator</a></li><li><a href="../calculadora-tallas/">Guía de Tallas</a></li><li><a href="../recursos/">Centro de Recursos</a></li></ul></div>
+    <div><span class="footer-col-head">Plataforma</span><ul class="footer-links"><li><a href="../../index.html">Inicio</a></li><li><a href="../../index.html#services">Servicios</a></li><li><a href="../empresas/">Empresas</a></li></ul></div>
+    <div><span class="footer-col-head">Contacto</span><ul class="footer-links"><li><a href="tel:+573005206285">+57 300 520 6285</a></li><li><a href="mailto:acosertallertextilinfo@gmail.com">Email</a></li><li><a href="https://instagram.com/acoser_tallertextil" target="_blank">Instagram</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">&copy; 2025 <span>ACOSER Taller Textil</span></span>
+    <div class="footer-social"><a href="https://instagram.com/acoser_tallertextil" target="_blank" class="f-social-link">Instagram</a><a href="https://wa.me/573005206285" target="_blank" class="f-social-link">WhatsApp</a></div>
+  </div>
+</footer>
+
+<script src="../../js/whatsapp.js"></script>
+<script src="../../js/leads.js"></script>
+<script src="../../js/core.js"></script>
+<script>
+/* ── Estado global ── */
+let state = {
+  garment: 'tshirt-front',
+  garmentLabel: 'Camiseta',
+  color: '#1a1a1a',
+  colorLabel: 'Negra',
+  designImg: null,
+  designSize: 40,
+  designPosY: 35,
+};
+
+const CANVAS_W = 480;
+const CANVAS_H = 560;
+
+/* ── Shapes de prendas (SVG-path como Path2D) ── */
+function getGarmentShape(ctx, garment) {
+  const W = CANVAS_W, H = CANVAS_H;
+  const shapes = {
+    'tshirt-front': () => {
+      ctx.beginPath();
+      ctx.moveTo(W*.28, H*.06);
+      ctx.lineTo(W*.04, H*.18);
+      ctx.lineTo(W*.15, H*.32);
+      ctx.lineTo(W*.25, H*.26);
+      ctx.lineTo(W*.25, H*.9);
+      ctx.lineTo(W*.75, H*.9);
+      ctx.lineTo(W*.75, H*.26);
+      ctx.lineTo(W*.85, H*.32);
+      ctx.lineTo(W*.96, H*.18);
+      ctx.lineTo(W*.72, H*.06);
+      ctx.quadraticCurveTo(W*.5, H*.14, W*.28, H*.06);
+      ctx.closePath();
+    },
+    polo: () => {
+      ctx.beginPath();
+      ctx.moveTo(W*.28, H*.06);
+      ctx.lineTo(W*.04, H*.18);
+      ctx.lineTo(W*.14, H*.31);
+      ctx.lineTo(W*.24, H*.25);
+      ctx.lineTo(W*.24, H*.9);
+      ctx.lineTo(W*.76, H*.9);
+      ctx.lineTo(W*.76, H*.25);
+      ctx.lineTo(W*.86, H*.31);
+      ctx.lineTo(W*.96, H*.18);
+      ctx.lineTo(W*.72, H*.06);
+      ctx.quadraticCurveTo(W*.6, H*.16, W*.52, H*.18);
+      ctx.quadraticCurveTo(W*.5, H*.22, W*.48, H*.18);
+      ctx.quadraticCurveTo(W*.4, H*.16, W*.28, H*.06);
+      ctx.closePath();
+    },
+    hoodie: () => {
+      ctx.beginPath();
+      ctx.moveTo(W*.28, H*.07);
+      ctx.lineTo(W*.18, H*.14);
+      ctx.lineTo(W*.04, H*.2);
+      ctx.lineTo(W*.14, H*.36);
+      ctx.lineTo(W*.24, H*.28);
+      ctx.lineTo(W*.24, H*.9);
+      ctx.lineTo(W*.76, H*.9);
+      ctx.lineTo(W*.76, H*.28);
+      ctx.lineTo(W*.86, H*.36);
+      ctx.lineTo(W*.96, H*.2);
+      ctx.lineTo(W*.82, H*.14);
+      ctx.lineTo(W*.72, H*.07);
+      ctx.quadraticCurveTo(W*.6, H*.18, W*.52, H*.2);
+      ctx.quadraticCurveTo(W*.5, H*.26, W*.48, H*.2);
+      ctx.quadraticCurveTo(W*.4, H*.18, W*.28, H*.07);
+      ctx.closePath();
+    },
+    uniform: () => {
+      ctx.beginPath();
+      ctx.moveTo(W*.29, H*.06);
+      ctx.lineTo(W*.04, H*.18);
+      ctx.lineTo(W*.15, H*.32);
+      ctx.lineTo(W*.25, H*.26);
+      ctx.lineTo(W*.25, H*.92);
+      ctx.lineTo(W*.75, H*.92);
+      ctx.lineTo(W*.75, H*.26);
+      ctx.lineTo(W*.85, H*.32);
+      ctx.lineTo(W*.96, H*.18);
+      ctx.lineTo(W*.71, H*.06);
+      ctx.quadraticCurveTo(W*.5, H*.13, W*.29, H*.06);
+      ctx.closePath();
+    },
+  };
+  (shapes[garment] || shapes['tshirt-front'])();
+}
+
+function getGarmentShadow(ctx, garment) {
+  const W = CANVAS_W, H = CANVAS_H;
+  /* Sombra lateral */
+  const grad = ctx.createLinearGradient(W*.2, 0, W*.8, 0);
+  grad.addColorStop(0, 'rgba(0,0,0,.35)');
+  grad.addColorStop(.3, 'rgba(0,0,0,.0)');
+  grad.addColorStop(.7, 'rgba(0,0,0,.0)');
+  grad.addColorStop(1, 'rgba(0,0,0,.35)');
+  return grad;
+}
+
+function drawGarment() {
+  const canvas = document.getElementById('mockupCanvas');
+  const ctx    = canvas.getContext('2d');
+  const W = CANVAS_W, H = CANVAS_H;
+
+  ctx.clearRect(0, 0, W, H);
+
+  /* Fondo neutro */
+  const bgTheme = document.documentElement.getAttribute('data-theme') === 'light' ? '#e8e3da' : '#1e1c18';
+  ctx.fillStyle = bgTheme;
+  ctx.fillRect(0, 0, W, H);
+
+  /* Rejilla sutil */
+  ctx.strokeStyle = 'rgba(184,151,90,.04)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+  /* Prenda */
+  ctx.save();
+  getGarmentShape(ctx, state.garment);
+  ctx.fillStyle = state.color;
+  ctx.fill();
+  /* Sombra */
+  getGarmentShape(ctx, state.garment);
+  ctx.fillStyle = getGarmentShadow(ctx, state.garment);
+  ctx.fill();
+  /* Borde sutil */
+  getGarmentShape(ctx, state.garment);
+  ctx.strokeStyle = 'rgba(255,255,255,.06)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+
+  /* Collar según tipo */
+  drawCollar(ctx, state.garment, state.color);
+
+  /* Diseño encima */
+  if (state.designImg) drawDesign(ctx);
+
+  /* Marca de agua */
+  ctx.font = '400 11px "Barlow Condensed"';
+  ctx.letterSpacing = '3px';
+  ctx.fillStyle = 'rgba(184,151,90,.18)';
+  ctx.textAlign = 'right';
+  ctx.fillText('ACOSER', W - 14, H - 14);
+}
+
+function drawCollar(ctx, garment, color) {
+  const W = CANVAS_W, H = CANVAS_H;
+  ctx.save();
+  /* Collar (más oscuro que la prenda) */
+  const darken = (hex, amt) => {
+    const n = parseInt(hex.slice(1), 16);
+    const r = Math.max(0, (n >> 16) + amt);
+    const g = Math.max(0, ((n >> 8) & 0xff) + amt);
+    const b = Math.max(0, (n & 0xff) + amt);
+    return `rgb(${r},${g},${b})`;
+  };
+  ctx.fillStyle = darken(color.length === 7 ? color : '#1a1a1a', -20);
+
+  if (garment === 'tshirt-front' || garment === 'uniform') {
+    ctx.beginPath();
+    ctx.ellipse(W*.5, H*.1, W*.12, H*.05, 0, 0, Math.PI*2);
+    ctx.fill();
+  } else if (garment === 'polo') {
+    ctx.beginPath();
+    ctx.moveTo(W*.44, H*.08);
+    ctx.lineTo(W*.44, H*.2);
+    ctx.lineTo(W*.56, H*.2);
+    ctx.lineTo(W*.56, H*.08);
+    ctx.quadraticCurveTo(W*.5, H*.06, W*.44, H*.08);
+    ctx.fill();
+    /* Botones */
+    ctx.fillStyle = 'rgba(255,255,255,.15)';
+    [H*.1, H*.14, H*.18].forEach(y => {
+      ctx.beginPath(); ctx.arc(W*.5, y, 2, 0, Math.PI*2); ctx.fill();
+    });
+  } else if (garment === 'hoodie') {
+    ctx.beginPath();
+    ctx.moveTo(W*.3, H*.07);
+    ctx.quadraticCurveTo(W*.3, H*.24, W*.5, H*.24);
+    ctx.quadraticCurveTo(W*.7, H*.24, W*.7, H*.07);
+    ctx.closePath();
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawDesign(ctx) {
+  if (!state.designImg) return;
+  const W = CANVAS_W;
+  const imgW  = state.designImg.naturalWidth  || state.designImg.width;
+  const imgH  = state.designImg.naturalHeight || state.designImg.height;
+  const scale = (state.designSize / 100) * (W * .55);
+  const aspect = imgW / imgH;
+  const dW = scale;
+  const dH = scale / aspect;
+  const x = (W - dW) / 2;
+  const y = (CANVAS_H * state.designPosY) / 100;
+  ctx.drawImage(state.designImg, x, y, dW, dH);
+}
+
+function setGarment(g, btn) {
+  state.garment = g;
+  state.garmentLabel = btn.querySelector('.garment-label').textContent;
+  document.querySelectorAll('.garment-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateInfo();
+  drawGarment();
+}
+
+function setColor(hex, label, dot) {
+  state.color = hex;
+  state.colorLabel = label;
+  document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+  dot.classList.add('active');
+  updateInfo();
+  drawGarment();
+}
+
+function uploadDesign(input) {
+  const file = input.files[0];
+  if (!file || !file.type.startsWith('image/')) return;
+  if (file.size > 5 * 1024 * 1024) { alert('La imagen no puede superar 5MB.'); return; }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      state.designImg = img;
+      document.getElementById('noDesignMsg').style.display = 'none';
+      document.getElementById('canvasWrapper').style.display = 'block';
+      document.getElementById('canvasInfo').style.display = 'block';
+      document.getElementById('designControls').style.display = 'block';
+      drawGarment();
+      ACOSER_LEADS.capturar({ fuente: 'mockup-generator', garment: state.garmentLabel, color: state.colorLabel }, { email: false });
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function adjustDesign() {
+  state.designSize = parseInt(document.getElementById('sizeSlider').value);
+  state.designPosY = parseInt(document.getElementById('posYSlider').value);
+  drawGarment();
+}
+
+function centerDesign() {
+  document.getElementById('posYSlider').value = 35;
+  state.designPosY = 35;
+  drawGarment();
+}
+
+function removeDesign() {
+  state.designImg = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('designControls').style.display = 'none';
+  document.getElementById('noDesignMsg').style.display = 'block';
+  document.getElementById('canvasWrapper').style.display = 'none';
+  document.getElementById('canvasInfo').style.display = 'none';
+}
+
+function updateInfo() {
+  document.getElementById('canvasInfoText').textContent = `${state.garmentLabel} ${state.colorLabel} · Tu diseño`;
+}
+
+function downloadMockup() {
+  const canvas = document.getElementById('mockupCanvas');
+  const a = document.createElement('a');
+  a.download = `acoser-mockup-${state.garmentLabel.toLowerCase()}.png`;
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+}
+
+function cotizarMockup() {
+  const url = ACOSER_WA.personalizador({
+    tipoPrenda:   state.garmentLabel,
+    colorPrenda:  state.colorLabel,
+    observacion:  'Diseño generado en el Mockup Generator de ACOSER',
+  });
+  window.open(url, '_blank');
+}
+
+/* Redibujar al cambiar tema */
+document.getElementById('themeBtn').addEventListener('click', () => setTimeout(drawGarment, 700));
+
+/* Init */
+drawGarment();
+</script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+/* ═══════════════════════════════════════════════════════════════
+   ACOSER Platform — Estilos de Módulos
+   Estilos compartidos para todas las páginas de módulos
+   (personalizador, calculadora, catálogo, empresas, etc.)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── MÓDULO: Layout base ────────────────────────────── */
+.module-page {
+  min-height: 100vh;
+  background: var(--ink);
+  color: var(--linen);
+}
+
+.module-hero {
+  padding: calc(88px + 6vh) 4rem 6vh;
+  border-bottom: 1px solid var(--dust);
+  background: var(--ink2);
+}
+
+.module-hero-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .56rem; letter-spacing: .55em;
+  text-transform: uppercase; color: var(--gold);
+  font-weight: 300; margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.module-hero-tag::before {
+  content: ''; width: 28px; height: 1px; background: var(--gold); display: block;
+}
+
+.module-hero-h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 400; color: var(--cream);
+  line-height: 1.1; margin-bottom: 1rem;
+}
+.module-hero-h1 em { font-style: italic; color: var(--gold2); }
+
+.module-hero-desc {
+  font-size: .9rem; color: var(--fog);
+  line-height: 1.85; max-width: 560px; font-weight: 300;
+}
+
+.module-body {
+  padding: 8vh 4rem;
+}
+
+/* ─── TARJETAS PREMIUM ───────────────────────────────── */
+.card-premium {
+  background: var(--ink2);
+  border: 1px solid var(--dust);
+  padding: 2.5rem;
+  transition: border-color .35s ease;
+}
+.card-premium:hover { border-color: rgba(184,151,90,.25); }
+
+.card-premium-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 400;
+  color: var(--cream); margin-bottom: 1rem;
+}
+.card-premium-title em { font-style: italic; color: var(--gold2); }
+
+/* ─── INPUTS PREMIUM ─────────────────────────────────── */
+.input-group {
+  display: flex; flex-direction: column; gap: .6rem;
+  margin-bottom: 1.5rem;
+}
+.input-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .52rem; letter-spacing: .4em;
+  color: var(--ash); text-transform: uppercase; font-weight: 300;
+}
+.input-field {
+  background: none; border: none;
+  border-bottom: 1px solid var(--dust);
+  color: var(--linen); font-family: 'Barlow', sans-serif;
+  font-size: .95rem; font-weight: 300;
+  padding: .6rem 0; outline: none;
+  transition: border-color .35s ease; width: 100%;
+}
+.input-field:focus { border-color: var(--gold); }
+.input-field::placeholder { color: var(--ash); }
+.input-field--box {
+  background: var(--ink3);
+  border: 1px solid var(--dust);
+  padding: .8rem 1rem;
+  transition: border-color .35s, background .35s;
+}
+.input-field--box:focus { border-color: var(--gold); background: var(--ink4); }
+.input-select {
+  -webkit-appearance: none; appearance: none;
+  background: var(--ink3); border: 1px solid var(--dust);
+  color: var(--linen); font-family: 'Barlow', sans-serif;
+  font-size: .88rem; padding: .8rem 1rem;
+  outline: none; width: 100%;
+  transition: border-color .35s ease; cursor: pointer;
+}
+.input-select:focus { border-color: var(--gold); }
+.input-select option { background: var(--ink2); }
+
+/* ─── BOTONES MÓDULO ─────────────────────────────────── */
+.btn-module-primary {
+  display: inline-flex; align-items: center; gap: 1rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--ink); background: var(--gold);
+  padding: 1.1rem 2.4rem; border: none; cursor: pointer;
+  position: relative; overflow: hidden; font-weight: 500;
+  transition: color .4s ease;
+}
+.btn-module-primary::before {
+  content: ''; position: absolute; inset: 0; background: var(--gold2);
+  transform: translateX(-100%); transition: transform .5s cubic-bezier(.77,0,.175,1);
+}
+.btn-module-primary:hover::before { transform: translateX(0); }
+.btn-module-primary > * { position: relative; }
+
+.btn-module-secondary {
+  display: inline-flex; align-items: center; gap: .8rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .62rem; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--fog); background: none;
+  border: 1px solid var(--dust); padding: 1rem 2rem;
+  cursor: pointer; transition: all .35s ease;
+}
+.btn-module-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+.btn-wa-module {
+  display: inline-flex; align-items: center; gap: .8rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .62rem; letter-spacing: .28em; text-transform: uppercase;
+  color: #25D366; background: none;
+  border: 1px solid rgba(37,211,102,.3); padding: 1rem 2rem;
+  cursor: pointer; text-decoration: none;
+  transition: all .35s ease;
+}
+.btn-wa-module:hover { border-color: #25D366; background: rgba(37,211,102,.06); }
+
+/* ─── RESULTADO / OUTPUT ─────────────────────────────── */
+.result-box {
+  background: linear-gradient(135deg, var(--ink2), var(--ink3));
+  border: 1px solid var(--dust);
+  padding: 2.5rem;
+}
+.result-box.highlight {
+  border-color: rgba(184,151,90,.35);
+  background: linear-gradient(135deg, rgba(184,151,90,.04), rgba(184,151,90,.02));
+}
+.result-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .52rem; letter-spacing: .45em;
+  text-transform: uppercase; color: var(--ash); font-weight: 300;
+  display: block; margin-bottom: .6rem;
+}
+.result-value {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 400; color: var(--gold2); line-height: 1;
+}
+.result-unit {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .65rem; letter-spacing: .2em;
+  color: var(--ash); display: block; margin-top: .4rem;
+}
+
+/* ─── BADGES ─────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .5rem; letter-spacing: .3em; text-transform: uppercase;
+  font-weight: 400; padding: .35rem .9rem;
+  border: 1px solid currentColor;
+}
+.badge--gold  { color: var(--gold);    border-color: rgba(184,151,90,.3); background: rgba(184,151,90,.06); }
+.badge--green { color: #25D366;        border-color: rgba(37,211,102,.3); background: rgba(37,211,102,.06); }
+.badge--gray  { color: var(--ash);     border-color: var(--dust);         background: var(--ink3); }
+
+/* ─── DIVISOR ────────────────────────────────────────── */
+.mod-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--dust) 30%, var(--dust) 70%, transparent);
+  margin: 3rem 0; opacity: .5;
+}
+
+/* ─── GRID UTILITIES ─────────────────────────────────── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+
+/* ─── BACK LINK ──────────────────────────────────────── */
+.back-link {
+  display: inline-flex; align-items: center; gap: .8rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .6rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--ash); text-decoration: none;
+  transition: color .35s; margin-bottom: 3rem;
+}
+.back-link::before { content: '←'; font-size: .8rem; }
+.back-link:hover { color: var(--gold); }
+
+/* ─── RESPONSIVE MÓDULOS ─────────────────────────────── */
+@media (max-width: 768px) {
+  .module-hero { padding: calc(62px + 4vh) 1.5rem 4vh; }
+  .module-body { padding: 4vh 1.5rem; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .card-premium { padding: 1.8rem; }
+  .result-box { padding: 1.8rem; }
+}
+
+@media (max-width: 480px) {
+  .module-hero { padding: calc(52px + 3vh) 1.2rem 3vh; }
+  .module-body { padding: 3vh 1.2rem; }
+}

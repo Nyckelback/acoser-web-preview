@@ -2,525 +2,2133 @@
 <html lang="es" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mockup Generator — ACOSER Taller Textil</title>
-<meta name="description" content="Sube tu logo o diseño y visualízalo sobre camisetas, polos y hoodies. Mockup generator gratuito de ACOSER Taller Textil.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ACOSER Studio — Personalizador de Prendas Premium</title>
+<meta name="description" content="Personalizador profesional de prendas ACOSER. Diseña camisetas, polos, hoodies y uniformes con tu logo. Vista previa instantánea, cotización automática y descarga en alta calidad.">
 <script>(function(){var t=localStorage.getItem('acoser-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../css/base.css">
-<link rel="stylesheet" href="../../css/modules.css">
 <style>
-.mockup-layout { display: grid; grid-template-columns: 320px 1fr; gap: 0; min-height: calc(100vh - 88px); }
-.mockup-sidebar { background: var(--ink2); border-right: 1px solid var(--dust); padding: 3rem 2rem; display: flex; flex-direction: column; gap: 2rem; overflow-y: auto; }
-.mockup-canvas-area { background: var(--ink); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2rem; padding: 4rem; position: relative; }
-.garment-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.garment-btn { background: var(--ink3); border: 1px solid var(--dust); padding: 1.2rem .8rem; cursor: pointer; transition: all .3s ease; display: flex; flex-direction: column; align-items: center; gap: .6rem; }
-.garment-btn.active { border-color: var(--gold); background: rgba(184,151,90,.08); }
-.garment-btn svg { width: 36px; height: 36px; }
-.garment-label { font-family: 'Barlow Condensed', sans-serif; font-size: .5rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ash); }
-.garment-btn.active .garment-label { color: var(--gold); }
-.color-selector { display: flex; gap: 8px; flex-wrap: wrap; }
-.color-dot { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color .2s ease; }
-.color-dot.active { border-color: var(--gold); }
-.upload-zone { border: 1px dashed rgba(184,151,90,.35); padding: 2rem; text-align: center; cursor: pointer; transition: all .35s ease; background: rgba(184,151,90,.02); }
-.upload-zone:hover { border-color: var(--gold); background: rgba(184,151,90,.06); }
-.upload-label { font-family: 'Barlow Condensed', sans-serif; font-size: .6rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ash); }
-.upload-label span { color: var(--gold); }
-.canvas-wrapper { position: relative; display: inline-block; }
-canvas#mockupCanvas { display: block; max-width: 100%; border: 1px solid var(--dust); }
-.design-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.ctrl-btn { background: var(--ink3); border: 1px solid var(--dust); padding: .7rem .5rem; cursor: pointer; transition: all .25s ease; font-family: 'Barlow Condensed', sans-serif; font-size: .52rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ash); }
-.ctrl-btn:hover { border-color: var(--gold); color: var(--gold); }
-.sidebar-label { font-family: 'Barlow Condensed', sans-serif; font-size: .52rem; letter-spacing: .45em; text-transform: uppercase; color: var(--gold); font-weight: 300; display: block; margin-bottom: .8rem; }
-.no-design { text-align: center; color: var(--ash); }
-.no-design-icon { font-family: 'Playfair Display', serif; font-size: 4rem; color: rgba(184,151,90,.1); line-height: 1; margin-bottom: 1rem; }
-@media(max-width:900px){ .mockup-layout{grid-template-columns:1fr;} .mockup-canvas-area{padding:2rem;} .mockup-sidebar{padding:1.5rem;} }
+/* ═══════════════════════════════════════════════════════
+   ACOSER STUDIO — Design System Premium
+   ═══════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --s-bg:        #0a0908;
+  --s-panel:     #111009;
+  --s-panel2:    #161411;
+  --s-border:    rgba(184,151,90,0.10);
+  --s-border2:   rgba(184,151,90,0.20);
+  --s-gold:      #b8975a;
+  --s-gold2:     #d4b278;
+  --s-gold-dim:  rgba(184,151,90,0.08);
+  --s-cream:     #f0ebe3;
+  --s-ash:       #6a6760;
+  --s-fog:       #8a8880;
+  --s-red:       #c0614a;
+  --s-green:     #3a8a5a;
+  --s-radius:    10px;
+  --s-sidebar-w: 248px;
+  --s-tool-w:    300px;
+  --s-bar-h:     52px;
+  --s-font:      'Inter', 'Barlow', sans-serif;
+}
+
+html, body { height: 100%; overflow: hidden; background: var(--s-bg); color: var(--s-cream); font-family: var(--s-font); }
+
+/* ── STUDIO SHELL ── */
+.studio { display: flex; flex-direction: column; height: 100vh; }
+
+/* ── TOP BAR ── */
+.studio-bar {
+  height: var(--s-bar-h);
+  background: rgba(10,9,8,0.95);
+  border-bottom: 1px solid var(--s-border);
+  backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  z-index: 100;
+  flex-shrink: 0;
+}
+.bar-brand {
+  display: flex; align-items: center; gap: .75rem;
+  text-decoration: none;
+}
+.bar-brand-logo {
+  height: 32px; width: auto; opacity: .9;
+  filter: brightness(1.05);
+}
+.bar-brand-divider {
+  width: 1px; height: 20px;
+  background: var(--s-border2);
+}
+.bar-brand-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .55rem; letter-spacing: .5em;
+  text-transform: uppercase; color: var(--s-gold);
+  font-weight: 400;
+}
+.bar-center {
+  display: flex; align-items: center; gap: .5rem;
+}
+.view-toggle {
+  display: flex; background: var(--s-panel2);
+  border: 1px solid var(--s-border); border-radius: 6px;
+  overflow: hidden; padding: 2px; gap: 2px;
+}
+.view-btn {
+  padding: .35rem .85rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .58rem; letter-spacing: .3em; text-transform: uppercase;
+  font-weight: 500; border: none; cursor: pointer;
+  border-radius: 4px;
+  transition: all .2s cubic-bezier(.4,0,.2,1);
+  color: var(--s-ash); background: transparent;
+}
+.view-btn.active {
+  background: var(--s-gold-dim);
+  color: var(--s-gold);
+  border: 1px solid var(--s-border2);
+}
+.view-btn:not(.active):hover { color: var(--s-fog); }
+
+.bar-actions { display: flex; align-items: center; gap: .5rem; }
+.bar-btn {
+  display: inline-flex; align-items: center; gap: .45rem;
+  padding: .4rem .9rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .58rem; letter-spacing: .25em; text-transform: uppercase;
+  font-weight: 500; border-radius: 6px; cursor: pointer;
+  transition: all .2s cubic-bezier(.4,0,.2,1); border: none;
+}
+.bar-btn--ghost {
+  background: transparent; color: var(--s-ash);
+  border: 1px solid var(--s-border);
+}
+.bar-btn--ghost:hover { color: var(--s-cream); border-color: var(--s-border2); background: var(--s-panel2); }
+.bar-btn--gold {
+  background: var(--s-gold); color: #0a0908; font-weight: 600;
+}
+.bar-btn--gold:hover { background: var(--s-gold2); }
+.bar-btn svg { flex-shrink: 0; }
+
+/* ── MAIN LAYOUT ── */
+.studio-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: var(--s-sidebar-w) 1fr var(--s-tool-w);
+  overflow: hidden;
+}
+
+/* ── LEFT PANEL: PRODUCTO ── */
+.studio-left {
+  background: var(--s-panel);
+  border-right: 1px solid var(--s-border);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.panel-section {
+  padding: 1.25rem 1.1rem;
+  border-bottom: 1px solid var(--s-border);
+}
+.panel-section:last-child { border-bottom: none; flex: 1; overflow-y: auto; }
+.panel-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .48rem; letter-spacing: .5em; text-transform: uppercase;
+  color: var(--s-gold); font-weight: 400; display: block; margin-bottom: 1rem;
+}
+
+/* Garment selector */
+.garment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.garment-tile {
+  background: var(--s-panel2);
+  border: 1px solid var(--s-border);
+  border-radius: var(--s-radius);
+  padding: 1rem .75rem .75rem;
+  cursor: pointer;
+  transition: all .2s cubic-bezier(.4,0,.2,1);
+  display: flex; flex-direction: column; align-items: center; gap: .6rem;
+  position: relative; overflow: hidden;
+}
+.garment-tile:hover { border-color: var(--s-border2); background: #1a1815; }
+.garment-tile.active {
+  border-color: var(--s-gold);
+  background: var(--s-gold-dim);
+}
+.garment-tile.active::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--s-gold), var(--s-gold2));
+}
+.garment-icon { width: 42px; height: 42px; opacity: .7; transition: opacity .2s; }
+.garment-tile.active .garment-icon, .garment-tile:hover .garment-icon { opacity: 1; }
+.garment-tile-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .52rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--s-ash); font-weight: 500;
+  transition: color .2s;
+}
+.garment-tile.active .garment-tile-name { color: var(--s-gold); }
+.garment-tile:hover .garment-tile-name { color: var(--s-fog); }
+
+/* Color palette */
+.color-palette { display: flex; flex-wrap: wrap; gap: 7px; }
+.color-swatch {
+  width: 28px; height: 28px; border-radius: 50%;
+  cursor: pointer; position: relative;
+  transition: transform .2s cubic-bezier(.4,0,.2,1);
+  flex-shrink: 0;
+}
+.color-swatch:hover { transform: scale(1.18); }
+.color-swatch.active::after {
+  content: '';
+  position: absolute; inset: -3px;
+  border-radius: 50%;
+  border: 2px solid var(--s-gold);
+}
+.color-swatch.active::before {
+  content: '✓';
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .6rem; font-weight: 700; color: rgba(255,255,255,.8);
+}
+.color-name-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .52rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--s-ash); margin-top: .6rem; display: block;
+}
+
+/* ── CENTER: CANVAS ── */
+.studio-canvas-area {
+  background: #0d0c0a;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+/* Dot grid background */
+.studio-canvas-area::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(184,151,90,.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+.canvas-wrap {
+  position: relative;
+  transition: transform .25s cubic-bezier(.4,0,.2,1);
+  transform-origin: center;
+}
+
+canvas#mc {
+  display: block;
+  cursor: default;
+}
+canvas#mc.can-drag { cursor: grab; }
+canvas#mc.dragging { cursor: grabbing; }
+canvas#mc.can-rotate { cursor: crosshair; }
+
+/* Floating zoom controls */
+.zoom-controls {
+  position: absolute;
+  bottom: 1.5rem; left: 50%;
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: .35rem;
+  background: rgba(10,9,8,.9);
+  border: 1px solid var(--s-border);
+  border-radius: 100px;
+  padding: .35rem .6rem;
+  backdrop-filter: blur(12px);
+  z-index: 10;
+}
+.zoom-btn {
+  width: 28px; height: 28px;
+  border: none; background: transparent;
+  color: var(--s-ash); cursor: pointer;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+  font-size: 1rem; line-height: 1;
+}
+.zoom-btn:hover { background: var(--s-panel2); color: var(--s-cream); }
+.zoom-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .55rem; letter-spacing: .2em; color: var(--s-ash);
+  min-width: 44px; text-align: center;
+}
+.zoom-sep { width: 1px; height: 16px; background: var(--s-border); }
+
+/* Print area warning */
+.print-warning-bar {
+  position: absolute; bottom: 4.5rem; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(192,97,74,.12);
+  border: 1px solid rgba(192,97,74,.35);
+  border-radius: 100px;
+  padding: .5rem 1.2rem;
+  display: flex; align-items: center; gap: .6rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .6rem; letter-spacing: .2em; text-transform: uppercase;
+  color: #e07a62;
+  opacity: 0; pointer-events: none;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+  z-index: 20;
+}
+.print-warning-bar.visible {
+  opacity: 1; transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+.print-warning-bar svg { flex-shrink: 0; }
+
+/* View label overlay */
+.view-label-overlay {
+  position: absolute; top: 1.2rem; left: 50%; transform: translateX(-50%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .5rem; letter-spacing: .6em; text-transform: uppercase;
+  color: rgba(184,151,90,.45); pointer-events: none;
+}
+
+/* ── RIGHT PANEL: TOOLS ── */
+.studio-right {
+  background: var(--s-panel);
+  border-left: 1px solid var(--s-border);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+
+/* Tab system */
+.panel-tabs {
+  display: flex; border-bottom: 1px solid var(--s-border);
+  padding: 0 1rem;
+  flex-shrink: 0;
+}
+.panel-tab {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .55rem; letter-spacing: .3em; text-transform: uppercase;
+  font-weight: 500; color: var(--s-ash);
+  padding: .85rem .8rem;
+  border: none; background: transparent; cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: all .2s;
+}
+.panel-tab.active { color: var(--s-gold); border-bottom-color: var(--s-gold); }
+.panel-tab:not(.active):hover { color: var(--s-fog); }
+
+.panel-tab-content { display: none; flex: 1; overflow-y: auto; flex-direction: column; }
+.panel-tab-content.active { display: flex; }
+
+/* Upload zone */
+.upload-zone {
+  margin: 1.25rem 1.1rem;
+  border: 1px dashed rgba(184,151,90,.25);
+  border-radius: var(--s-radius);
+  padding: 2rem 1.25rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all .25s cubic-bezier(.4,0,.2,1);
+  background: transparent;
+  position: relative; overflow: hidden;
+}
+.upload-zone::before {
+  content: '';
+  position: absolute; inset: 0; border-radius: var(--s-radius);
+  background: var(--s-gold-dim);
+  opacity: 0; transition: opacity .25s;
+}
+.upload-zone:hover { border-color: rgba(184,151,90,.55); }
+.upload-zone:hover::before { opacity: 1; }
+.upload-zone.drag-over { border-color: var(--s-gold); }
+.upload-zone.drag-over::before { opacity: 1; }
+.upload-icon {
+  width: 40px; height: 40px; margin: 0 auto .75rem;
+  opacity: .4; transition: opacity .25s;
+}
+.upload-zone:hover .upload-icon { opacity: .7; }
+.upload-zone-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--s-cream); font-weight: 500; display: block; margin-bottom: .35rem;
+}
+.upload-zone-sub {
+  font-size: .72rem; color: var(--s-ash); display: block;
+  line-height: 1.6;
+}
+.upload-zone-sub span { color: var(--s-gold); }
+
+/* Design controls */
+.design-controls-section { padding: 0 1.1rem 1.1rem; }
+.ctrl-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .48rem; letter-spacing: .42em; text-transform: uppercase;
+  color: var(--s-gold); display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: .6rem;
+}
+.ctrl-val {
+  font-family: 'Inter', monospace; font-size: .65rem;
+  color: var(--s-cream); font-weight: 500;
+}
+.ctrl-slider {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 2px; border-radius: 1px;
+  background: var(--s-panel2);
+  outline: none; cursor: pointer;
+  position: relative;
+}
+.ctrl-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--s-gold);
+  border: 2px solid var(--s-panel);
+  box-shadow: 0 0 0 3px rgba(184,151,90,.2);
+  cursor: pointer; transition: box-shadow .2s;
+}
+.ctrl-slider::-webkit-slider-thumb:hover { box-shadow: 0 0 0 5px rgba(184,151,90,.25); }
+.ctrl-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: .6rem; }
+.ctrl-btn-pill {
+  display: flex; align-items: center; justify-content: center; gap: .35rem;
+  padding: .5rem;
+  background: var(--s-panel2);
+  border: 1px solid var(--s-border);
+  border-radius: 7px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .5rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--s-ash); cursor: pointer;
+  transition: all .2s; font-weight: 400;
+}
+.ctrl-btn-pill:hover { border-color: var(--s-border2); color: var(--s-cream); background: #1a1815; }
+.ctrl-btn-pill svg { flex-shrink: 0; }
+.ctrl-btn-pill.danger:hover { border-color: rgba(192,97,74,.4); color: #e07a62; background: rgba(192,97,74,.06); }
+
+/* Size system */
+.size-cats {
+  display: flex; gap: 4px; flex-wrap: wrap;
+  padding: 1.1rem 1.1rem 0;
+}
+.size-cat-btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .52rem; letter-spacing: .25em; text-transform: uppercase;
+  font-weight: 500; padding: .35rem .65rem;
+  border: 1px solid var(--s-border);
+  border-radius: 5px; cursor: pointer;
+  background: transparent; color: var(--s-ash);
+  transition: all .2s;
+}
+.size-cat-btn.active { background: var(--s-gold-dim); color: var(--s-gold); border-color: var(--s-border2); }
+.size-cat-btn:not(.active):hover { color: var(--s-fog); }
+
+.size-grid {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  padding: .75rem 1.1rem;
+}
+.size-pill {
+  min-width: 38px; height: 34px; padding: 0 .6rem;
+  border: 1px solid var(--s-border);
+  border-radius: 6px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .6rem; letter-spacing: .15em; font-weight: 600;
+  text-transform: uppercase; color: var(--s-ash); cursor: pointer;
+  background: var(--s-panel2);
+  display: flex; align-items: center; justify-content: center;
+  transition: all .18s cubic-bezier(.4,0,.2,1);
+}
+.size-pill:hover { border-color: var(--s-border2); color: var(--s-cream); }
+.size-pill.active {
+  background: var(--s-gold);
+  border-color: var(--s-gold);
+  color: #0a0908; font-weight: 700;
+}
+
+/* Size spec card */
+.size-spec-card {
+  margin: 0 1.1rem;
+  background: var(--s-panel2);
+  border: 1px solid var(--s-border);
+  border-radius: var(--s-radius);
+  padding: 1rem;
+}
+.size-spec-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; color: var(--s-cream); font-style: italic;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: .8rem;
+}
+.size-spec-title span {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .55rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--s-gold); font-style: normal;
+}
+.size-spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+.spec-item {}
+.spec-key {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .46rem; letter-spacing: .35em; text-transform: uppercase;
+  color: var(--s-ash); display: block; margin-bottom: .25rem;
+}
+.spec-val {
+  font-family: 'Inter', sans-serif;
+  font-size: .82rem; font-weight: 600; color: var(--s-cream);
+}
+.spec-val.gold { color: var(--s-gold); }
+.print-area-visual {
+  margin-top: .8rem; padding-top: .8rem;
+  border-top: 1px solid var(--s-border);
+}
+.pa-bar-wrap { background: var(--s-panel); border-radius: 3px; height: 4px; overflow: hidden; margin-top: .4rem; }
+.pa-bar-fill { height: 100%; background: linear-gradient(90deg, var(--s-gold), var(--s-gold2)); border-radius: 3px; transition: width .4s cubic-bezier(.4,0,.2,1); }
+
+/* QUOTER */
+.quoter-section { padding: 1.1rem; display: flex; flex-direction: column; gap: .75rem; }
+.qty-input-wrap {
+  display: flex; align-items: center;
+  background: var(--s-panel2); border: 1px solid var(--s-border);
+  border-radius: var(--s-radius); overflow: hidden;
+}
+.qty-btn {
+  width: 36px; height: 36px; border: none; background: transparent;
+  color: var(--s-ash); cursor: pointer; font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s; flex-shrink: 0;
+}
+.qty-btn:hover { background: var(--s-panel); color: var(--s-cream); }
+.qty-input {
+  flex: 1; border: none; background: transparent;
+  text-align: center; color: var(--s-cream);
+  font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 600;
+  outline: none;
+}
+.technique-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.tech-btn {
+  padding: .5rem .5rem;
+  border: 1px solid var(--s-border);
+  border-radius: 7px; cursor: pointer;
+  background: var(--s-panel2); text-align: center;
+  transition: all .2s;
+}
+.tech-btn.active { border-color: var(--s-gold); background: var(--s-gold-dim); }
+.tech-btn-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .55rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--s-ash); display: block;
+}
+.tech-btn.active .tech-btn-name { color: var(--s-gold); }
+.tech-btn-price { font-size: .65rem; color: var(--s-ash); display: block; margin-top: .2rem; }
+
+/* Quote result */
+.quote-result {
+  background: linear-gradient(135deg, rgba(184,151,90,.06), rgba(184,151,90,.03));
+  border: 1px solid var(--s-border2);
+  border-radius: var(--s-radius);
+  padding: 1rem;
+}
+.quote-row { display: flex; align-items: center; justify-content: space-between; padding: .35rem 0; }
+.quote-row:not(:last-child) { border-bottom: 1px solid var(--s-border); }
+.quote-key {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .5rem; letter-spacing: .35em; text-transform: uppercase; color: var(--s-ash);
+}
+.quote-val { font-family: 'Inter', sans-serif; font-size: .82rem; font-weight: 600; color: var(--s-cream); }
+.quote-val.gold { color: var(--s-gold2); font-size: 1rem; }
+.quote-val.green { color: #5aba85; }
+
+/* Enterprise breakdown */
+.enterprise-section { padding: 1.1rem; }
+.enterprise-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .6rem .8rem;
+  background: var(--s-panel2); border: 1px solid var(--s-border);
+  border-radius: 7px; cursor: pointer; margin-bottom: .75rem;
+  transition: all .2s;
+}
+.enterprise-toggle:hover { border-color: var(--s-border2); }
+.enterprise-toggle-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .55rem; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--s-ash); font-weight: 500;
+}
+.enterprise-toggle.active .enterprise-toggle-label { color: var(--s-gold); }
+.enterprise-body { display: none; }
+.enterprise-body.open { display: block; }
+.size-qty-row {
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: center; gap: .5rem;
+  margin-bottom: .4rem;
+}
+.size-qty-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .58rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--s-cream);
+}
+.size-qty-input {
+  width: 56px; height: 30px;
+  background: var(--s-panel2); border: 1px solid var(--s-border);
+  border-radius: 5px; text-align: center;
+  color: var(--s-cream); font-family: 'Inter', sans-serif;
+  font-size: .8rem; font-weight: 600; outline: none;
+}
+.size-qty-input:focus { border-color: var(--s-gold); }
+.enterprise-total {
+  margin-top: .75rem; padding: .75rem;
+  background: var(--s-gold-dim); border: 1px solid var(--s-border2);
+  border-radius: 8px; display: flex; justify-content: space-between; align-items: center;
+}
+.enterprise-total-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .52rem; letter-spacing: .35em; text-transform: uppercase; color: var(--s-ash);
+}
+.enterprise-total-val {
+  font-family: 'Inter', sans-serif; font-size: .95rem; font-weight: 700; color: var(--s-gold2);
+}
+
+/* Action buttons */
+.action-section { padding: 1.1rem; display: flex; flex-direction: column; gap: .5rem; margin-top: auto; }
+.action-btn-primary {
+  width: 100%; padding: .85rem 1.25rem;
+  background: var(--s-gold); color: #0a0908;
+  border: none; border-radius: var(--s-radius);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .65rem; letter-spacing: .3em; text-transform: uppercase;
+  font-weight: 700; cursor: pointer;
+  transition: all .2s cubic-bezier(.4,0,.2,1);
+  position: relative; overflow: hidden;
+}
+.action-btn-primary::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--s-gold2);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .4s cubic-bezier(.77,0,.175,1);
+}
+.action-btn-primary:hover::before { transform: scaleX(1); }
+.action-btn-primary span { position: relative; }
+.action-btn-secondary {
+  width: 100%; padding: .7rem 1rem;
+  background: transparent; color: var(--s-ash);
+  border: 1px solid var(--s-border);
+  border-radius: var(--s-radius);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .6rem; letter-spacing: .25em; text-transform: uppercase;
+  font-weight: 400; cursor: pointer;
+  transition: all .2s;
+}
+.action-btn-secondary:hover { border-color: var(--s-border2); color: var(--s-cream); }
+.action-btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+
+/* Scrollbar in panels */
+.studio-left::-webkit-scrollbar,
+.studio-right::-webkit-scrollbar,
+.panel-tab-content::-webkit-scrollbar { width: 3px; }
+.studio-left::-webkit-scrollbar-thumb,
+.studio-right::-webkit-scrollbar-thumb,
+.panel-tab-content::-webkit-scrollbar-thumb { background: rgba(184,151,90,.2); border-radius: 2px; }
+
+/* Dividers */
+.panel-divider { height: 1px; background: var(--s-border); margin: .2rem 1.1rem; flex-shrink: 0; }
+.section-gap { height: 1.25rem; flex-shrink: 0; }
+
+/* ── MOBILE ── */
+@media (max-width: 1100px) {
+  :root { --s-sidebar-w: 220px; --s-tool-w: 270px; }
+}
+
+@media (max-width: 900px) {
+  .studio-main {
+    grid-template-columns: 1fr;
+    grid-template-rows: 48px 1fr 340px;
+    overflow-y: auto;
+  }
+  .studio-left {
+    flex-direction: row;
+    overflow-x: auto; overflow-y: hidden;
+    border-right: none; border-bottom: 1px solid var(--s-border);
+    height: 48px;
+  }
+  .studio-left .panel-section { padding: 0 1rem; border-bottom: none; border-right: 1px solid var(--s-border); }
+  .garment-grid { grid-template-columns: repeat(4,1fr); width: max-content; }
+  .garment-tile { flex-direction: row; padding: .5rem .7rem; gap: .5rem; white-space: nowrap; }
+  .garment-icon { width: 20px; height: 20px; }
+  .garment-tile-name { font-size: .46rem; }
+  .color-palette { flex-wrap: nowrap; }
+  .panel-label { display: none; }
+  .studio-canvas-area { min-height: 340px; }
+  .studio-right { overflow-y: auto; }
+  canvas#mc { max-width: 100%; height: auto; }
+  .view-label-overlay { display: none; }
+}
+
+@media (max-width: 600px) {
+  .studio-bar { padding: 0 .75rem; }
+  .bar-brand-divider, .bar-brand-tag { display: none; }
+  .bar-btn--ghost { display: none; }
+}
 </style>
 </head>
 <body>
 
-<div class="grain"></div>
-<div class="cur-dot" id="curDot"></div>
-<div class="cur-ring" id="curRing"></div>
-<div id="loader"><div class="loader-word"><span>ACOSER</span></div><div class="loader-line-wrap"><div class="loader-line-inner"></div></div></div>
+<!-- Grain texture -->
+<div class="grain" style="opacity:.015;z-index:9999;pointer-events:none;"></div>
 
-<a href="https://wa.me/573005206285" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
-  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-</a>
+<!-- ═══ STUDIO SHELL ═══════════════════════════════════════ -->
+<div class="studio">
 
-<div class="mob-overlay" id="mobOverlay" onclick="closeMob()"></div>
-<div class="mob-nav" id="mobNav">
-  <button class="mob-close" onclick="closeMob()">Cerrar</button>
-  <ul class="mob-nav-links">
-    <li><a href="../../index.html#services" onclick="closeMob()">Servicios</a></li>
-    <li><a href="../calculadora-dtf/" onclick="closeMob()">Calculadora DTF</a></li>
-    <li><a href="../mockup/" onclick="closeMob()">Mockup</a></li>
-    <li><a href="../empresas/" onclick="closeMob()">Empresas</a></li>
-    <li><a href="../recursos/" onclick="closeMob()">Recursos</a></li>
-    <li><a href="../../index.html#contact" onclick="closeMob()">Cotizar</a></li>
-  </ul>
+  <!-- ── TOP BAR ── -->
+  <header class="studio-bar">
+    <a href="../../index.html" class="bar-brand">
+      <img src="../../imagenes/logo.png" alt="ACOSER" class="bar-brand-logo">
+      <div class="bar-brand-divider"></div>
+      <span class="bar-brand-tag">Mockup Studio</span>
+    </a>
+
+    <div class="bar-center">
+      <div class="view-toggle">
+        <button class="view-btn active" id="btnFront" onclick="setView('front',this)">Vista frontal</button>
+        <button class="view-btn" id="btnBack" onclick="setView('back',this)">Vista trasera</button>
+      </div>
+    </div>
+
+    <div class="bar-actions">
+      <button class="bar-btn bar-btn--ghost" onclick="downloadPNG()">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M6.5 1v8M3 6l3.5 3.5L10 6M1 11h11"/></svg>
+        Descargar
+      </button>
+      <button class="bar-btn bar-btn--ghost" onclick="generatePDF()">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><rect x="2" y="1" width="9" height="11" rx="1"/><path d="M4 4h5M4 6.5h5M4 9h3"/></svg>
+        Ficha PDF
+      </button>
+      <button class="bar-btn bar-btn--gold" onclick="cotizarWA()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <span>Cotizar</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── MAIN ── -->
+  <div class="studio-main">
+
+    <!-- LEFT: PRODUCTO -->
+    <aside class="studio-left">
+
+      <!-- Tipo de prenda -->
+      <div class="panel-section">
+        <span class="panel-label">Prenda</span>
+        <div class="garment-grid">
+          <button class="garment-tile active" id="gt-tshirt" onclick="setGarment('tshirt',this)">
+            <svg class="garment-icon" viewBox="0 0 44 44" fill="none" stroke="var(--s-gold)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 4l-12 8 5 5 3-2v25h20V15l3 2 5-5-12-8c0 0-2 4-7 4s-5-4-5-4z"/>
+            </svg>
+            <span class="garment-tile-name">Camiseta</span>
+          </button>
+          <button class="garment-tile" id="gt-polo" onclick="setGarment('polo',this)">
+            <svg class="garment-icon" viewBox="0 0 44 44" fill="none" stroke="var(--s-ash)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 4l-12 8 5 5 3-2v25h20V15l3 2 5-5-12-8c0 0-1 4-5 4-4 0-5-4-5-4z"/>
+              <path d="M19 4v10M25 4v10M19 4h6"/>
+            </svg>
+            <span class="garment-tile-name">Polo</span>
+          </button>
+          <button class="garment-tile" id="gt-hoodie" onclick="setGarment('hoodie',this)">
+            <svg class="garment-icon" viewBox="0 0 44 44" fill="none" stroke="var(--s-ash)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 5l-12 9 5 5 3-2v23h20V17l3 2 5-5-12-9c0 0-1 5-5 7-4-2-5-7-5-7z"/>
+              <path d="M16 5c2 5 4 7 6 7s4-2 6-7"/>
+              <path d="M17 16h10v4l-1 1h-8l-1-1z"/>
+            </svg>
+            <span class="garment-tile-name">Hoodie</span>
+          </button>
+          <button class="garment-tile" id="gt-uniform" onclick="setGarment('uniform',this)">
+            <svg class="garment-icon" viewBox="0 0 44 44" fill="none" stroke="var(--s-ash)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 4l-12 8 5 5 3-2v25h20V15l3 2 5-5-12-8c0 0-1 3-4 3s-4-3-4-3z"/>
+              <line x1="22" y1="12" x2="22" y2="18"/>
+              <circle cx="22" cy="13.5" r="1.2" fill="var(--s-ash)"/>
+              <circle cx="22" cy="16.5" r="1.2" fill="var(--s-ash)"/>
+              <rect x="17" y="18" width="5" height="7" rx="0.5"/>
+            </svg>
+            <span class="garment-tile-name">Uniforme</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Color -->
+      <div class="panel-section" style="flex:1;overflow-y:auto;">
+        <span class="panel-label">Color</span>
+        <div class="color-palette">
+          <div class="color-swatch active" style="background:#111111;" onclick="setColor('#111111','Noir',this)" title="Noir"></div>
+          <div class="color-swatch" style="background:#f4f0ea;border:1px solid rgba(0,0,0,.1);" onclick="setColor('#f4f0ea','Blanco marfil',this)" title="Blanco marfil"></div>
+          <div class="color-swatch" style="background:#3a3a3a;" onclick="setColor('#3a3a3a','Grafito',this)" title="Grafito"></div>
+          <div class="color-swatch" style="background:#8a8a8a;" onclick="setColor('#8a8a8a','Gris plata',this)" title="Gris plata"></div>
+          <div class="color-swatch" style="background:#1a2d4a;" onclick="setColor('#1a2d4a','Azul marino',this)" title="Azul marino"></div>
+          <div class="color-swatch" style="background:#1e5c8a;" onclick="setColor('#1e5c8a','Azul royal',this)" title="Azul royal"></div>
+          <div class="color-swatch" style="background:#b8975a;" onclick="setColor('#b8975a','Dorado',this)" title="Dorado"></div>
+          <div class="color-swatch" style="background:#7a1a1a;" onclick="setColor('#7a1a1a','Borgoña',this)" title="Borgoña"></div>
+          <div class="color-swatch" style="background:#c0392b;" onclick="setColor('#c0392b','Rojo',this)" title="Rojo"></div>
+          <div class="color-swatch" style="background:#155724;" onclick="setColor('#155724','Verde botella',this)" title="Verde botella"></div>
+          <div class="color-swatch" style="background:#1a6b3a;" onclick="setColor('#1a6b3a','Verde esmeralda',this)" title="Verde esmeralda"></div>
+          <div class="color-swatch" style="background:#4a1a6b;" onclick="setColor('#4a1a6b','Morado',this)" title="Morado"></div>
+          <div class="color-swatch" style="background:#c47d1a;" onclick="setColor('#c47d1a','Naranja',this)" title="Naranja"></div>
+          <div class="color-swatch" style="background:#2c3e50;" onclick="setColor('#2c3e50','Azul pizarra',this)" title="Azul pizarra"></div>
+          <div class="color-swatch" style="background:#e8d5a3;" onclick="setColor('#e8d5a3','Beige',this)" title="Beige"></div>
+          <div class="color-swatch" style="background:#4a2c1a;" onclick="setColor('#4a2c1a','Café',this)" title="Café"></div>
+        </div>
+        <span class="color-name-tag" id="colorNameTag">Noir</span>
+      </div>
+
+    </aside>
+
+    <!-- CENTER: CANVAS -->
+    <div class="studio-canvas-area">
+      <div class="view-label-overlay" id="viewLabel">Vista frontal</div>
+
+      <div class="canvas-wrap" id="canvasWrap">
+        <canvas id="mc" width="500" height="580"></canvas>
+      </div>
+
+      <!-- Floating zoom controls -->
+      <div class="zoom-controls">
+        <button class="zoom-btn" onclick="zoomOut()" title="Alejar">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="2" y1="6" x2="10" y2="6"/></svg>
+        </button>
+        <div class="zoom-sep"></div>
+        <span class="zoom-label" id="zoomLabel">100%</span>
+        <div class="zoom-sep"></div>
+        <button class="zoom-btn" onclick="zoomIn()" title="Acercar">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg>
+        </button>
+        <div class="zoom-sep"></div>
+        <button class="zoom-btn" onclick="resetZoom()" title="Reset zoom">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 6a4 4 0 1 1 1 2.8M2 9V6h3"/></svg>
+        </button>
+      </div>
+
+      <!-- Warning bar -->
+      <div class="print-warning-bar" id="printWarning">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="#e07a62" stroke-width="1.3" stroke-linecap="round">
+          <path d="M6.5 1.5l5.5 9.5H1L6.5 1.5z"/>
+          <line x1="6.5" y1="5" x2="6.5" y2="7.5"/>
+          <circle cx="6.5" cy="9" r=".4" fill="#e07a62"/>
+        </svg>
+        <span id="warningText">El diseño supera el área recomendada</span>
+        <button style="background:rgba(192,97,74,.15);border:none;color:#e07a62;font-family:'Barlow Condensed',sans-serif;font-size:.46rem;letter-spacing:.25em;text-transform:uppercase;padding:.25rem .6rem;border-radius:4px;cursor:pointer;margin-left:.5rem;" onclick="centerDesign()">Centrar</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: HERRAMIENTAS -->
+    <aside class="studio-right">
+      <div class="panel-tabs">
+        <button class="panel-tab active" onclick="switchTab('design',this)">Diseño</button>
+        <button class="panel-tab" onclick="switchTab('tallas',this)">Tallas</button>
+        <button class="panel-tab" onclick="switchTab('cotizar',this)">Cotizar</button>
+      </div>
+
+      <!-- TAB: DISEÑO -->
+      <div class="panel-tab-content active" id="tab-design">
+        <!-- Upload zone -->
+        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()"
+             ondragover="e => {e.preventDefault(); this.classList.add('drag-over');}"
+             ondragleave="this.classList.remove('drag-over');"
+             ondrop="handleDrop(event)">
+          <svg class="upload-icon" viewBox="0 0 40 40" fill="none" stroke="var(--s-gold)" stroke-width="1.2" stroke-linecap="round">
+            <circle cx="20" cy="20" r="17"/>
+            <path d="M20 14v12M14 18l6-4 6 4"/>
+          </svg>
+          <span class="upload-zone-title">Subir diseño o logo</span>
+          <span class="upload-zone-sub">
+            Arrastra aquí o <span>haz clic para explorar</span><br>
+            PNG · JPG · SVG · máx 8MB
+          </span>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="uploadDesign(this)">
+
+        <!-- Design controls (visible only when design loaded) -->
+        <div id="designControlsPanel" style="display:none;">
+          <div class="panel-divider"></div>
+          <div class="design-controls-section">
+            <div class="panel-label" style="margin-bottom:1rem;display:block;">Ajustes del diseño</div>
+
+            <!-- Scale -->
+            <div style="margin-bottom:1.1rem;">
+              <div class="ctrl-label">Tamaño <span class="ctrl-val" id="scaleLabel">100%</span></div>
+              <input type="range" class="ctrl-slider" id="scaleSlider" min="10" max="200" value="100" oninput="onScaleChange(this.value)">
+            </div>
+
+            <!-- Rotation -->
+            <div style="margin-bottom:1.1rem;">
+              <div class="ctrl-label">Rotación <span class="ctrl-val" id="rotLabel">0°</span></div>
+              <input type="range" class="ctrl-slider" id="rotSlider" min="-180" max="180" value="0" oninput="onRotChange(this.value)">
+            </div>
+
+            <!-- Opacity -->
+            <div style="margin-bottom:1.1rem;">
+              <div class="ctrl-label">Opacidad <span class="ctrl-val" id="opacityLabel">100%</span></div>
+              <input type="range" class="ctrl-slider" id="opacitySlider" min="10" max="100" value="100" oninput="onOpacityChange(this.value)">
+            </div>
+
+            <!-- Quick actions -->
+            <div class="ctrl-row">
+              <button class="ctrl-btn-pill" onclick="centerDesign()">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><line x1="5.5" y1="1" x2="5.5" y2="10"/><line x1="1" y1="5.5" x2="10" y2="5.5"/></svg>
+                Centrar
+              </button>
+              <button class="ctrl-btn-pill" onclick="flipDesign()">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M1 5.5h9M3 3l-2 2.5 2 2.5M8 3l2 2.5-2 2.5"/></svg>
+                Voltear
+              </button>
+              <button class="ctrl-btn-pill" onclick="resetDesignTransform()">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M2 5.5a3.5 3.5 0 1 1 .8 2.2M2 9V6h3"/></svg>
+                Reset
+              </button>
+              <button class="ctrl-btn-pill danger" onclick="removeDesign()">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><line x1="2" y1="2" x2="9" y2="9"/><line x1="9" y1="2" x2="2" y2="9"/></svg>
+                Quitar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- No design message -->
+        <div id="noDesignMsg" style="padding:1.5rem 1.1rem;text-align:center;color:var(--s-ash);display:flex;flex-direction:column;align-items:center;gap:.6rem;">
+          <div style="font-size:.78rem;line-height:1.7;">
+            Sube tu logo o diseño para visualizarlo sobre la prenda.
+            Puedes arrastrarlo, escalarlo y rotarlo libremente.
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: TALLAS -->
+      <div class="panel-tab-content" id="tab-tallas">
+        <!-- Category tabs -->
+        <div class="size-cats">
+          <button class="size-cat-btn active" onclick="setSizeCat('hombre',this)">Hombre</button>
+          <button class="size-cat-btn" onclick="setSizeCat('mujer',this)">Mujer</button>
+          <button class="size-cat-btn" onclick="setSizeCat('ninos',this)">Niños</button>
+          <button class="size-cat-btn" onclick="setSizeCat('oversize',this)">Oversize</button>
+        </div>
+
+        <!-- Size pills -->
+        <div class="size-grid" id="sizeGrid">
+          <!-- Generated by JS -->
+        </div>
+
+        <!-- Spec card -->
+        <div class="size-spec-card" id="sizeSpecCard">
+          <div class="size-spec-title">
+            <span id="specGarmentName">Camiseta</span>
+            <span id="specSizeLabel">L</span>
+          </div>
+          <div class="size-spec-grid">
+            <div class="spec-item">
+              <span class="spec-key">Ancho prenda</span>
+              <span class="spec-val" id="specAncho">52 cm</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-key">Largo prenda</span>
+              <span class="spec-val" id="specLargo">76 cm</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-key">Área impresión</span>
+              <span class="spec-val gold" id="specArea">32×38 cm</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-key">Diseño recomendado</span>
+              <span class="spec-val" id="specRecom">≤ 30 cm</span>
+            </div>
+          </div>
+          <div class="print-area-visual">
+            <div class="ctrl-label">Uso del área de impresión <span class="ctrl-val" id="areaUsoPct">—</span></div>
+            <div class="pa-bar-wrap"><div class="pa-bar-fill" id="paBarFill" style="width:0%"></div></div>
+          </div>
+        </div>
+        <div class="section-gap"></div>
+      </div>
+
+      <!-- TAB: COTIZAR -->
+      <div class="panel-tab-content" id="tab-cotizar">
+        <div class="quoter-section">
+
+          <!-- Cantidad -->
+          <div>
+            <div class="panel-label" style="margin-bottom:.6rem;display:block;">Cantidad de prendas</div>
+            <div class="qty-input-wrap">
+              <button class="qty-btn" onclick="changeQty(-1)">−</button>
+              <input type="number" class="qty-input" id="qtyInput" value="50" min="1" oninput="calcQuote()">
+              <button class="qty-btn" onclick="changeQty(1)">+</button>
+            </div>
+          </div>
+
+          <!-- Técnica -->
+          <div>
+            <div class="panel-label" style="margin-bottom:.6rem;display:block;">Técnica de impresión</div>
+            <div class="technique-selector">
+              <button class="tech-btn active" id="tech-dtf" onclick="setTechnique('dtf',this)">
+                <span class="tech-btn-name">Estampado DTF</span>
+                <span class="tech-btn-price">Desde $8.000/m</span>
+              </button>
+              <button class="tech-btn" id="tech-bordado" onclick="setTechnique('bordado',this)">
+                <span class="tech-btn-name">Bordado</span>
+                <span class="tech-btn-price">Desde $8.000/u</span>
+              </button>
+              <button class="tech-btn" id="tech-sublimacion" onclick="setTechnique('sublimacion',this)">
+                <span class="tech-btn-name">Sublimación</span>
+                <span class="tech-btn-price">Desde $6.000/m</span>
+              </button>
+              <button class="tech-btn" id="tech-serigrafía" onclick="setTechnique('serigrafía',this)">
+                <span class="tech-btn-name">Serigrafía</span>
+                <span class="tech-btn-price">Desde $3.500/u</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quote result -->
+          <div class="quote-result">
+            <div class="quote-row">
+              <span class="quote-key">Prendas</span>
+              <span class="quote-val" id="q-qty">50 uds</span>
+            </div>
+            <div class="quote-row">
+              <span class="quote-key">Consumo DTF estimado</span>
+              <span class="quote-val" id="q-metros">— m</span>
+            </div>
+            <div class="quote-row">
+              <span class="quote-key">Tiempo de producción</span>
+              <span class="quote-val green" id="q-tiempo">5–7 días hábiles</span>
+            </div>
+            <div class="quote-row">
+              <span class="quote-key">Costo estimado total</span>
+              <span class="quote-val gold" id="q-total">—</span>
+            </div>
+            <div class="quote-row" style="border-bottom:none;">
+              <span class="quote-key">Costo por prenda</span>
+              <span class="quote-val" id="q-unit">—</span>
+            </div>
+          </div>
+
+          <div style="font-size:.7rem;color:var(--s-ash);line-height:1.6;">
+            * Estimado orientativo. El costo final depende del diseño, acabados y tela seleccionada.
+          </div>
+        </div>
+
+        <!-- Enterprise breakdown -->
+        <div class="panel-divider"></div>
+        <div class="enterprise-section">
+          <div class="panel-label" style="margin-bottom:.6rem;display:block;">Pedido por tallas</div>
+          <button class="enterprise-toggle" id="enterpriseToggle" onclick="toggleEnterprise()">
+            <span class="enterprise-toggle-label">Distribución por talla</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" id="enterpriseChevron" style="transition:transform .25s;">
+              <path d="M3 5l4 4 4-4"/>
+            </svg>
+          </button>
+          <div class="enterprise-body" id="enterpriseBody">
+            <div id="enterpriseSizes">
+              <!-- Generated by JS -->
+            </div>
+            <div class="enterprise-total">
+              <span class="enterprise-total-label">Total prendas</span>
+              <span class="enterprise-total-val" id="enterpriseTotal">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="action-section">
+          <button class="action-btn-primary" onclick="cotizarWA()">
+            <span>Cotizar por WhatsApp →</span>
+          </button>
+          <div class="action-btn-row">
+            <button class="action-btn-secondary" onclick="downloadPNG()">PNG</button>
+            <button class="action-btn-secondary" onclick="downloadJPG()">JPG</button>
+          </div>
+          <button class="action-btn-secondary" onclick="generatePDF()">Generar Ficha Técnica PDF</button>
+        </div>
+      </div>
+
+    </aside>
+  </div>
 </div>
 
-<nav id="nav">
-  <div class="nav-inner">
-    <a href="../../index.html" class="nav-logo"><img src="../../imagenes/logo.png" alt="ACOSER" class="nav-logo-img"></a>
-    <ul class="nav-links">
-      <li><a href="../../index.html#services">Servicios</a></li>
-      <li><a href="../calculadora-dtf/">Calculadora DTF</a></li>
-      <li><a href="../mockup/" style="color:var(--gold)">Mockup</a></li>
-      <li><a href="../empresas/">Empresas</a></li>
-      <li><a href="../recursos/">Recursos</a></li>
-      <li><a href="../../index.html#contact" class="nav-cta-btn"><span>Cotizar</span></a></li>
-    </ul>
-    <div class="nav-right">
-      <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" id="themeIcon"></svg></button>
-      <button class="burger" id="burger" onclick="openMob()" aria-label="Menu"><span></span><span></span><span></span></button>
-    </div>
-  </div>
-</nav>
-
-<!-- HEADER -->
-<div style="padding: calc(88px + 4vh) 4rem 3vh; border-bottom: 1px solid var(--dust); background: var(--ink2);">
-  <div class="section-label">Herramienta visual gratuita</div>
-  <h1 class="sec-h2">Mockup Generator<br><em>Visualiza tu diseño.</em></h1>
-  <p style="font-size:.85rem;color:var(--fog);margin-top:1rem;font-weight:300;max-width:520px;line-height:1.85;">Sube tu logo o diseño y míralo sobre diferentes prendas. Selecciona el color, ajusta el tamaño y comparte el resultado para cotizar.</p>
-</div>
-
-<!-- TOOL -->
-<div class="mockup-layout">
-
-  <!-- SIDEBAR CONTROLES -->
-  <div class="mockup-sidebar">
-
-    <!-- PRENDA -->
-    <div>
-      <span class="sidebar-label">Tipo de prenda</span>
-      <div class="garment-selector">
-        <button class="garment-btn active" onclick="setGarment('tshirt-front',this)" title="Camiseta frente">
-          <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 3l-9 6 4 4 2-1v20h18V12l2 1 4-4-9-6c0 0-2 3-6 3s-6-3-6-3z"/></svg>
-          <span class="garment-label">Camiseta</span>
-        </button>
-        <button class="garment-btn" onclick="setGarment('polo',this)" title="Polo">
-          <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M13 3l-10 7 4 3 2-1v20h18V12l2 1 4-3-10-7c0 0-1 4-5 4s-5-4-5-4z"/><path d="M15 3v8M21 3v8M15 3h6"/></svg>
-          <span class="garment-label">Polo</span>
-        </button>
-        <button class="garment-btn" onclick="setGarment('hoodie',this)" title="Hoodie">
-          <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M13 4l-10 8 4 3 2-2v19h18V13l2 2 4-3-10-8c0 0-1 5-5 7-4-2-5-7-5-7z"/><path d="M13 4c2 4 4 6 5 6s3-2 5-6"/><path d="M14 13h8v3l-1 1h-6l-1-1z"/></svg>
-          <span class="garment-label">Hoodie</span>
-        </button>
-        <button class="garment-btn" onclick="setGarment('uniform',this)" title="Uniforme">
-          <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 3l-9 6 4 4 2-1v20h18V12l2 1 4-4-9-6c0 0-1 2-4 2s-4-2-4-2z"/><path d="M18 10v5M15 13h6"/></svg>
-          <span class="garment-label">Uniforme</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- COLOR -->
-    <div>
-      <span class="sidebar-label">Color de prenda</span>
-      <div class="color-selector">
-        <div class="color-dot active" style="background:#1a1a1a;border-color:rgba(255,255,255,.2);" onclick="setColor('#1a1a1a','Negra',this)" title="Negra"></div>
-        <div class="color-dot" style="background:#f5f5f5;border-color:rgba(0,0,0,.1);" onclick="setColor('#f5f5f5','Blanca',this)" title="Blanca"></div>
-        <div class="color-dot" style="background:#3a3a3a;" onclick="setColor('#3a3a3a','Gris oscuro',this)" title="Gris oscuro"></div>
-        <div class="color-dot" style="background:#8a8a8a;" onclick="setColor('#8a8a8a','Gris claro',this)" title="Gris claro"></div>
-        <div class="color-dot" style="background:#1a3a5c;" onclick="setColor('#1a3a5c','Azul marino',this)" title="Azul marino"></div>
-        <div class="color-dot" style="background:#2563a8;" onclick="setColor('#2563a8','Azul',this)" title="Azul"></div>
-        <div class="color-dot" style="background:#8b1a1a;" onclick="setColor('#8b1a1a','Rojo oscuro',this)" title="Rojo oscuro"></div>
-        <div class="color-dot" style="background:#166534;" onclick="setColor('#166534','Verde',this)" title="Verde"></div>
-        <div class="color-dot" style="background:#b8975a;" onclick="setColor('#b8975a','Dorado',this)" title="Dorado"></div>
-        <div class="color-dot" style="background:#5b21b6;" onclick="setColor('#5b21b6','Morado',this)" title="Morado"></div>
-      </div>
-    </div>
-
-    <!-- UPLOAD -->
-    <div>
-      <span class="sidebar-label">Tu diseño o logo</span>
-      <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--gold)" stroke-width="1.2" style="display:block;margin:0 auto 1rem;opacity:.6;"><path d="M14 4v14M9 9l5-5 5 5M4 22h20"/></svg>
-        <p class="upload-label">Click para subir · <span>PNG, JPG, SVG</span></p>
-        <p style="font-size:.7rem;color:var(--ash);margin-top:.4rem;">Máximo 5MB · Fondo transparente recomendado</p>
-      </div>
-      <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="uploadDesign(this)">
-    </div>
-
-    <!-- CONTROLES DISEÑO -->
-    <div id="designControls" style="display:none;">
-      <span class="sidebar-label">Ajustar diseño</span>
-      <div style="margin-bottom:1rem;">
-        <label class="upload-label" style="margin-bottom:.5rem;display:block;">Tamaño</label>
-        <input type="range" id="sizeSlider" min="20" max="90" value="40" oninput="adjustDesign()" style="width:100%;accent-color:var(--gold);">
-      </div>
-      <div style="margin-bottom:1rem;">
-        <label class="upload-label" style="margin-bottom:.5rem;display:block;">Posición vertical</label>
-        <input type="range" id="posYSlider" min="15" max="70" value="35" oninput="adjustDesign()" style="width:100%;accent-color:var(--gold);">
-      </div>
-      <div class="design-controls">
-        <button class="ctrl-btn" onclick="centerDesign()">Centrar</button>
-        <button class="ctrl-btn" onclick="removeDesign()">Quitar diseño</button>
-      </div>
-    </div>
-
-    <!-- CTA -->
-    <div style="margin-top:auto;padding-top:2rem;border-top:1px solid var(--dust);">
-      <button class="btn-module-primary" style="width:100%;justify-content:center;margin-bottom:.8rem;" onclick="cotizarMockup()">Cotizar este diseño</button>
-      <button class="btn-module-secondary" style="width:100%;justify-content:center;" onclick="downloadMockup()">Descargar imagen</button>
-    </div>
-
-  </div>
-
-  <!-- ÁREA CANVAS -->
-  <div class="mockup-canvas-area">
-    <div id="noDesignMsg" class="no-design">
-      <div class="no-design-icon">✦</div>
-      <p style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--linen);font-style:italic;margin-bottom:.5rem;">Sube tu diseño para comenzar.</p>
-      <p style="font-size:.8rem;color:var(--ash);font-weight:300;">El mockup aparecerá aquí instantáneamente.</p>
-    </div>
-    <div class="canvas-wrapper" id="canvasWrapper" style="display:none;">
-      <canvas id="mockupCanvas" width="480" height="560"></canvas>
-    </div>
-    <div id="canvasInfo" style="display:none;text-align:center;">
-      <p style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.35em;text-transform:uppercase;color:var(--ash);" id="canvasInfoText">Camiseta Negra · Tu diseño</p>
-    </div>
-  </div>
-</div>
-
-<!-- INFO SECTION -->
-<div style="background:var(--ink2);padding:8vh 4rem;border-top:1px solid var(--dust);">
-  <div style="max-width:900px;margin:0 auto;">
-    <div class="r" style="margin-bottom:4vh;"><div class="section-label">¿Cómo funciona?</div></div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--dust);" class="r d2">
-      <div style="background:var(--ink);padding:2rem 1.5rem;text-align:center;">
-        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);font-style:italic;margin-bottom:1rem;">01</div>
-        <p style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:.6rem;">Elige prenda</p>
-        <p style="font-size:.75rem;color:var(--ash);line-height:1.6;">Selecciona el tipo y color de prenda que deseas visualizar.</p>
-      </div>
-      <div style="background:var(--ink);padding:2rem 1.5rem;text-align:center;">
-        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);font-style:italic;margin-bottom:1rem;">02</div>
-        <p style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:.6rem;">Sube tu diseño</p>
-        <p style="font-size:.75rem;color:var(--ash);line-height:1.6;">Sube tu logo o diseño en PNG (fondo transparente ideal).</p>
-      </div>
-      <div style="background:var(--ink);padding:2rem 1.5rem;text-align:center;">
-        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);font-style:italic;margin-bottom:1rem;">03</div>
-        <p style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:.6rem;">Ajusta</p>
-        <p style="font-size:.75rem;color:var(--ash);line-height:1.6;">Escala y posiciona tu diseño exactamente como lo quieres.</p>
-      </div>
-      <div style="background:var(--ink);padding:2rem 1.5rem;text-align:center;">
-        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);font-style:italic;margin-bottom:1rem;">04</div>
-        <p style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:.6rem;">Cotiza</p>
-        <p style="font-size:.75rem;color:var(--ash);line-height:1.6;">Envía el resultado por WhatsApp y recibe tu cotización.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-top">
-    <div><span class="footer-brand-name">ACOSER</span><span class="footer-brand-sub">Taller Textil</span><p class="footer-brand-desc">Confeccionamos tus ideas a medida. Producción textil personalizada para marcas, empresas y proyectos en toda Colombia.</p></div>
-    <div><span class="footer-col-head">Herramientas</span><ul class="footer-links"><li><a href="../calculadora-dtf/">Calculadora DTF</a></li><li><a href="../mockup/">Mockup Generator</a></li><li><a href="../calculadora-tallas/">Guía de Tallas</a></li><li><a href="../recursos/">Centro de Recursos</a></li></ul></div>
-    <div><span class="footer-col-head">Plataforma</span><ul class="footer-links"><li><a href="../../index.html">Inicio</a></li><li><a href="../../index.html#services">Servicios</a></li><li><a href="../empresas/">Empresas</a></li></ul></div>
-    <div><span class="footer-col-head">Contacto</span><ul class="footer-links"><li><a href="tel:+573005206285">+57 300 520 6285</a></li><li><a href="mailto:acosertallertextilinfo@gmail.com">Email</a></li><li><a href="https://instagram.com/acoser_tallertextil" target="_blank">Instagram</a></li></ul></div>
-  </div>
-  <div class="footer-bottom">
-    <span class="footer-copy">&copy; 2025 <span>ACOSER Taller Textil</span></span>
-    <div class="footer-social"><a href="https://instagram.com/acoser_tallertextil" target="_blank" class="f-social-link">Instagram</a><a href="https://wa.me/573005206285" target="_blank" class="f-social-link">WhatsApp</a></div>
-  </div>
-</footer>
-
+<!-- ═══ SCRIPTS ═══════════════════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="../../js/whatsapp.js"></script>
 <script src="../../js/leads.js"></script>
-<script src="../../js/core.js"></script>
+
 <script>
-/* ── Estado global ── */
-let state = {
-  garment: 'tshirt-front',
-  garmentLabel: 'Camiseta',
-  color: '#1a1a1a',
-  colorLabel: 'Negra',
-  designImg: null,
-  designSize: 40,
-  designPosY: 35,
+/* ════════════════════════════════════════════════════
+   ACOSER STUDIO PREMIUM — Core Engine
+   ════════════════════════════════════════════════════ */
+
+const CW = 500, CH = 580;
+let cvs, ctx, canvasWrap;
+
+/* ── STATE ── */
+const S = {
+  garment:    'tshirt',
+  view:       'front',
+  color:      '#111111',
+  colorName:  'Noir',
+  designImg:  null,
+  design: {
+    x: 250, y: 230,
+    scale: 1.0,
+    rot: 0,
+    opacity: 1,
+    flipH: false,
+    w: 0, h: 0,
+  },
+  sizeCategory: 'hombre',
+  sizeLabel:    'L',
+  qty:          50,
+  technique:    'dtf',
+  zoom:         1,
+  dragging:     false,
+  dragOffX:     0, dragOffY: 0,
+  mouseX: 0, mouseY: 0,
+  enterprise: {},
 };
 
-const CANVAS_W = 480;
-const CANVAS_H = 560;
+/* ── SIZE DATA ── */
+const SIZES = {
+  hombre: [
+    { label:'S',   ancho:46, largo:70, pw:28, ph:34, rec:26 },
+    { label:'M',   ancho:49, largo:73, pw:30, ph:36, rec:28 },
+    { label:'L',   ancho:52, largo:76, pw:32, ph:38, rec:30 },
+    { label:'XL',  ancho:55, largo:79, pw:34, ph:40, rec:32 },
+    { label:'2XL', ancho:58, largo:82, pw:36, ph:42, rec:34 },
+    { label:'3XL', ancho:61, largo:85, pw:38, ph:44, rec:36 },
+    { label:'4XL', ancho:64, largo:88, pw:40, ph:46, rec:38 },
+  ],
+  mujer: [
+    { label:'XS',  ancho:36, largo:58, pw:22, ph:26, rec:20 },
+    { label:'S',   ancho:39, largo:61, pw:24, ph:28, rec:22 },
+    { label:'M',   ancho:42, largo:64, pw:26, ph:30, rec:24 },
+    { label:'L',   ancho:45, largo:67, pw:28, ph:32, rec:26 },
+    { label:'XL',  ancho:48, largo:70, pw:30, ph:34, rec:28 },
+    { label:'2XL', ancho:51, largo:73, pw:32, ph:36, rec:30 },
+  ],
+  ninos: [
+    { label:'2',  ancho:28, largo:38, pw:16, ph:16, rec:14 },
+    { label:'4',  ancho:30, largo:41, pw:17, ph:18, rec:15 },
+    { label:'6',  ancho:33, largo:44, pw:19, ph:20, rec:16 },
+    { label:'8',  ancho:35, largo:47, pw:20, ph:22, rec:18 },
+    { label:'10', ancho:38, largo:50, pw:22, ph:24, rec:20 },
+    { label:'12', ancho:40, largo:53, pw:23, ph:26, rec:21 },
+    { label:'14', ancho:43, largo:56, pw:25, ph:28, rec:22 },
+    { label:'16', ancho:45, largo:59, pw:26, ph:30, rec:24 },
+  ],
+  oversize: [
+    { label:'S',   ancho:54, largo:72, pw:32, ph:36, rec:30 },
+    { label:'M',   ancho:57, largo:75, pw:34, ph:38, rec:32 },
+    { label:'L',   ancho:60, largo:78, pw:36, ph:40, rec:34 },
+    { label:'XL',  ancho:63, largo:81, pw:38, ph:42, rec:36 },
+    { label:'2XL', ancho:66, largo:84, pw:40, ph:44, rec:38 },
+  ],
+};
 
-/* ── Shapes de prendas (SVG-path como Path2D) ── */
-function getGarmentShape(ctx, garment) {
-  const W = CANVAS_W, H = CANVAS_H;
-  const shapes = {
-    'tshirt-front': () => {
+/* ── PRICE CONFIG ── */
+const PRICES = {
+  dtf: [
+    { min:1,   max:9,   pm:18000 },
+    { min:10,  max:49,  pm:15000 },
+    { min:50,  max:99,  pm:12500 },
+    { min:100, max:299, pm:10000 },
+    { min:300, max:Infinity, pm:8000 },
+  ],
+  bordado:    [{ min:1, max:Infinity, pm:8000 }],   // per unit
+  sublimacion:[{ min:1, max:9,  pm:16000 }, { min:10, max:49, pm:13000 }, { min:50, max:Infinity, pm:10000 }],
+  serigrafía: [{ min:1, max:9,  pm:5000  }, { min:10, max:49, pm:4000  }, { min:50, max:Infinity, pm:3500  }],
+};
+
+/* ── GARMENT SHAPES ── */
+const GARMENTS = {
+  tshirt: {
+    name: 'Camiseta',
+    front: (ctx) => {
       ctx.beginPath();
-      ctx.moveTo(W*.28, H*.06);
-      ctx.lineTo(W*.04, H*.18);
-      ctx.lineTo(W*.15, H*.32);
-      ctx.lineTo(W*.25, H*.26);
-      ctx.lineTo(W*.25, H*.9);
-      ctx.lineTo(W*.75, H*.9);
-      ctx.lineTo(W*.75, H*.26);
-      ctx.lineTo(W*.85, H*.32);
-      ctx.lineTo(W*.96, H*.18);
-      ctx.lineTo(W*.72, H*.06);
-      ctx.quadraticCurveTo(W*.5, H*.14, W*.28, H*.06);
+      ctx.moveTo(196, 68);
+      ctx.quadraticCurveTo(250, 108, 304, 68);
+      ctx.lineTo(430, 106);
+      ctx.lineTo(468, 195);
+      ctx.lineTo(398, 215);
+      ctx.bezierCurveTo(380, 222, 368, 228, 360, 248);
+      ctx.lineTo(360, 545);
+      ctx.lineTo(140, 545);
+      ctx.lineTo(140, 248);
+      ctx.bezierCurveTo(132, 228, 120, 222, 102, 215);
+      ctx.lineTo(32, 195);
+      ctx.lineTo(70, 106);
       ctx.closePath();
     },
-    polo: () => {
+    back: (ctx) => {
       ctx.beginPath();
-      ctx.moveTo(W*.28, H*.06);
-      ctx.lineTo(W*.04, H*.18);
-      ctx.lineTo(W*.14, H*.31);
-      ctx.lineTo(W*.24, H*.25);
-      ctx.lineTo(W*.24, H*.9);
-      ctx.lineTo(W*.76, H*.9);
-      ctx.lineTo(W*.76, H*.25);
-      ctx.lineTo(W*.86, H*.31);
-      ctx.lineTo(W*.96, H*.18);
-      ctx.lineTo(W*.72, H*.06);
-      ctx.quadraticCurveTo(W*.6, H*.16, W*.52, H*.18);
-      ctx.quadraticCurveTo(W*.5, H*.22, W*.48, H*.18);
-      ctx.quadraticCurveTo(W*.4, H*.16, W*.28, H*.06);
+      ctx.moveTo(190, 68);
+      ctx.lineTo(150, 62);
+      ctx.lineTo(70, 106);
+      ctx.lineTo(32, 195);
+      ctx.lineTo(102, 215);
+      ctx.bezierCurveTo(120, 222, 132, 228, 140, 248);
+      ctx.lineTo(140, 545);
+      ctx.lineTo(360, 545);
+      ctx.lineTo(360, 248);
+      ctx.bezierCurveTo(368, 228, 380, 222, 398, 215);
+      ctx.lineTo(468, 195);
+      ctx.lineTo(430, 106);
+      ctx.lineTo(350, 62);
+      ctx.lineTo(310, 68);
+      ctx.bezierCurveTo(290, 80, 210, 80, 190, 68);
       ctx.closePath();
     },
-    hoodie: () => {
+    collar_f: (ctx) => {
       ctx.beginPath();
-      ctx.moveTo(W*.28, H*.07);
-      ctx.lineTo(W*.18, H*.14);
-      ctx.lineTo(W*.04, H*.2);
-      ctx.lineTo(W*.14, H*.36);
-      ctx.lineTo(W*.24, H*.28);
-      ctx.lineTo(W*.24, H*.9);
-      ctx.lineTo(W*.76, H*.9);
-      ctx.lineTo(W*.76, H*.28);
-      ctx.lineTo(W*.86, H*.36);
-      ctx.lineTo(W*.96, H*.2);
-      ctx.lineTo(W*.82, H*.14);
-      ctx.lineTo(W*.72, H*.07);
-      ctx.quadraticCurveTo(W*.6, H*.18, W*.52, H*.2);
-      ctx.quadraticCurveTo(W*.5, H*.26, W*.48, H*.2);
-      ctx.quadraticCurveTo(W*.4, H*.18, W*.28, H*.07);
+      ctx.moveTo(196, 68);
+      ctx.quadraticCurveTo(250, 118, 304, 68);
+    },
+    printArea: { front: {x:155, y:145, w:190, h:230}, back: {x:140, y:110, w:220, h:280} },
+  },
+  polo: {
+    name: 'Polo',
+    front: (ctx) => {
+      ctx.beginPath();
+      ctx.moveTo(200, 70);
+      ctx.lineTo(250, 72);
+      ctx.lineTo(262, 115);
+      ctx.lineTo(250, 105);
+      ctx.lineTo(250, 115);
+      ctx.quadraticCurveTo(250, 125, 250, 130);
+      ctx.lineTo(250, 545);
+      ctx.lineTo(140, 545);
+      ctx.lineTo(140, 248);
+      ctx.bezierCurveTo(132, 228, 120, 222, 102, 215);
+      ctx.lineTo(32, 195);
+      ctx.lineTo(70, 106);
+      ctx.closePath();
+      ctx.moveTo(300, 70);
+      ctx.lineTo(430, 106);
+      ctx.lineTo(468, 195);
+      ctx.lineTo(398, 215);
+      ctx.bezierCurveTo(380, 222, 368, 228, 360, 248);
+      ctx.lineTo(360, 545);
+      ctx.lineTo(250, 545);
+      ctx.lineTo(250, 130);
+      ctx.lineTo(250, 115);
+      ctx.lineTo(238, 115);
+      ctx.lineTo(250, 105);
+      ctx.lineTo(238, 72);
+      ctx.lineTo(300, 70);
+    },
+    back: (ctx) => GARMENTS.tshirt.back(ctx),
+    collar_f: null,
+    printArea: { front: {x:162, y:160, w:176, h:200}, back: {x:140, y:110, w:220, h:280} },
+  },
+  hoodie: {
+    name: 'Hoodie',
+    front: (ctx) => {
+      /* Hood */
+      ctx.beginPath();
+      ctx.moveTo(196, 75);
+      ctx.bezierCurveTo(162, 52, 150, 18, 172, 2);
+      ctx.bezierCurveTo(198, -14, 230, -20, 250, -20);
+      ctx.bezierCurveTo(270, -20, 302, -14, 328, 2);
+      ctx.bezierCurveTo(350, 18, 338, 52, 304, 75);
+      ctx.quadraticCurveTo(250, 112, 196, 75);
+      ctx.closePath();
+      /* Body */
+      ctx.moveTo(196, 75);
+      ctx.quadraticCurveTo(250, 112, 304, 75);
+      ctx.lineTo(430, 106);
+      ctx.lineTo(468, 195);
+      ctx.lineTo(398, 215);
+      ctx.bezierCurveTo(380, 222, 368, 228, 360, 248);
+      ctx.lineTo(360, 545);
+      ctx.lineTo(140, 545);
+      ctx.lineTo(140, 248);
+      ctx.bezierCurveTo(132, 228, 120, 222, 102, 215);
+      ctx.lineTo(32, 195);
+      ctx.lineTo(70, 106);
+      ctx.closePath();
+      /* Pocket */
+      ctx.moveTo(200, 390);
+      ctx.lineTo(300, 390);
+      ctx.lineTo(300, 445);
+      ctx.lineTo(200, 445);
       ctx.closePath();
     },
-    uniform: () => {
+    back: (ctx) => GARMENTS.tshirt.back(ctx),
+    collar_f: null,
+    printArea: { front: {x:158, y:140, w:184, h:215}, back: {x:140, y:110, w:220, h:280} },
+  },
+  uniform: {
+    name: 'Uniforme',
+    front: (ctx) => {
       ctx.beginPath();
-      ctx.moveTo(W*.29, H*.06);
-      ctx.lineTo(W*.04, H*.18);
-      ctx.lineTo(W*.15, H*.32);
-      ctx.lineTo(W*.25, H*.26);
-      ctx.lineTo(W*.25, H*.92);
-      ctx.lineTo(W*.75, H*.92);
-      ctx.lineTo(W*.75, H*.26);
-      ctx.lineTo(W*.85, H*.32);
-      ctx.lineTo(W*.96, H*.18);
-      ctx.lineTo(W*.71, H*.06);
-      ctx.quadraticCurveTo(W*.5, H*.13, W*.29, H*.06);
+      ctx.moveTo(200, 68);
+      ctx.lineTo(244, 68);
+      ctx.lineTo(252, 90);
+      ctx.lineTo(248, 110);
+      ctx.lineTo(250, 140);
+      ctx.lineTo(252, 110);
+      ctx.lineTo(248, 90);
+      ctx.lineTo(256, 68);
+      ctx.lineTo(300, 68);
+      ctx.lineTo(430, 106);
+      ctx.lineTo(468, 195);
+      ctx.lineTo(398, 215);
+      ctx.bezierCurveTo(380, 222, 368, 228, 360, 248);
+      ctx.lineTo(360, 545);
+      ctx.lineTo(140, 545);
+      ctx.lineTo(140, 248);
+      ctx.bezierCurveTo(132, 228, 120, 222, 102, 215);
+      ctx.lineTo(32, 195);
+      ctx.lineTo(70, 106);
       ctx.closePath();
     },
-  };
-  (shapes[garment] || shapes['tshirt-front'])();
+    back: (ctx) => GARMENTS.tshirt.back(ctx),
+    collar_f: null,
+    printArea: { front: {x:170, y:155, w:160, h:200}, back: {x:140, y:110, w:220, h:280} },
+  },
+};
+
+/* ── COLOR UTILS ── */
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return {r,g,b};
+}
+function lighten(hex, amt) {
+  const {r,g,b} = hexToRgb(hex);
+  return `rgb(${Math.min(255,r+amt)},${Math.min(255,g+amt)},${Math.min(255,b+amt)})`;
+}
+function darken(hex, amt) {
+  const {r,g,b} = hexToRgb(hex);
+  return `rgb(${Math.max(0,r-amt)},${Math.max(0,g-amt)},${Math.max(0,b-amt)})`;
+}
+function getLuminance(hex) {
+  const {r,g,b} = hexToRgb(hex);
+  return 0.299*r + 0.587*g + 0.114*b;
 }
 
-function getGarmentShadow(ctx, garment) {
-  const W = CANVAS_W, H = CANVAS_H;
-  /* Sombra lateral */
-  const grad = ctx.createLinearGradient(W*.2, 0, W*.8, 0);
-  grad.addColorStop(0, 'rgba(0,0,0,.35)');
-  grad.addColorStop(.3, 'rgba(0,0,0,.0)');
-  grad.addColorStop(.7, 'rgba(0,0,0,.0)');
-  grad.addColorStop(1, 'rgba(0,0,0,.35)');
-  return grad;
-}
+/* ── RENDER ── */
+function render() {
+  ctx.clearRect(0, 0, CW, CH);
 
-function drawGarment() {
-  const canvas = document.getElementById('mockupCanvas');
-  const ctx    = canvas.getContext('2d');
-  const W = CANVAS_W, H = CANVAS_H;
+  const g = GARMENTS[S.garment];
+  const path = S.view === 'front' ? g.front : g.back;
+  const pa = (S.view === 'front' ? g.printArea.front : g.printArea.back);
 
-  ctx.clearRect(0, 0, W, H);
-
-  /* Fondo neutro */
-  const bgTheme = document.documentElement.getAttribute('data-theme') === 'light' ? '#e8e3da' : '#1e1c18';
-  ctx.fillStyle = bgTheme;
-  ctx.fillRect(0, 0, W, H);
-
-  /* Rejilla sutil */
-  ctx.strokeStyle = 'rgba(184,151,90,.04)';
-  ctx.lineWidth = 1;
-  for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
-  for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
-
-  /* Prenda */
+  /* Drop shadow behind garment */
   ctx.save();
-  getGarmentShape(ctx, state.garment);
-  ctx.fillStyle = state.color;
+  ctx.shadowColor = 'rgba(0,0,0,.55)';
+  ctx.shadowBlur = 32;
+  ctx.shadowOffsetY = 12;
+  path(ctx);
+  ctx.fillStyle = '#000';
   ctx.fill();
-  /* Sombra */
-  getGarmentShape(ctx, state.garment);
-  ctx.fillStyle = getGarmentShadow(ctx, state.garment);
+  ctx.restore();
+
+  /* Garment fill */
+  ctx.save();
+  path(ctx);
+  ctx.fillStyle = S.color;
   ctx.fill();
-  /* Borde sutil */
-  getGarmentShape(ctx, state.garment);
-  ctx.strokeStyle = 'rgba(255,255,255,.06)';
+
+  /* Subtle highlight */
+  if (S.view === 'front') {
+    const highlight = ctx.createLinearGradient(CW*0.2, 0, CW*0.8, 0);
+    highlight.addColorStop(0, 'rgba(255,255,255,.07)');
+    highlight.addColorStop(0.3, 'rgba(255,255,255,.0)');
+    highlight.addColorStop(0.7, 'rgba(255,255,255,.0)');
+    highlight.addColorStop(1, 'rgba(0,0,0,.08)');
+    path(ctx);
+    ctx.fillStyle = highlight;
+    ctx.fill();
+  }
+
+  /* Garment stroke */
+  const lum = getLuminance(S.color);
+  const strokeAlpha = lum > 200 ? 0.18 : 0.12;
+  path(ctx);
+  ctx.strokeStyle = lum > 200 ? `rgba(0,0,0,${strokeAlpha})` : `rgba(255,255,255,${strokeAlpha})`;
   ctx.lineWidth = 1;
   ctx.stroke();
   ctx.restore();
 
-  /* Collar según tipo */
-  drawCollar(ctx, state.garment, state.color);
-
-  /* Diseño encima */
-  if (state.designImg) drawDesign(ctx);
-
-  /* Marca de agua */
-  ctx.font = '400 11px "Barlow Condensed"';
-  ctx.letterSpacing = '3px';
-  ctx.fillStyle = 'rgba(184,151,90,.18)';
-  ctx.textAlign = 'right';
-  ctx.fillText('ACOSER', W - 14, H - 14);
-}
-
-function drawCollar(ctx, garment, color) {
-  const W = CANVAS_W, H = CANVAS_H;
-  ctx.save();
-  /* Collar (más oscuro que la prenda) */
-  const darken = (hex, amt) => {
-    const n = parseInt(hex.slice(1), 16);
-    const r = Math.max(0, (n >> 16) + amt);
-    const g = Math.max(0, ((n >> 8) & 0xff) + amt);
-    const b = Math.max(0, (n & 0xff) + amt);
-    return `rgb(${r},${g},${b})`;
-  };
-  ctx.fillStyle = darken(color.length === 7 ? color : '#1a1a1a', -20);
-
-  if (garment === 'tshirt-front' || garment === 'uniform') {
+  /* Collar detail (t-shirt front) */
+  if (S.view === 'front' && S.garment === 'tshirt') {
+    ctx.save();
     ctx.beginPath();
-    ctx.ellipse(W*.5, H*.1, W*.12, H*.05, 0, 0, Math.PI*2);
-    ctx.fill();
-  } else if (garment === 'polo') {
-    ctx.beginPath();
-    ctx.moveTo(W*.44, H*.08);
-    ctx.lineTo(W*.44, H*.2);
-    ctx.lineTo(W*.56, H*.2);
-    ctx.lineTo(W*.56, H*.08);
-    ctx.quadraticCurveTo(W*.5, H*.06, W*.44, H*.08);
-    ctx.fill();
-    /* Botones */
-    ctx.fillStyle = 'rgba(255,255,255,.15)';
-    [H*.1, H*.14, H*.18].forEach(y => {
-      ctx.beginPath(); ctx.arc(W*.5, y, 2, 0, Math.PI*2); ctx.fill();
-    });
-  } else if (garment === 'hoodie') {
-    ctx.beginPath();
-    ctx.moveTo(W*.3, H*.07);
-    ctx.quadraticCurveTo(W*.3, H*.24, W*.5, H*.24);
-    ctx.quadraticCurveTo(W*.7, H*.24, W*.7, H*.07);
-    ctx.closePath();
-    ctx.fill();
+    ctx.moveTo(196, 68);
+    ctx.quadraticCurveTo(250, 118, 304, 68);
+    ctx.strokeStyle = darken(S.color, lum < 60 ? -5 : 15);
+    ctx.lineWidth = 6;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+    ctx.restore();
   }
+
+  /* Hoodie — hood separator line */
+  if (S.garment === 'hoodie' && S.view === 'front') {
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(196, 75);
+    ctx.quadraticCurveTo(250, 112, 304, 75);
+    ctx.strokeStyle = darken(S.color, lum < 60 ? -6 : 12);
+    ctx.lineWidth = 4;
+    ctx.stroke();
+    /* Pocket outline */
+    ctx.beginPath();
+    ctx.rect(200, 390, 100, 55);
+    ctx.strokeStyle = darken(S.color, lum < 60 ? -8 : 20);
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  /* Polo — collar detail */
+  if (S.garment === 'polo' && S.view === 'front') {
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(244, 68);
+    ctx.lineTo(250, 85);
+    ctx.lineTo(256, 68);
+    ctx.strokeStyle = darken(S.color, lum < 60 ? -5 : 18);
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    /* Placket */
+    ctx.beginPath();
+    ctx.moveTo(250, 85);
+    ctx.lineTo(250, 160);
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3,4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+
+  /* Uniform — buttons */
+  if (S.garment === 'uniform' && S.view === 'front') {
+    ctx.save();
+    ctx.fillStyle = lum > 150 ? 'rgba(0,0,0,.3)' : 'rgba(255,255,255,.25)';
+    [100, 120, 140, 160].forEach(y => {
+      ctx.beginPath(); ctx.arc(250, y, 2.5, 0, Math.PI*2); ctx.fill();
+    });
+    /* Chest pocket */
+    ctx.strokeStyle = darken(S.color, lum < 60 ? -8 : 20);
+    ctx.lineWidth = 1;
+    ctx.strokeRect(160, 160, 55, 45);
+    ctx.restore();
+  }
+
+  /* Clip for design */
+  ctx.save();
+  path(ctx);
+  ctx.clip();
+
+  /* Print area indicator */
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(pa.x, pa.y, pa.w, pa.h);
+  ctx.strokeStyle = 'rgba(184,151,90,.25)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+
+  /* Design */
+  if (S.designImg) {
+    const d = S.design;
+    ctx.save();
+    ctx.globalAlpha = d.opacity;
+    ctx.translate(d.x, d.y);
+    ctx.rotate(d.rot * Math.PI / 180);
+    if (d.flipH) ctx.scale(-1, 1);
+    const dw = d.w * d.scale;
+    const dh = d.h * d.scale;
+    ctx.drawImage(S.designImg, -dw/2, -dh/2, dw, dh);
+    ctx.restore();
+
+    /* Selection handles */
+    ctx.save();
+    ctx.translate(d.x, d.y);
+    ctx.rotate(d.rot * Math.PI / 180);
+    const dw2 = d.w * d.scale / 2;
+    const dh2 = d.h * d.scale / 2;
+
+    ctx.strokeStyle = 'rgba(184,151,90,.7)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3,3]);
+    ctx.strokeRect(-dw2, -dh2, dw2*2, dh2*2);
+    ctx.setLineDash([]);
+
+    /* Corner handles */
+    const hs = 6;
+    [[-dw2,-dh2],[dw2,-dh2],[dw2,dh2],[-dw2,dh2]].forEach(([hx,hy]) => {
+      ctx.fillStyle = '#0a0908';
+      ctx.strokeStyle = 'rgba(184,151,90,.9)';
+      ctx.lineWidth = 1.5;
+      ctx.fillRect(hx-hs/2, hy-hs/2, hs, hs);
+      ctx.strokeRect(hx-hs/2, hy-hs/2, hs, hs);
+    });
+
+    /* Rotate handle */
+    ctx.beginPath();
+    ctx.moveTo(0, -dh2);
+    ctx.lineTo(0, -dh2-16);
+    ctx.strokeStyle = 'rgba(184,151,90,.5)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(0, -dh2-20, 5, 0, Math.PI*2);
+    ctx.fillStyle = '#0a0908';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(184,151,90,.9)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.restore();
+
+    /* Check print area */
+    checkPrintAreaWarning(pa);
+  }
+
+  ctx.restore(); /* end clip */
+
+  /* View label on canvas */
+  ctx.save();
+  ctx.font = '300 11px "Barlow Condensed"';
+  ctx.letterSpacing = '4px';
+  ctx.fillStyle = 'rgba(184,151,90,.3)';
+  ctx.textAlign = 'right';
+  ctx.fillText(S.view === 'front' ? 'ACOSER' : 'ACOSER', CW - 14, CH - 14);
   ctx.restore();
 }
 
-function drawDesign(ctx) {
-  if (!state.designImg) return;
-  const W = CANVAS_W;
-  const imgW  = state.designImg.naturalWidth  || state.designImg.width;
-  const imgH  = state.designImg.naturalHeight || state.designImg.height;
-  const scale = (state.designSize / 100) * (W * .55);
-  const aspect = imgW / imgH;
-  const dW = scale;
-  const dH = scale / aspect;
-  const x = (W - dW) / 2;
-  const y = (CANVAS_H * state.designPosY) / 100;
-  ctx.drawImage(state.designImg, x, y, dW, dH);
+function checkPrintAreaWarning(pa) {
+  if (!S.designImg) return;
+  const d = S.design;
+  const dw2 = (d.w * d.scale) / 2;
+  const dh2 = (d.h * d.scale) / 2;
+  const dl = d.x - dw2, dr = d.x + dw2;
+  const dt = d.y - dh2, db = d.y + dh2;
+  const outside = dl < pa.x || dr > pa.x + pa.w || dt < pa.y || db > pa.y + pa.h;
+  const warn = document.getElementById('printWarning');
+  warn.classList.toggle('visible', outside);
+
+  /* Update print area usage indicator */
+  const usedW = dw2 * 2, usedH = dh2 * 2;
+  const usagePct = Math.min(100, Math.round(Math.max(usedW / pa.w, usedH / pa.h) * 100));
+  const paFill = document.getElementById('paBarFill');
+  if (paFill) {
+    paFill.style.width = usagePct + '%';
+    paFill.style.background = outside
+      ? 'linear-gradient(90deg,#c0614a,#e07a62)'
+      : 'linear-gradient(90deg,var(--s-gold),var(--s-gold2))';
+  }
+  const pctEl = document.getElementById('areaUsoPct');
+  if (pctEl) pctEl.textContent = usagePct + '%';
 }
 
-function setGarment(g, btn) {
-  state.garment = g;
-  state.garmentLabel = btn.querySelector('.garment-label').textContent;
-  document.querySelectorAll('.garment-btn').forEach(b => b.classList.remove('active'));
+/* ── INIT ── */
+function init() {
+  cvs = document.getElementById('mc');
+  ctx = cvs.getContext('2d');
+  canvasWrap = document.getElementById('canvasWrap');
+
+  /* Events */
+  cvs.addEventListener('mousedown', onMouseDown);
+  cvs.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('mouseup', onMouseUp);
+  cvs.addEventListener('wheel', onWheel, { passive: false });
+
+  /* Touch */
+  cvs.addEventListener('touchstart', onTouchStart, { passive: false });
+  cvs.addEventListener('touchmove', onTouchMove, { passive: false });
+  window.addEventListener('touchend', onMouseUp);
+
+  /* Drag-drop on upload zone */
+  const uz = document.getElementById('uploadZone');
+  uz.addEventListener('dragover', (e) => { e.preventDefault(); uz.classList.add('drag-over'); });
+  uz.addEventListener('dragleave', () => uz.classList.remove('drag-over'));
+  uz.addEventListener('drop', handleDrop);
+
+  renderSizeGrid();
+  renderEnterpriseSizes();
+  updateSizeCard();
+  calcQuote();
+  render();
+}
+
+/* ── MOUSE INTERACTION ── */
+function canvasPoint(e) {
+  const rect = cvs.getBoundingClientRect();
+  return {
+    x: (e.clientX - rect.left) / S.zoom,
+    y: (e.clientY - rect.top) / S.zoom,
+  };
+}
+function isInDesign(px, py) {
+  if (!S.designImg) return false;
+  const d = S.design;
+  const dw2 = (d.w * d.scale) / 2, dh2 = (d.h * d.scale) / 2;
+  return px >= d.x - dw2 && px <= d.x + dw2 && py >= d.y - dh2 && py <= d.y + dh2;
+}
+function onMouseDown(e) {
+  const p = canvasPoint(e);
+  if (S.designImg && isInDesign(p.x, p.y)) {
+    S.dragging = true;
+    S.dragOffX = p.x - S.design.x;
+    S.dragOffY = p.y - S.design.y;
+    cvs.classList.add('dragging');
+  }
+}
+function onMouseMove(e) {
+  const p = canvasPoint(e);
+  S.mouseX = p.x; S.mouseY = p.y;
+  if (S.designImg) {
+    cvs.classList.toggle('can-drag', isInDesign(p.x, p.y) && !S.dragging);
+  }
+  if (S.dragging) {
+    S.design.x = p.x - S.dragOffX;
+    S.design.y = p.y - S.dragOffY;
+    render();
+    calcQuote();
+  }
+}
+function onMouseUp() {
+  S.dragging = false;
+  cvs.classList.remove('dragging');
+}
+function onWheel(e) {
+  if (!S.designImg) return;
+  e.preventDefault();
+  const delta = e.deltaY > 0 ? -0.05 : 0.05;
+  S.design.scale = Math.max(0.05, Math.min(5, S.design.scale + delta));
+  document.getElementById('scaleSlider').value = Math.round(S.design.scale * 100);
+  document.getElementById('scaleLabel').textContent = Math.round(S.design.scale * 100) + '%';
+  render();
+  calcQuote();
+}
+
+/* Touch */
+let lastTouchDist = 0;
+function onTouchStart(e) {
+  if (e.touches.length === 1) {
+    const t = e.touches[0];
+    const p = canvasPoint(t);
+    if (S.designImg && isInDesign(p.x, p.y)) {
+      S.dragging = true;
+      S.dragOffX = p.x - S.design.x;
+      S.dragOffY = p.y - S.design.y;
+    }
+  } else if (e.touches.length === 2) {
+    lastTouchDist = Math.hypot(
+      e.touches[1].clientX - e.touches[0].clientX,
+      e.touches[1].clientY - e.touches[0].clientY
+    );
+  }
+}
+function onTouchMove(e) {
+  e.preventDefault();
+  if (e.touches.length === 1 && S.dragging) {
+    const p = canvasPoint(e.touches[0]);
+    S.design.x = p.x - S.dragOffX;
+    S.design.y = p.y - S.dragOffY;
+    render();
+  } else if (e.touches.length === 2) {
+    const dist = Math.hypot(
+      e.touches[1].clientX - e.touches[0].clientX,
+      e.touches[1].clientY - e.touches[0].clientY
+    );
+    const delta = (dist - lastTouchDist) * 0.008;
+    S.design.scale = Math.max(0.05, Math.min(5, S.design.scale + delta));
+    lastTouchDist = dist;
+    render();
+  }
+}
+
+/* ── ACTIONS ── */
+function setGarment(type, btn) {
+  S.garment = type;
+  document.querySelectorAll('.garment-tile').forEach(b => {
+    b.classList.remove('active');
+    b.querySelector('.garment-icon').setAttribute('stroke', 'var(--s-ash)');
+  });
   btn.classList.add('active');
-  updateInfo();
-  drawGarment();
+  btn.querySelector('.garment-icon').setAttribute('stroke', 'var(--s-gold)');
+  document.getElementById('specGarmentName').textContent = GARMENTS[type].name;
+  render();
 }
 
-function setColor(hex, label, dot) {
-  state.color = hex;
-  state.colorLabel = label;
-  document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+function setColor(hex, name, dot) {
+  S.color = hex; S.colorName = name;
+  document.querySelectorAll('.color-swatch').forEach(d => d.classList.remove('active'));
   dot.classList.add('active');
-  updateInfo();
-  drawGarment();
+  document.getElementById('colorNameTag').textContent = name;
+  render();
+}
+
+function setView(view, btn) {
+  S.view = view;
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('viewLabel').textContent = view === 'front' ? 'Vista frontal' : 'Vista trasera';
+  render();
 }
 
 function uploadDesign(input) {
   const file = input.files[0];
-  if (!file || !file.type.startsWith('image/')) return;
-  if (file.size > 5 * 1024 * 1024) { alert('La imagen no puede superar 5MB.'); return; }
+  if (!file) return;
+  if (file.size > 8 * 1024 * 1024) { showToast('La imagen no puede superar 8MB.'); return; }
   const reader = new FileReader();
   reader.onload = (e) => {
     const img = new Image();
     img.onload = () => {
-      state.designImg = img;
+      S.designImg = img;
+      /* Size relative to print area */
+      const pa = GARMENTS[S.garment].printArea.front;
+      const maxW = pa.w * 0.85;
+      const aspect = img.naturalWidth / img.naturalHeight;
+      S.design.w = maxW;
+      S.design.h = maxW / aspect;
+      S.design.x = pa.x + pa.w / 2;
+      S.design.y = pa.y + pa.h / 2;
+      S.design.scale = 1;
+      S.design.rot = 0;
+      S.design.opacity = 1;
+      S.design.flipH = false;
+      document.getElementById('scaleSlider').value = 100;
+      document.getElementById('scaleLabel').textContent = '100%';
+      document.getElementById('rotSlider').value = 0;
+      document.getElementById('rotLabel').textContent = '0°';
+      document.getElementById('opacitySlider').value = 100;
+      document.getElementById('opacityLabel').textContent = '100%';
+      document.getElementById('designControlsPanel').style.display = 'block';
       document.getElementById('noDesignMsg').style.display = 'none';
-      document.getElementById('canvasWrapper').style.display = 'block';
-      document.getElementById('canvasInfo').style.display = 'block';
-      document.getElementById('designControls').style.display = 'block';
-      drawGarment();
-      ACOSER_LEADS.capturar({ fuente: 'mockup-generator', garment: state.garmentLabel, color: state.colorLabel }, { email: false });
+      ACOSER_LEADS.capturar({ fuente: 'mockup-studio', accion: 'upload-design' }, { email: false });
+      render();
+      calcQuote();
     };
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
 
-function adjustDesign() {
-  state.designSize = parseInt(document.getElementById('sizeSlider').value);
-  state.designPosY = parseInt(document.getElementById('posYSlider').value);
-  drawGarment();
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('uploadZone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (!file || !file.type.startsWith('image/')) return;
+  const dt = new DataTransfer();
+  dt.items.add(file);
+  const input = document.getElementById('fileInput');
+  input.files = dt.files;
+  uploadDesign(input);
+}
+
+function onScaleChange(v) {
+  S.design.scale = parseInt(v) / 100;
+  document.getElementById('scaleLabel').textContent = v + '%';
+  render();
+  calcQuote();
+}
+function onRotChange(v) {
+  S.design.rot = parseInt(v);
+  document.getElementById('rotLabel').textContent = v + '°';
+  render();
+}
+function onOpacityChange(v) {
+  S.design.opacity = parseInt(v) / 100;
+  document.getElementById('opacityLabel').textContent = v + '%';
+  render();
 }
 
 function centerDesign() {
-  document.getElementById('posYSlider').value = 35;
-  state.designPosY = 35;
-  drawGarment();
+  if (!S.designImg) return;
+  const pa = GARMENTS[S.garment].printArea[S.view];
+  S.design.x = pa.x + pa.w / 2;
+  S.design.y = pa.y + pa.h / 2;
+  render();
 }
-
+function flipDesign() {
+  S.design.flipH = !S.design.flipH;
+  render();
+}
+function resetDesignTransform() {
+  if (!S.designImg) return;
+  S.design.scale = 1; S.design.rot = 0; S.design.opacity = 1; S.design.flipH = false;
+  document.getElementById('scaleSlider').value = 100;
+  document.getElementById('scaleLabel').textContent = '100%';
+  document.getElementById('rotSlider').value = 0;
+  document.getElementById('rotLabel').textContent = '0°';
+  document.getElementById('opacitySlider').value = 100;
+  document.getElementById('opacityLabel').textContent = '100%';
+  centerDesign();
+}
 function removeDesign() {
-  state.designImg = null;
+  S.designImg = null;
   document.getElementById('fileInput').value = '';
-  document.getElementById('designControls').style.display = 'none';
-  document.getElementById('noDesignMsg').style.display = 'block';
-  document.getElementById('canvasWrapper').style.display = 'none';
-  document.getElementById('canvasInfo').style.display = 'none';
+  document.getElementById('designControlsPanel').style.display = 'none';
+  document.getElementById('noDesignMsg').style.display = 'flex';
+  document.getElementById('printWarning').classList.remove('visible');
+  render();
 }
 
-function updateInfo() {
-  document.getElementById('canvasInfoText').textContent = `${state.garmentLabel} ${state.colorLabel} · Tu diseño`;
+/* ── ZOOM ── */
+function setZoom(z) {
+  S.zoom = Math.max(0.5, Math.min(2.5, z));
+  canvasWrap.style.transform = `scale(${S.zoom})`;
+  document.getElementById('zoomLabel').textContent = Math.round(S.zoom * 100) + '%';
+}
+function zoomIn() { setZoom(S.zoom + 0.1); }
+function zoomOut() { setZoom(S.zoom - 0.1); }
+function resetZoom() { setZoom(1); }
+
+/* ── TABS ── */
+function switchTab(tab, btn) {
+  document.querySelectorAll('.panel-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel-tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
 }
 
-function downloadMockup() {
-  const canvas = document.getElementById('mockupCanvas');
-  const a = document.createElement('a');
-  a.download = `acoser-mockup-${state.garmentLabel.toLowerCase()}.png`;
-  a.href = canvas.toDataURL('image/png');
-  a.click();
+/* ── SIZE SYSTEM ── */
+function renderSizeGrid() {
+  const cat = S.sizeCategory;
+  const sizes = SIZES[cat];
+  const grid = document.getElementById('sizeGrid');
+  grid.innerHTML = sizes.map(s =>
+    `<button class="size-pill${s.label === S.sizeLabel ? ' active' : ''}" onclick="selectSize('${s.label}',this)">${s.label}</button>`
+  ).join('');
 }
 
-function cotizarMockup() {
+function setSizeCat(cat, btn) {
+  S.sizeCategory = cat;
+  document.querySelectorAll('.size-cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  /* Pick first size in category */
+  S.sizeLabel = SIZES[cat][Math.floor(SIZES[cat].length / 2)].label;
+  renderSizeGrid();
+  updateSizeCard();
+  renderEnterpriseSizes();
+  calcQuote();
+}
+
+function selectSize(label, btn) {
+  S.sizeLabel = label;
+  document.querySelectorAll('.size-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  updateSizeCard();
+  calcQuote();
+  render();
+}
+
+function getCurrentSize() {
+  return SIZES[S.sizeCategory].find(s => s.label === S.sizeLabel) || SIZES[S.sizeCategory][2];
+}
+
+function updateSizeCard() {
+  const sz = getCurrentSize();
+  document.getElementById('specSizeLabel').textContent = S.sizeLabel;
+  document.getElementById('specGarmentName').textContent = GARMENTS[S.garment]?.name || 'Camiseta';
+  document.getElementById('specAncho').textContent = sz.ancho + ' cm';
+  document.getElementById('specLargo').textContent = sz.largo + ' cm';
+  document.getElementById('specArea').textContent = sz.pw + '×' + sz.ph + ' cm';
+  document.getElementById('specRecom').textContent = '≤ ' + sz.rec + ' cm';
+}
+
+/* ── ENTERPRISE ORDER ── */
+function renderEnterpriseSizes() {
+  const cat = S.sizeCategory;
+  const sizes = SIZES[cat];
+  const container = document.getElementById('enterpriseSizes');
+  container.innerHTML = sizes.map(s => {
+    const qty = S.enterprise[s.label] || 0;
+    return `
+      <div class="size-qty-row">
+        <div>
+          <span class="size-qty-label">${s.label}</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.44rem;letter-spacing:.2em;text-transform:uppercase;color:var(--s-ash);margin-left:.5rem;">${s.ancho}×${s.largo}cm</span>
+        </div>
+        <input type="number" class="size-qty-input" min="0" value="${qty}"
+               onchange="updateEnterpriseQty('${s.label}',this.value)">
+      </div>`;
+  }).join('');
+  updateEnterpriseTotal();
+}
+
+function updateEnterpriseQty(label, val) {
+  S.enterprise[label] = Math.max(0, parseInt(val) || 0);
+  updateEnterpriseTotal();
+  /* Sync main qty */
+  const total = Object.values(S.enterprise).reduce((a, b) => a + b, 0);
+  if (total > 0) {
+    document.getElementById('qtyInput').value = total;
+    S.qty = total;
+    calcQuote();
+  }
+}
+
+function updateEnterpriseTotal() {
+  const total = Object.values(S.enterprise).reduce((a, b) => a + b, 0);
+  document.getElementById('enterpriseTotal').textContent = total + ' prendas';
+}
+
+function toggleEnterprise() {
+  const body = document.getElementById('enterpriseBody');
+  const chevron = document.getElementById('enterpriseChevron');
+  const toggle = document.getElementById('enterpriseToggle');
+  const open = body.classList.toggle('open');
+  toggle.classList.toggle('active', open);
+  chevron.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+/* ── QUOTER ── */
+function fmt(n) {
+  return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(n);
+}
+function changeQty(delta) {
+  const inp = document.getElementById('qtyInput');
+  const newQty = Math.max(1, (parseInt(inp.value) || 1) + delta);
+  inp.value = newQty;
+  S.qty = newQty;
+  calcQuote();
+}
+function setTechnique(tech, btn) {
+  S.technique = tech;
+  document.querySelectorAll('.tech-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  calcQuote();
+}
+function calcQuote() {
+  const qty = parseInt(document.getElementById('qtyInput').value) || 1;
+  S.qty = qty;
+  const sz = getCurrentSize();
+  const areaM = (sz.pw * sz.ph) / 10000; /* m² */
+  const mLinear = (sz.pw * sz.ph) * qty / (60 * 100); /* metros lineales DTF (rollo 60cm) */
+
+  let totalCost = 0;
+  const prices = PRICES[S.technique] || PRICES.dtf;
+  const rango = prices.find(p => qty >= p.min && qty <= p.max) || prices[prices.length-1];
+
+  if (S.technique === 'dtf' || S.technique === 'sublimacion') {
+    totalCost = mLinear * rango.pm;
+  } else if (S.technique === 'bordado') {
+    totalCost = qty * rango.pm;
+  } else {
+    totalCost = qty * rango.pm;
+  }
+
+  /* Production time */
+  let dias = qty < 10 ? '3–4' : qty < 50 ? '4–6' : qty < 200 ? '7–10' : '10–15';
+
+  document.getElementById('q-qty').textContent = qty + (qty === 1 ? ' unidad' : ' unidades');
+  document.getElementById('q-metros').textContent = (S.technique === 'dtf' || S.technique === 'sublimacion')
+    ? mLinear.toFixed(2) + ' m lineales'
+    : '—';
+  document.getElementById('q-tiempo').textContent = dias + ' días hábiles';
+  document.getElementById('q-total').textContent = fmt(Math.round(totalCost));
+  document.getElementById('q-unit').textContent = fmt(Math.round(totalCost / qty)) + ' / prenda';
+}
+
+/* ── DOWNLOAD ── */
+function downloadPNG() {
+  const link = document.createElement('a');
+  link.download = `acoser-studio-${S.garment}-${S.colorName.replace(/ /g,'-')}.png`;
+  link.href = cvs.toDataURL('image/png');
+  link.click();
+  ACOSER_LEADS.capturar({ fuente: 'mockup-studio', accion: 'download-png', garment: S.garment, color: S.colorName }, { email: false });
+}
+function downloadJPG() {
+  const link = document.createElement('a');
+  link.download = `acoser-studio-${S.garment}-${S.colorName.replace(/ /g,'-')}.jpg`;
+  link.href = cvs.toDataURL('image/jpeg', 0.92);
+  link.click();
+}
+
+/* ── PDF ── */
+function generatePDF() {
+  if (!window.jspdf) { showToast('Cargando generador de PDF...'); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+  /* Styles */
+  const gold = [184, 151, 90];
+  const dark = [15, 14, 12];
+  const cream = [240, 235, 227];
+  const ash = [110, 103, 96];
+  const W = 210, H = 297;
+
+  /* Background */
+  doc.setFillColor(...dark);
+  doc.rect(0, 0, W, H, 'F');
+
+  /* Gold header bar */
+  doc.setFillColor(...gold);
+  doc.rect(0, 0, W, 12, 'F');
+
+  /* Logo text (no image since it might not load in iframe) */
+  doc.setTextColor(...dark);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.text('ACOSER', 15, 8.5);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6);
+  doc.text('TALLER TEXTIL', 35, 8.5);
+
+  /* Date */
+  doc.setTextColor(...cream);
+  doc.setFontSize(7);
+  doc.text(new Date().toLocaleDateString('es-CO', { year:'numeric', month:'long', day:'numeric' }), W-15, 8.5, { align:'right' });
+
+  /* Title */
+  doc.setTextColor(...gold);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.text('FICHA TÉCNICA', 15, 30);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(...ash);
+  doc.text('Solicitud de personalización · ACOSER Mockup Studio', 15, 37);
+
+  /* Divider */
+  doc.setDrawColor(...gold);
+  doc.setLineWidth(0.4);
+  doc.line(15, 41, W-15, 41);
+
+  /* Mockup image */
+  const imgData = cvs.toDataURL('image/jpeg', 0.9);
+  doc.addImage(imgData, 'JPEG', 15, 46, 82, 95);
+
+  /* Gold border around image */
+  doc.setDrawColor(...gold);
+  doc.setLineWidth(0.3);
+  doc.rect(15, 46, 82, 95);
+
+  /* Spec table */
+  const sx = 105, sy = 46;
+  const specs = [
+    ['Tipo de prenda', GARMENTS[S.garment]?.name || 'Camiseta'],
+    ['Vista',         S.view === 'front' ? 'Frontal' : 'Trasera'],
+    ['Color',         S.colorName],
+    ['Categoría',     ({hombre:'Hombre',mujer:'Mujer',ninos:'Niños',oversize:'Oversize'})[S.sizeCategory]],
+    ['Talla',         S.sizeLabel],
+  ];
+  const sz = getCurrentSize();
+  const moreSpecs = [
+    ['Ancho prenda',    sz.ancho + ' cm'],
+    ['Largo prenda',    sz.largo + ' cm'],
+    ['Área impresión',  sz.pw + '×' + sz.ph + ' cm'],
+    ['Técnica',         ({dtf:'Estampado DTF',bordado:'Bordado computarizado',sublimacion:'Sublimación',serigrafía:'Serigrafía'})[S.technique]],
+    ['Cantidad',        S.qty + ' unidades'],
+  ];
+  const allSpecs = [...specs, ...moreSpecs];
+
+  doc.setFont('helvetica', 'normal');
+  allSpecs.forEach((row, i) => {
+    const y = sy + i * 8.5;
+    doc.setFillColor(i % 2 === 0 ? 22 : 28, i % 2 === 0 ? 21 : 27, i % 2 === 0 ? 19 : 24);
+    doc.rect(sx, y - 5, W-15-sx, 8.5, 'F');
+    doc.setTextColor(...ash);
+    doc.setFontSize(7);
+    doc.text(row[0], sx + 3, y);
+    doc.setTextColor(...cream);
+    doc.setFontSize(8);
+    doc.text(row[1], W-17, y, { align: 'right' });
+  });
+
+  /* Quote box */
+  const qy = 150;
+  doc.setFillColor(25, 23, 20);
+  doc.rect(15, qy, W-30, 38, 'F');
+  doc.setDrawColor(...gold);
+  doc.setLineWidth(0.3);
+  doc.rect(15, qy, W-30, 38);
+  doc.setTextColor(...gold);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.text('ESTIMADO DE COTIZACIÓN', 21, qy+7);
+
+  const qty = S.qty;
+  const mLinear = (sz.pw * sz.ph) * qty / (60 * 100);
+  const prices = PRICES[S.technique] || PRICES.dtf;
+  const rango = prices.find(p => qty >= p.min && qty <= p.max) || prices[prices.length-1];
+  let totalCost = S.technique === 'bordado' ? qty * rango.pm : mLinear * rango.pm;
+  const dias = qty < 10 ? '3–4' : qty < 50 ? '4–6' : qty < 200 ? '7–10' : '10–15';
+
+  doc.setFont('helvetica', 'normal');
+  const qSpecs = [
+    ['Costo total estimado', fmt(Math.round(totalCost))],
+    ['Costo por prenda',     fmt(Math.round(totalCost / qty))],
+    ['Tiempo de producción', dias + ' días hábiles'],
+  ];
+  qSpecs.forEach(([k, v], i) => {
+    doc.setTextColor(...ash);
+    doc.setFontSize(7);
+    doc.text(k, 21, qy + 15 + i * 8);
+    doc.setTextColor(...cream);
+    doc.setFontSize(8.5);
+    doc.setFont('helvetica', 'bold');
+    doc.text(v, W-20, qy + 15 + i * 8, { align: 'right' });
+    doc.setFont('helvetica', 'normal');
+  });
+
+  /* Notes */
+  doc.setTextColor(...ash);
+  doc.setFontSize(7);
+  doc.text('* Estimado orientativo. El costo final puede variar según diseño, tela y acabados.', 15, 198);
+
+  /* Footer */
+  doc.setFillColor(...gold);
+  doc.rect(0, H-18, W, 18, 'F');
+  doc.setTextColor(...dark);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.text('ACOSER Taller Textil', 15, H-10);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6.5);
+  doc.text('Corozal, Sucre, Colombia  ·  +57 300 520 6285  ·  acosertallertextilinfo@gmail.com', 15, H-5);
+  doc.text('Generated by ACOSER Studio', W-15, H-7, { align: 'right' });
+
+  doc.save(`ficha-tecnica-acoser-${S.garment}-${S.sizeLabel}.pdf`);
+}
+
+/* ── WHATSAPP ── */
+function cotizarWA() {
+  const sz = getCurrentSize();
   const url = ACOSER_WA.personalizador({
-    tipoPrenda:   state.garmentLabel,
-    colorPrenda:  state.colorLabel,
-    observacion:  'Diseño generado en el Mockup Generator de ACOSER',
+    tipoPrenda:   GARMENTS[S.garment]?.name + ' — ' + S.view === 'front' ? 'Frente' : 'Espalda',
+    colorPrenda:  S.colorName,
+    cantidad:     S.qty,
+    vista:        S.view === 'front' ? 'Vista frontal' : 'Vista trasera',
+    ancho:        sz.pw, alto: sz.ph,
+    observacion:  `Talla: ${S.sizeLabel} | Técnica: ${S.technique} | Diseño generado en ACOSER Studio`,
+  });
+  ACOSER_LEADS.capturar({
+    fuente: 'mockup-studio', accion: 'cotizar-wa',
+    garment: S.garment, color: S.colorName, talla: S.sizeLabel,
+    cantidad: S.qty, tecnica: S.technique,
   });
   window.open(url, '_blank');
 }
 
-/* Redibujar al cambiar tema */
-document.getElementById('themeBtn').addEventListener('click', () => setTimeout(drawGarment, 700));
+/* ── TOAST ── */
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = `
+    position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(16px);
+    background:rgba(20,19,16,.95);border:1px solid var(--s-border2);
+    padding:.6rem 1.5rem;border-radius:100px;
+    font-family:'Barlow Condensed',sans-serif;font-size:.6rem;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--s-cream);
+    z-index:9999;opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);
+    backdrop-filter:blur(12px);`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => { t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; });
+  setTimeout(() => { t.style.opacity='0'; setTimeout(() => t.remove(), 300); }, 2800);
+}
 
-/* Init */
-drawGarment();
+window.addEventListener('load', init);
 </script>
 </body>
 </html>

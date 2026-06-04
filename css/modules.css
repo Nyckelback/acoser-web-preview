@@ -37,8 +37,8 @@
 .module-hero-h1 em { font-style: italic; color: var(--gold2); }
 
 .module-hero-desc {
-  font-size: .9rem; color: var(--fog);
-  line-height: 1.85; max-width: 560px; font-weight: 300;
+  font-size: .92rem; color: var(--fog);
+  line-height: 1.85; max-width: 560px; font-weight: 400;
 }
 
 .module-body {
@@ -119,10 +119,10 @@
 .btn-module-secondary {
   display: inline-flex; align-items: center; gap: .8rem;
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: .62rem; letter-spacing: .28em; text-transform: uppercase;
+  font-size: .64rem; letter-spacing: .25em; text-transform: uppercase;
   color: var(--fog); background: none;
   border: 1px solid var(--dust); padding: 1rem 2rem;
-  cursor: pointer; transition: all .35s ease;
+  cursor: pointer; transition: all .25s ease;
 }
 .btn-module-secondary:hover { border-color: var(--gold); color: var(--gold); }
 

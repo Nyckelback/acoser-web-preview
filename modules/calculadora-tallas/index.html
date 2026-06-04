@@ -2,267 +2,939 @@
 <html lang="es" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guía y Calculadora de Tallas — ACOSER Taller Textil</title>
-<meta name="description" content="Encuentra tu talla exacta para camisetas, polos y uniformes. Calculadora de tallas y tabla de medidas de ACOSER Taller Textil Colombia.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ACOSER Studio — Guía de Tallas Premium</title>
+<meta name="description" content="Guía de tallas profesional ACOSER. Medidas exactas de prendas, área de impresión y tamaño de diseño recomendado por talla.">
 <script>(function(){var t=localStorage.getItem('acoser-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/base.css">
-<link rel="stylesheet" href="../../css/modules.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-.size-table { width: 100%; border-collapse: collapse; }
-.size-table th { font-family: 'Barlow Condensed', sans-serif; font-size: .52rem; letter-spacing: .38em; text-transform: uppercase; color: var(--ash); font-weight: 300; padding: 1rem 1.2rem; text-align: center; border-bottom: 1px solid var(--dust); border-right: 1px solid var(--dust); }
-.size-table th:first-child { text-align: left; }
-.size-table td { padding: .9rem 1.2rem; font-size: .85rem; color: var(--fog); text-align: center; border-bottom: 1px solid rgba(58,55,48,.4); border-right: 1px solid rgba(58,55,48,.3); transition: background .2s; }
-.size-table td:first-child { font-family: 'Barlow Condensed', sans-serif; letter-spacing: .2em; font-size: .7rem; font-weight: 600; color: var(--cream); text-align: left; text-transform: uppercase; }
-.size-table tr:hover td { background: rgba(184,151,90,.04); }
-.size-table tr.highlighted td { background: rgba(184,151,90,.1); color: var(--cream); }
-.size-table tr.highlighted td:first-child { color: var(--gold2); }
-.calc-inputs { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-bottom: 2rem; }
-.result-tag { display: inline-flex; align-items: center; gap: 1rem; padding: 1.2rem 2rem; border: 1px solid rgba(184,151,90,.35); background: rgba(184,151,90,.06); }
-.result-tag-size { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--gold2); font-weight: 400; line-height: 1; }
-.result-tag-info { font-size: .78rem; color: var(--ash); line-height: 1.6; }
-.how-to-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--dust); }
-.how-item { background: var(--ink2); padding: 2rem 1.8rem; }
-.how-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: rgba(184,151,90,.25); font-style: italic; margin-bottom: .8rem; }
-@media(max-width:900px){ .calc-inputs{grid-template-columns:1fr 1fr;} .how-to-grid{grid-template-columns:1fr;} }
-@media(max-width:600px){ .calc-inputs{grid-template-columns:1fr;} .size-table th, .size-table td{padding:.7rem .6rem;font-size:.75rem;} }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --s-bg:#0a0908;--s-panel:#111009;--s-panel2:#161411;
+  --s-border:rgba(184,151,90,.10);--s-border2:rgba(184,151,90,.20);
+  --s-gold:#b8975a;--s-gold2:#d4b278;--s-gold-dim:rgba(184,151,90,.08);
+  --s-cream:#f0ebe3;--s-ash:#9a9895;--s-fog:#b8b5b0;
+  --s-red:#c0614a;--s-green:#3a8a5a;
+  --s-radius:10px;--s-left:248px;--s-right:288px;--s-bar:52px;
+  --s-font:'Inter','Barlow',sans-serif;
+}
+html,body{height:100%;overflow:hidden;background:var(--s-bg);color:var(--s-cream);font-family:var(--s-font)}
+
+/* ── SHELL ── */
+.studio{display:flex;flex-direction:column;height:100vh}
+
+/* ── TOP BAR ── */
+.studio-bar{
+  height:var(--s-bar);background:rgba(10,9,8,.96);border-bottom:1px solid var(--s-border);
+  backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.25rem;z-index:100;flex-shrink:0
+}
+.bar-brand{display:flex;align-items:center;gap:.75rem;text-decoration:none}
+.bar-brand-logo{height:32px;width:auto;opacity:.9}
+.bar-brand-div{width:1px;height:20px;background:var(--s-border2)}
+.bar-brand-tag{font-family:'Barlow Condensed',sans-serif;font-size:.55rem;letter-spacing:.5em;text-transform:uppercase;color:var(--s-gold)}
+.bar-badge{
+  display:flex;align-items:center;gap:.45rem;background:var(--s-gold-dim);
+  border:1px solid var(--s-border2);border-radius:100px;padding:.28rem .9rem
+}
+.bar-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--s-gold)}
+.bar-badge-txt{font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.35em;text-transform:uppercase;color:var(--s-gold)}
+.bar-actions{display:flex;align-items:center;gap:.5rem}
+.bar-btn{
+  display:inline-flex;align-items:center;gap:.4rem;padding:.38rem .88rem;
+  font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:.25em;
+  text-transform:uppercase;font-weight:500;border-radius:6px;cursor:pointer;
+  transition:all .2s cubic-bezier(.4,0,.2,1);border:none
+}
+.bar-btn--ghost{background:transparent;color:var(--s-ash);border:1px solid var(--s-border)}
+.bar-btn--ghost:hover{color:var(--s-cream);border-color:var(--s-border2);background:var(--s-panel2)}
+.bar-btn--gold{background:var(--s-gold);color:#0a0908;font-weight:600}
+.bar-btn--gold:hover{background:var(--s-gold2)}
+
+/* ── MAIN 3-COL ── */
+.studio-main{
+  flex:1;display:grid;
+  grid-template-columns:var(--s-left) 1fr var(--s-right);
+  overflow:hidden
+}
+
+/* ── LEFT PANEL ── */
+.studio-left{
+  background:var(--s-panel);border-right:1px solid var(--s-border);
+  display:flex;flex-direction:column;overflow:hidden
+}
+.p-sec{padding:1.15rem 1.1rem;border-bottom:1px solid var(--s-border);flex-shrink:0}
+.p-sec--grow{flex:1;overflow-y:auto;border-bottom:none}
+.p-lbl{
+  font-family:'Barlow Condensed',sans-serif;font-size:.48rem;letter-spacing:.5em;
+  text-transform:uppercase;color:var(--s-gold);display:block;margin-bottom:.85rem
+}
+
+/* Category grid */
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.cat-tile{
+  background:var(--s-panel2);border:1px solid var(--s-border);border-radius:var(--s-radius);
+  padding:.9rem .7rem .75rem;cursor:pointer;transition:all .2s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;position:relative;overflow:hidden
+}
+.cat-tile:hover{border-color:var(--s-border2);background:#1a1815}
+.cat-tile.active{border-color:var(--s-gold);background:var(--s-gold-dim)}
+.cat-tile.active::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--s-gold),var(--s-gold2))
+}
+.cat-ico{width:34px;height:34px;opacity:.55;transition:opacity .2s}
+.cat-tile.active .cat-ico,.cat-tile:hover .cat-ico{opacity:1}
+.cat-name{
+  font-family:'Barlow Condensed',sans-serif;font-size:.5rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--s-ash);font-weight:500;transition:color .2s
+}
+.cat-tile.active .cat-name{color:var(--s-gold)}
+.cat-tile:hover .cat-name{color:var(--s-fog)}
+
+/* Size pills */
+.sz-grid{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:.8rem}
+.sz-pill{
+  min-width:44px;height:38px;padding:0 .7rem;border:1px solid var(--s-border);border-radius:7px;
+  font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.08em;font-weight:600;
+  text-transform:uppercase;color:var(--s-ash);cursor:pointer;background:var(--s-panel2);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .18s cubic-bezier(.4,0,.2,1)
+}
+.sz-pill:hover{border-color:var(--s-border2);color:var(--s-cream)}
+.sz-pill.active{background:var(--s-gold);border-color:var(--s-gold);color:#0a0908;font-weight:700}
+
+/* Quick calc */
+.qc-card{
+  background:var(--s-panel2);border:1px solid var(--s-border);
+  border-radius:var(--s-radius);padding:.9rem
+}
+.qc-sub{
+  font-family:'Barlow Condensed',sans-serif;font-size:.47rem;letter-spacing:.38em;
+  text-transform:uppercase;color:var(--s-ash);display:block;margin-bottom:.6rem
+}
+.qc-row{display:flex;align-items:center;gap:.5rem}
+.qc-input{
+  flex:1;height:34px;background:var(--s-panel);border:1px solid var(--s-border);
+  border-radius:6px;text-align:center;color:var(--s-cream);
+  font-family:'Inter',sans-serif;font-size:.88rem;font-weight:500;outline:none;transition:border-color .2s
+}
+.qc-input:focus{border-color:var(--s-gold)}
+.qc-unit{font-size:.72rem;color:var(--s-ash);font-family:'Barlow Condensed',sans-serif;letter-spacing:.05em}
+.qc-result{
+  margin-top:.5rem;font-family:'Barlow Condensed',sans-serif;
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--s-ash);
+  min-height:18px;transition:color .3s
+}
+.qc-result.found{color:var(--s-gold)}
+
+/* ── CENTER CANVAS ── */
+.studio-canvas{
+  background:#0d0c0a;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden
+}
+.studio-canvas::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(184,151,90,.05) 1px,transparent 1px);
+  background-size:28px 28px
+}
+.shirt-wrap{
+  position:relative;width:380px;display:flex;align-items:center;justify-content:center
+}
+#shirtSvg{
+  width:100%;max-height:calc(100vh - 140px);
+  filter:drop-shadow(0 6px 16px rgba(0,0,0,.45));
+  transition:all .25s cubic-bezier(.4,0,.2,1)
+}
+.canvas-label{
+  position:absolute;top:1.4rem;left:50%;transform:translateX(-50%);
+  font-family:'Barlow Condensed',sans-serif;font-size:.48rem;letter-spacing:.6em;
+  text-transform:uppercase;color:rgba(184,151,90,.38);pointer-events:none;white-space:nowrap
+}
+.size-badge{
+  position:absolute;bottom:1.75rem;left:50%;transform:translateX(-50%);
+  background:rgba(10,9,8,.88);border:1px solid var(--s-border2);border-radius:100px;
+  padding:.38rem 1.2rem;backdrop-filter:blur(12px);display:flex;align-items:center;gap:.7rem
+}
+.sb-cat{font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.35em;text-transform:uppercase;color:var(--s-ash)}
+.sb-sep{width:1px;height:14px;background:var(--s-border2)}
+.sb-sz{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s-gold);font-weight:600}
+
+/* ── RIGHT PANEL ── */
+.studio-right{
+  background:var(--s-panel);border-left:1px solid var(--s-border);
+  display:flex;flex-direction:column;overflow:hidden
+}
+.tabs{display:flex;border-bottom:1px solid var(--s-border);padding:0 1rem;flex-shrink:0}
+.tab{
+  font-family:'Barlow Condensed',sans-serif;font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;
+  font-weight:500;color:var(--s-ash);padding:.85rem .8rem;border:none;background:transparent;
+  cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s
+}
+.tab.active{color:var(--s-gold);border-bottom-color:var(--s-gold)}
+.tab:not(.active):hover{color:var(--s-fog)}
+.tab-body{display:none;flex:1;overflow-y:auto;flex-direction:column}
+.tab-body.active{display:flex}
+
+/* Hero number */
+.hero-metric{
+  padding:1.4rem 1.2rem .9rem;border-bottom:1px solid var(--s-border);text-align:center
+}
+.h-lbl{
+  font-family:'Barlow Condensed',sans-serif;font-size:.47rem;letter-spacing:.5em;
+  text-transform:uppercase;color:var(--s-ash);margin-bottom:.45rem;display:block
+}
+.h-vals{display:flex;align-items:baseline;justify-content:center;gap:.35rem}
+.h-num{
+  font-family:'Playfair Display',serif;font-size:2.75rem;color:var(--s-gold2);
+  font-weight:400;line-height:1;transition:all .35s cubic-bezier(.4,0,.2,1)
+}
+.h-unit{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--s-ash)}
+
+/* Spec cards */
+.r-sec{padding:1rem 1.15rem;border-bottom:1px solid var(--s-border)}
+.r-sec:last-of-type{border-bottom:none}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.45rem}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:.45rem}
+.s-card{
+  background:var(--s-panel2);border:1px solid var(--s-border);
+  border-radius:8px;padding:.75rem .65rem;transition:border-color .3s,background .3s
+}
+.s-card.hi{border-color:var(--s-border2);background:var(--s-gold-dim)}
+.s-key{
+  font-family:'Barlow Condensed',sans-serif;font-size:.44rem;letter-spacing:.38em;
+  text-transform:uppercase;color:var(--s-ash);display:block;margin-bottom:.3rem
+}
+.s-val{
+  font-family:'Inter',sans-serif;font-size:.9rem;font-weight:600;color:var(--s-cream);
+  transition:all .3s cubic-bezier(.4,0,.2,1)
+}
+.s-val.gold{color:var(--s-gold)}
+.s-val.green{color:#5aba85}
+
+/* Coverage bar */
+.cov-wrap{padding:.9rem 1.15rem}
+.cov-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.55rem}
+.cov-lbl{font-family:'Barlow Condensed',sans-serif;font-size:.47rem;letter-spacing:.4em;text-transform:uppercase;color:var(--s-ash)}
+.cov-pct{font-family:'Inter',sans-serif;font-size:.82rem;font-weight:600;color:var(--s-gold)}
+.cov-track{height:4px;background:var(--s-panel2);border-radius:2px;overflow:hidden;margin-bottom:.4rem}
+.cov-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--s-gold),var(--s-gold2));transition:width .5s cubic-bezier(.4,0,.2,1)}
+
+/* Recommended tag */
+.recom-tag{
+  background:linear-gradient(135deg,rgba(184,151,90,.07),rgba(184,151,90,.03));
+  border:1px solid var(--s-border2);border-radius:var(--s-radius);padding:.9rem 1rem;
+  margin:0 1.15rem .9rem
+}
+.rt-lbl{
+  font-family:'Barlow Condensed',sans-serif;font-size:.44rem;letter-spacing:.4em;
+  text-transform:uppercase;color:var(--s-gold);display:block;margin-bottom:.3rem
+}
+.rt-val{font-family:'Playfair Display',serif;font-size:1rem;color:var(--s-cream);font-style:italic}
+
+/* Tip card */
+.tip-card{
+  background:var(--s-panel2);border:1px solid var(--s-border);border-radius:8px;
+  padding:.75rem .65rem;margin:0 1.15rem
+}
+.tip-val{font-family:'Inter',sans-serif;font-size:.74rem;font-weight:400;color:var(--s-fog);line-height:1.75}
+
+/* Actions */
+.action-sec{padding:1rem 1.1rem;margin-top:auto;display:flex;flex-direction:column;gap:.45rem}
+.btn-primary{
+  width:100%;padding:.8rem 1.25rem;background:var(--s-gold);color:#0a0908;border:none;
+  border-radius:var(--s-radius);font-family:'Barlow Condensed',sans-serif;font-size:.64rem;
+  letter-spacing:.3em;text-transform:uppercase;font-weight:700;cursor:pointer;
+  transition:all .2s;position:relative;overflow:hidden
+}
+.btn-primary::before{
+  content:'';position:absolute;inset:0;background:var(--s-gold2);
+  transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.77,0,.175,1)
+}
+.btn-primary:hover::before{transform:scaleX(1)}
+.btn-primary span{position:relative}
+.btn-secondary{
+  width:100%;padding:.65rem 1rem;background:transparent;color:var(--s-ash);
+  border:1px solid var(--s-border);border-radius:var(--s-radius);
+  font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:.25em;
+  text-transform:uppercase;cursor:pointer;transition:all .2s
+}
+.btn-secondary:hover{border-color:var(--s-border2);color:var(--s-cream)}
+
+/* Scrollbar */
+.studio-left::-webkit-scrollbar,.studio-right::-webkit-scrollbar,.tab-body::-webkit-scrollbar{width:3px}
+.studio-left::-webkit-scrollbar-thumb,.studio-right::-webkit-scrollbar-thumb,.tab-body::-webkit-scrollbar-thumb{background:rgba(184,151,90,.2);border-radius:2px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1020px){:root{--s-left:212px;--s-right:258px}}
+@media(max-width:800px){
+  .studio-main{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;overflow-y:auto}
+  .studio-left{flex-direction:row;overflow-x:auto;overflow-y:hidden;border-right:none;border-bottom:1px solid var(--s-border);height:56px;align-items:center}
+  .p-sec{border-bottom:none;border-right:1px solid var(--s-border);padding:0 .8rem;height:100%;display:flex;align-items:center;flex-shrink:0}
+  .p-lbl{display:none}
+  .cat-grid{grid-template-columns:repeat(4,1fr);width:max-content}
+  .cat-tile{flex-direction:row;padding:.35rem .7rem;gap:.4rem}
+  .cat-ico{width:16px;height:16px}
+  .sz-grid{flex-wrap:nowrap}
+  .p-sec--grow{border-right:none}
+  .studio-canvas{min-height:380px}
+  .studio-right{min-height:280px}
+  .qc-card{display:none}
+}
+@media(max-width:560px){
+  .bar-brand-div,.bar-brand-tag{display:none}
+  .bar-btn--ghost{display:none}
+}
 </style>
 </head>
 <body>
-<div class="grain"></div>
-<div class="cur-dot" id="curDot"></div>
-<div class="cur-ring" id="curRing"></div>
-<div id="loader"><div class="loader-word"><span>ACOSER</span></div><div class="loader-line-wrap"><div class="loader-line-inner"></div></div></div>
-<a href="https://wa.me/573005206285" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
-<div class="mob-overlay" id="mobOverlay" onclick="closeMob()"></div>
-<div class="mob-nav" id="mobNav">
-  <button class="mob-close" onclick="closeMob()">Cerrar</button>
-  <ul class="mob-nav-links">
-    <li><a href="../../index.html#services" onclick="closeMob()">Servicios</a></li>
-    <li><a href="../calculadora-dtf/" onclick="closeMob()">Calculadora DTF</a></li>
-    <li><a href="../mockup/" onclick="closeMob()">Mockup</a></li>
-    <li><a href="../empresas/" onclick="closeMob()">Empresas</a></li>
-    <li><a href="../recursos/" onclick="closeMob()">Recursos</a></li>
-    <li><a href="../../index.html#contact" onclick="closeMob()">Cotizar</a></li>
-  </ul>
-</div>
-<nav id="nav">
-  <div class="nav-inner">
-    <a href="../../index.html" class="nav-logo"><img src="../../imagenes/logo.png" alt="ACOSER" class="nav-logo-img"></a>
-    <ul class="nav-links">
-      <li><a href="../../index.html#services">Servicios</a></li>
-      <li><a href="../calculadora-dtf/">Calculadora DTF</a></li>
-      <li><a href="../mockup/">Mockup</a></li>
-      <li><a href="../empresas/">Empresas</a></li>
-      <li><a href="../recursos/">Recursos</a></li>
-      <li><a href="../../index.html#contact" class="nav-cta-btn"><span>Cotizar</span></a></li>
-    </ul>
-    <div class="nav-right">
-      <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" id="themeIcon"></svg></button>
-      <button class="burger" id="burger" onclick="openMob()" aria-label="Menu"><span></span><span></span><span></span></button>
+<div class="grain" style="opacity:.015;z-index:9999;pointer-events:none;position:fixed;inset:0;background:url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\"><filter id=\"n\"><feTurbulence type=\"fractalNoise\" baseFrequency=\".65\" numOctaves=\"3\" stitchTiles=\"stitch\"/></filter><rect width=\"200\" height=\"200\" filter=\"url(%23n)\" opacity=\"1\"/></svg>');"></div>
+
+<div class="studio">
+
+  <!-- TOP BAR -->
+  <header class="studio-bar">
+    <a href="../../index.html" class="bar-brand">
+      <img src="../../imagenes/logo.png" alt="ACOSER" class="bar-brand-logo">
+      <div class="bar-brand-div"></div>
+      <span class="bar-brand-tag">Guía de Tallas</span>
+    </a>
+    <div class="bar-badge">
+      <div class="bar-badge-dot"></div>
+      <span class="bar-badge-txt" id="badgeCatTop">Hombre</span>
     </div>
-  </div>
-</nav>
-
-<div style="padding:calc(88px + 6vh) 4rem 4vh;background:var(--ink2);border-bottom:1px solid var(--dust);">
-  <div class="section-label">Guía de medidas</div>
-  <h1 class="sec-h2">Calculadora de<br><em>Tallas ACOSER</em></h1>
-  <p style="font-size:.88rem;color:var(--fog);line-height:1.9;max-width:500px;margin-top:1.5rem;font-weight:300;">Ingresa tus medidas corporales y te diremos qué talla elegir. Disponible para camisetas, polos y uniformes en nuestra producción estándar.</p>
-</div>
-
-<div style="padding:6vh 4rem;max-width:1100px;margin:0 auto;">
-
-  <!-- CALCULADORA -->
-  <div class="r" style="margin-bottom:6vh;">
-    <div class="section-label">Encuentra tu talla</div>
-    <div class="calc-inputs">
-      <div class="input-group">
-        <label class="input-label">Contorno de pecho (cm)</label>
-        <input class="input-field input-field--box" type="number" id="medPecho" placeholder="Ej: 96" min="70" max="140" oninput="calcTalla()">
-        <small style="font-size:.7rem;color:var(--ash);margin-top:.3rem;">Mide la parte más ancha del pecho</small>
-      </div>
-      <div class="input-group">
-        <label class="input-label">Contorno de cintura (cm)</label>
-        <input class="input-field input-field--box" type="number" id="medCintura" placeholder="Ej: 82" min="55" max="130" oninput="calcTalla()">
-        <small style="font-size:.7rem;color:var(--ash);margin-top:.3rem;">Mide a la altura del ombligo</small>
-      </div>
-      <div class="input-group">
-        <label class="input-label">Tipo de prenda</label>
-        <select class="input-select" id="tipoPrenda" onchange="calcTalla()">
-          <option value="regular">Camiseta regular fit</option>
-          <option value="slim">Camiseta slim fit</option>
-          <option value="polo">Polo / Camisa</option>
-          <option value="uniforme">Uniforme corporativo</option>
-        </select>
-      </div>
+    <div class="bar-actions">
+      <button class="bar-btn bar-btn--ghost" onclick="window.location='../mockup/'">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5"/><path d="M4.5 6h3M6 4.5v3"/></svg>
+        Mockup Studio
+      </button>
+      <button class="bar-btn bar-btn--gold" onclick="cotizarWA()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Cotizar
+      </button>
     </div>
-    <div id="tallaResultado" style="display:none;margin-top:1rem;">
-      <div class="result-tag r">
-        <div class="result-tag-size" id="tallaValor">—</div>
-        <div class="result-tag-info">
-          <strong style="color:var(--cream);display:block;font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;">Tu talla recomendada</strong>
-          <span id="tallaDetalle" style="color:var(--ash);font-size:.78rem;"></span>
+  </header>
+
+  <div class="studio-main">
+
+    <!-- LEFT: CATEGORY + SIZE -->
+    <aside class="studio-left">
+
+      <div class="p-sec">
+        <span class="p-lbl">Categoría</span>
+        <div class="cat-grid">
+          <button class="cat-tile active" data-cat="hombre" onclick="setCategory('hombre',this)">
+            <svg class="cat-ico" viewBox="0 0 36 36" fill="none" stroke="var(--s-gold)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 5l-10 7 3.5 3.5L10 14v18h16V14l2.5 1.5L32 12l-10-7c0 0-1.5 3.5-4 3.5S14 5 14 5z"/>
+            </svg>
+            <span class="cat-name">Hombre</span>
+          </button>
+          <button class="cat-tile" data-cat="mujer" onclick="setCategory('mujer',this)">
+            <svg class="cat-ico" viewBox="0 0 36 36" fill="none" stroke="var(--s-ash)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 5l-10 7 3.5 3.5L10 14v18h16V14l2.5 1.5L32 12l-10-7c0 0-1 4-4 4s-4-4-4-4z"/>
+              <path d="M13.5 10 Q18 15 22.5 10" stroke-dasharray="2,2"/>
+            </svg>
+            <span class="cat-name">Mujer</span>
+          </button>
+          <button class="cat-tile" data-cat="nino" onclick="setCategory('nino',this)">
+            <svg class="cat-ico" viewBox="0 0 36 36" fill="none" stroke="var(--s-ash)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 7l-9 6 3 3L11 14v16h14V14l2 2 3-3-9-6c0 0-1.5 3-3 3s-3-3-3-3z"/>
+            </svg>
+            <span class="cat-name">Niño</span>
+          </button>
+          <button class="cat-tile" data-cat="uniforme" onclick="setCategory('uniforme',this)">
+            <svg class="cat-ico" viewBox="0 0 36 36" fill="none" stroke="var(--s-ash)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 5l-10 7 3.5 3.5L10 14v18h16V14l2.5 1.5L32 12l-10-7c0 0-1 3-4 3s-4-3-4-3z"/>
+              <line x1="18" y1="8" x2="18" y2="13"/>
+              <circle cx="18" cy="9.5" r=".9" fill="var(--s-ash)"/>
+              <circle cx="18" cy="12.5" r=".9" fill="var(--s-ash)"/>
+            </svg>
+            <span class="cat-name">Uniforme</span>
+          </button>
         </div>
       </div>
-      <div style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;">
-        <button class="btn-module-primary" onclick="cotizarTalla()"><span>Cotizar con esta talla</span></button>
-        <a href="../../index.html#contact" class="btn-module-secondary">Ver todos los servicios</a>
+
+      <div class="p-sec">
+        <span class="p-lbl">Talla</span>
+        <div class="sz-grid" id="szGrid"><!-- JS --></div>
+      </div>
+
+      <div class="p-sec p-sec--grow">
+        <span class="p-lbl">Cálculo rápido</span>
+        <div class="qc-card">
+          <span class="qc-sub">Contorno de pecho</span>
+          <div class="qc-row">
+            <input type="number" class="qc-input" id="qcPecho" placeholder="96" min="60" max="160" oninput="calcFromPecho()">
+            <span class="qc-unit">cm</span>
+          </div>
+          <div class="qc-result" id="qcResult">Ingresa tu medida</div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- CENTER: SVG SHIRT -->
+    <div class="studio-canvas">
+      <div class="canvas-label">Vista frontal — Área de impresión</div>
+      <div class="shirt-wrap">
+        <svg id="shirtSvg" viewBox="0 0 400 490" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="sfx" x="-25%" y="-15%" width="150%" height="140%">
+              <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(0,0,0,.55)"/>
+            </filter>
+            <linearGradient id="sGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgba(255,255,255,.065)"/>
+              <stop offset="45%" stop-color="rgba(255,255,255,0)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,.09)"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Shirt shadow -->
+          <path d="M152 50 Q200 92 248 50 L314 60 L386 108 L386 170 L310 148 L310 442 L90 442 L90 148 L14 170 L14 108 L86 60 Z"
+            fill="#000" filter="url(#sfx)" opacity=".6"/>
+
+          <!-- Shirt body -->
+          <path id="shirtBody"
+            d="M152 50 Q200 92 248 50 L314 60 L386 108 L386 170 L310 148 L310 442 L90 442 L90 148 L14 170 L14 108 L86 60 Z"
+            fill="#1b1916" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+
+          <!-- Gradient overlay -->
+          <path d="M152 50 Q200 92 248 50 L314 60 L386 108 L386 170 L310 148 L310 442 L90 442 L90 148 L14 170 L14 108 L86 60 Z"
+            fill="url(#sGrad)" pointer-events="none"/>
+
+          <!-- Collar -->
+          <path d="M152 50 Q200 96 248 50"
+            fill="none" stroke="rgba(255,255,255,.13)" stroke-width="7" stroke-linecap="round"/>
+
+          <!-- Subtle sleeve crease lines -->
+          <line x1="68" y1="88" x2="34" y2="130" stroke="rgba(255,255,255,.04)" stroke-width="1.5"/>
+          <line x1="332" y1="88" x2="366" y2="130" stroke="rgba(255,255,255,.04)" stroke-width="1.5"/>
+
+          <!-- Print area (gold dashed rect) -->
+          <rect id="paRect" x="117" y="162" width="166" height="190"
+            fill="rgba(184,151,90,.07)" stroke="rgba(184,151,90,.55)"
+            stroke-width="1.2" stroke-dasharray="5,4" rx="2"/>
+
+          <!-- Print area top label -->
+          <text id="paTopLabel" x="200" y="157"
+            font-family="Barlow Condensed,sans-serif" font-size="7.5" letter-spacing="3.5"
+            fill="rgba(184,151,90,.65)" text-anchor="middle">ÁREA DE IMPRESIÓN</text>
+
+          <!-- Recommended area -->
+          <rect id="recRect" x="131" y="178" width="138" height="160"
+            fill="rgba(184,151,90,.025)" stroke="rgba(184,151,90,.22)"
+            stroke-width="1" stroke-dasharray="3,4" rx="1"/>
+
+          <!-- Recommended label inside -->
+          <text id="recLabel" x="200" y="262"
+            font-family="Barlow Condensed,sans-serif" font-size="7" letter-spacing="2"
+            fill="rgba(184,151,90,.35)" text-anchor="middle">DISEÑO RECOMENDADO</text>
+
+          <!-- Print area dimension: width (below print area) -->
+          <g id="dimPW">
+            <line id="dimPWLine" x1="117" y1="366" x2="283" y2="366"
+              stroke="rgba(184,151,90,.5)" stroke-width="1"/>
+            <line id="dimPWTL" x1="117" y1="361" x2="117" y2="371"
+              stroke="rgba(184,151,90,.5)" stroke-width="1"/>
+            <line id="dimPWTR" x1="283" y1="361" x2="283" y2="371"
+              stroke="rgba(184,151,90,.5)" stroke-width="1"/>
+            <text id="dimPWText" x="200" y="381"
+              font-family="Barlow Condensed,sans-serif" font-size="11" letter-spacing="1"
+              fill="rgba(184,151,90,.85)" text-anchor="middle">32 cm</text>
+          </g>
+
+          <!-- Print area dimension: height (right of print area) -->
+          <g id="dimPH">
+            <line id="dimPHLine" x1="295" y1="162" x2="295" y2="352"
+              stroke="rgba(184,151,90,.5)" stroke-width="1"/>
+            <line id="dimPHTT" x1="290" y1="162" x2="300" y2="162"
+              stroke="rgba(184,151,90,.5)" stroke-width="1"/>
+            <line id="dimPHTB" x1="290" y1="352" x2="300" y2="352"
+              stroke="rgba(184,151,90,.5)" stroke-width="1"/>
+            <text id="dimPHText" x="320" y="257"
+              font-family="Barlow Condensed,sans-serif" font-size="11" letter-spacing="1"
+              fill="rgba(184,151,90,.85)" text-anchor="middle"
+              transform="rotate(90,320,257)">38 cm</text>
+          </g>
+
+          <!-- Shirt width (below body) -->
+          <line x1="90" y1="455" x2="310" y2="455" stroke="rgba(240,235,227,.18)" stroke-width="1"/>
+          <line x1="90" y1="450" x2="90" y2="460" stroke="rgba(240,235,227,.18)" stroke-width="1"/>
+          <line x1="310" y1="450" x2="310" y2="460" stroke="rgba(240,235,227,.18)" stroke-width="1"/>
+          <text id="dimShirtW" x="200" y="471"
+            font-family="Barlow Condensed,sans-serif" font-size="9"
+            fill="rgba(240,235,227,.32)" text-anchor="middle">52 cm</text>
+
+          <!-- Shirt height (left of body) -->
+          <line x1="74" y1="60" x2="74" y2="442" stroke="rgba(240,235,227,.18)" stroke-width="1"/>
+          <line x1="69" y1="60" x2="79" y2="60" stroke="rgba(240,235,227,.18)" stroke-width="1"/>
+          <line x1="69" y1="442" x2="79" y2="442" stroke="rgba(240,235,227,.18)" stroke-width="1"/>
+          <text id="dimShirtH" x="56" y="254"
+            font-family="Barlow Condensed,sans-serif" font-size="9"
+            fill="rgba(240,235,227,.32)" text-anchor="middle"
+            transform="rotate(-90,56,254)">76 cm</text>
+
+          <!-- Sleeve length indicator -->
+          <text id="dimManga" x="200" y="488"
+            font-family="Barlow Condensed,sans-serif" font-size="8" letter-spacing="2"
+            fill="rgba(184,151,90,.3)" text-anchor="middle">MANGA: 64 cm</text>
+        </svg>
+      </div>
+
+      <div class="size-badge">
+        <span class="sb-cat" id="badgeCat">Hombre</span>
+        <div class="sb-sep"></div>
+        <span class="sb-sz" id="badgeSize">L</span>
       </div>
     </div>
-  </div>
 
-  <!-- TABLA DE TALLAS HOMBRE -->
-  <div class="r" style="margin-bottom:4vh;">
-    <div class="section-label">Tabla de tallas — Hombre</div>
-    <div style="overflow-x:auto;">
-      <table class="size-table" id="tablasHombre">
-        <thead>
-          <tr>
-            <th>Talla</th>
-            <th>Pecho (cm)</th>
-            <th>Cintura (cm)</th>
-            <th>Largo prenda (cm)</th>
-            <th>Ancho hombro (cm)</th>
-            <th>Manga (cm)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr id="sz-XS"><td>XS</td><td>82–86</td><td>70–74</td><td>68</td><td>42</td><td>61</td></tr>
-          <tr id="sz-S"><td>S</td><td>87–92</td><td>75–80</td><td>70</td><td>44</td><td>62</td></tr>
-          <tr id="sz-M"><td>M</td><td>93–99</td><td>81–87</td><td>72</td><td>46</td><td>63</td></tr>
-          <tr id="sz-L"><td>L</td><td>100–107</td><td>88–95</td><td>74</td><td>48</td><td>64</td></tr>
-          <tr id="sz-XL"><td>XL</td><td>108–116</td><td>96–104</td><td>76</td><td>50</td><td>65</td></tr>
-          <tr id="sz-2XL"><td>2XL</td><td>117–126</td><td>105–114</td><td>78</td><td>52</td><td>66</td></tr>
-          <tr id="sz-3XL"><td>3XL</td><td>127–136</td><td>115–124</td><td>80</td><td>54</td><td>67</td></tr>
-          <tr id="sz-4XL"><td>4XL</td><td>137+</td><td>125+</td><td>82</td><td>56</td><td>68</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- TABLA MUJER -->
-  <div class="r d2" style="margin-bottom:6vh;">
-    <div class="section-label">Tabla de tallas — Mujer</div>
-    <div style="overflow-x:auto;">
-      <table class="size-table">
-        <thead>
-          <tr>
-            <th>Talla</th>
-            <th>Busto (cm)</th>
-            <th>Cintura (cm)</th>
-            <th>Cadera (cm)</th>
-            <th>Largo prenda (cm)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>XS</td><td>78–82</td><td>62–66</td><td>86–90</td><td>60</td></tr>
-          <tr><td>S</td><td>83–87</td><td>67–71</td><td>91–95</td><td>62</td></tr>
-          <tr><td>M</td><td>88–93</td><td>72–77</td><td>96–101</td><td>64</td></tr>
-          <tr><td>L</td><td>94–100</td><td>78–84</td><td>102–108</td><td>66</td></tr>
-          <tr><td>XL</td><td>101–108</td><td>85–92</td><td>109–116</td><td>68</td></tr>
-          <tr><td>2XL</td><td>109–117</td><td>93–101</td><td>117–125</td><td>70</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- CÓMO MEDIRSE -->
-  <div class="r">
-    <div class="section-label">Cómo medirse correctamente</div>
-    <div class="how-to-grid">
-      <div class="how-item">
-        <div class="how-num">01</div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:.6rem;">Pecho / Busto</div>
-        <p style="font-size:.8rem;color:var(--ash);line-height:1.7;font-weight:300;">Pasa la cinta métrica por la parte más prominente del pecho, manteniéndola horizontal y sin apretar. Exhala normalmente antes de medir.</p>
+    <!-- RIGHT: METRICS PANEL -->
+    <aside class="studio-right">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('medidas',this)">Medidas</button>
+        <button class="tab" onclick="switchTab('impresion',this)">Impresión</button>
+        <button class="tab" onclick="switchTab('diseno',this)">Diseño</button>
       </div>
-      <div class="how-item">
-        <div class="how-num">02</div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:.6rem;">Cintura</div>
-        <p style="font-size:.8rem;color:var(--ash);line-height:1.7;font-weight:300;">Mide a la altura del ombligo o la parte más estrecha del torso. La cinta debe ser horizontal y cómoda, ni apretada ni suelta.</p>
-      </div>
-      <div class="how-item">
-        <div class="how-num">03</div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);font-weight:500;margin-bottom:.6rem;">Tip importante</div>
-        <p style="font-size:.8rem;color:var(--ash);line-height:1.7;font-weight:300;">Si estás entre dos tallas, elige la más grande para mayor comodidad. Para uniformes corporativos, consulta con ACOSER para ajuste personalizado.</p>
-      </div>
-    </div>
-  </div>
 
-  <!-- NOTA PERSONALIZACIÓN -->
-  <div style="background:rgba(184,151,90,.06);border:1px solid rgba(184,151,90,.2);padding:2.5rem;margin-top:4vh;" class="r d2">
-    <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--cream);font-style:italic;margin-bottom:1rem;">¿Necesitas tallas personalizadas o fuera de tabla?</div>
-    <p style="font-size:.85rem;color:var(--fog);line-height:1.85;font-weight:300;max-width:580px;">En ACOSER trabajamos con patronaje personalizado. Si tienes empleados con medidas especiales, confeccionamos a la medida exacta. Contáctanos para asesoría sin costo.</p>
-    <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap;">
-      <a href="https://wa.me/573005206285?text=Hola%2C+necesito+asesoría+sobre+tallas+para+uniformes" class="btn-wa-module" target="_blank">Consultar por WhatsApp</a>
-      <a href="../empresas/" class="btn-module-secondary">Portal Empresas</a>
-    </div>
+      <!-- TAB MEDIDAS -->
+      <div class="tab-body active" id="tab-medidas">
+        <div class="hero-metric">
+          <span class="h-lbl">Ancho de prenda</span>
+          <div class="h-vals">
+            <span class="h-num" id="heroAncho">52</span>
+            <span class="h-unit">cm</span>
+          </div>
+        </div>
+        <div class="r-sec">
+          <span class="p-lbl" style="margin-bottom:.75rem;display:block;">Dimensiones completas</span>
+          <div class="grid-3">
+            <div class="s-card hi">
+              <span class="s-key">Ancho</span>
+              <span class="s-val gold" id="mAncho">52 cm</span>
+            </div>
+            <div class="s-card hi">
+              <span class="s-key">Largo</span>
+              <span class="s-val gold" id="mLargo">76 cm</span>
+            </div>
+            <div class="s-card hi">
+              <span class="s-key">Manga</span>
+              <span class="s-val gold" id="mManga">64 cm</span>
+            </div>
+          </div>
+        </div>
+        <div class="r-sec">
+          <span class="p-lbl" style="margin-bottom:.75rem;display:block;">Referencia activa</span>
+          <div class="grid-2">
+            <div class="s-card hi">
+              <span class="s-key">Talla</span>
+              <span class="s-val gold" id="mTalla">L</span>
+            </div>
+            <div class="s-card">
+              <span class="s-key">Categoría</span>
+              <span class="s-val" id="mCat">Hombre</span>
+            </div>
+          </div>
+        </div>
+        <div class="action-sec">
+          <button class="btn-primary" onclick="cotizarWA()">
+            <span>Cotizar con esta talla →</span>
+          </button>
+          <button class="btn-secondary" onclick="window.location='../mockup/'">
+            Abrir en Mockup Studio
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB IMPRESIÓN -->
+      <div class="tab-body" id="tab-impresion">
+        <div class="r-sec">
+          <span class="p-lbl" style="margin-bottom:.75rem;display:block;">Área máxima de impresión</span>
+          <div class="grid-2">
+            <div class="s-card hi">
+              <span class="s-key">Ancho máx.</span>
+              <span class="s-val gold" id="impAncho">32 cm</span>
+            </div>
+            <div class="s-card hi">
+              <span class="s-key">Alto máx.</span>
+              <span class="s-val gold" id="impAlto">38 cm</span>
+            </div>
+          </div>
+          <div class="grid-2" style="margin-top:.45rem;">
+            <div class="s-card">
+              <span class="s-key">Área total</span>
+              <span class="s-val" id="impArea">1216 cm²</span>
+            </div>
+            <div class="s-card">
+              <span class="s-key">% de la prenda</span>
+              <span class="s-val" id="impPct">30%</span>
+            </div>
+          </div>
+        </div>
+        <div class="cov-wrap">
+          <div class="cov-head">
+            <span class="cov-lbl">Cobertura en prenda</span>
+            <span class="cov-pct" id="covPct">30%</span>
+          </div>
+          <div class="cov-track">
+            <div class="cov-fill" id="covBar" style="width:30%"></div>
+          </div>
+        </div>
+        <div class="r-sec">
+          <div class="s-card">
+            <span class="s-key">Técnicas disponibles</span>
+            <span class="s-val" style="font-size:.76rem;line-height:1.8;color:var(--s-fog);">DTF · Bordado · Sublimación · Serigrafía</span>
+          </div>
+        </div>
+        <div class="action-sec">
+          <button class="btn-primary" onclick="cotizarWA()">
+            <span>Solicitar cotización →</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB DISEÑO -->
+      <div class="tab-body" id="tab-diseno">
+        <div class="recom-tag">
+          <span class="rt-lbl">Tamaño recomendado para esta prenda</span>
+          <div class="rt-val">
+            Máximo <span id="recSzVal" style="color:var(--s-gold2);font-style:normal;">30 cm</span> de ancho
+          </div>
+        </div>
+        <div class="r-sec">
+          <span class="p-lbl" style="margin-bottom:.75rem;display:block;">Guía de diseño</span>
+          <div class="grid-2">
+            <div class="s-card hi">
+              <span class="s-key">Ancho recom.</span>
+              <span class="s-val gold" id="recAncho">30 cm</span>
+            </div>
+            <div class="s-card hi">
+              <span class="s-key">Alto recom.</span>
+              <span class="s-val gold" id="recAlto">36 cm</span>
+            </div>
+            <div class="s-card">
+              <span class="s-key">Área recom.</span>
+              <span class="s-val" id="recArea">1080 cm²</span>
+            </div>
+            <div class="s-card">
+              <span class="s-key">Uso del área</span>
+              <span class="s-val green" id="recPct">89%</span>
+            </div>
+          </div>
+        </div>
+        <div class="cov-wrap">
+          <div class="cov-head">
+            <span class="cov-lbl">Uso del área disponible</span>
+            <span class="cov-pct" id="recCovPct" style="color:#5aba85;">89%</span>
+          </div>
+          <div class="cov-track">
+            <div class="cov-fill" id="recCovBar" style="width:89%;background:linear-gradient(90deg,#3a8a5a,#5aba85)"></div>
+          </div>
+        </div>
+        <div class="r-sec">
+          <div class="tip-card">
+            <span class="s-key" style="margin-bottom:.4rem;display:block;">Consejo profesional</span>
+            <p class="tip-val" id="tipText">Para talla L, centra el diseño a 3 cm del cuello y usa el 80% del ancho disponible.</p>
+          </div>
+        </div>
+        <div class="action-sec">
+          <button class="btn-primary" onclick="window.location='../mockup/'">
+            <span>Diseñar en Mockup Studio →</span>
+          </button>
+          <button class="btn-secondary" onclick="cotizarWA()">Cotizar por WhatsApp</button>
+        </div>
+      </div>
+
+    </aside>
   </div>
 </div>
-
-<footer>
-  <div class="footer-top">
-    <div><span class="footer-brand-name">ACOSER</span><span class="footer-brand-sub">Taller Textil</span><p class="footer-brand-desc">Confección personalizada · Uniformes · DTF · Bordados · Sublimación · Colombia</p></div>
-    <div><span class="footer-col-head">Herramientas</span><ul class="footer-links"><li><a href="../calculadora-dtf/">Calculadora DTF</a></li><li><a href="../mockup/">Mockup Generator</a></li><li><a href="../calculadora-tallas/">Guía de Tallas</a></li><li><a href="../telas/">Comparador de Telas</a></li><li><a href="../recursos/">Centro de Recursos</a></li></ul></div>
-    <div><span class="footer-col-head">Plataforma</span><ul class="footer-links"><li><a href="../../index.html">Inicio</a></li><li><a href="../../index.html#services">Servicios</a></li><li><a href="../empresas/">Empresas</a></li><li><a href="../casos/">Casos de Éxito</a></li></ul></div>
-    <div><span class="footer-col-head">Contacto</span><ul class="footer-links"><li><a href="tel:+573005206285">+57 300 520 6285</a></li><li><a href="mailto:acosertallertextilinfo@gmail.com">acosertallertextilinfo@gmail.com</a></li><li><a href="https://instagram.com/acoser_tallertextil" target="_blank">@acoser_tallertextil</a></li></ul></div>
-  </div>
-  <div class="footer-bottom">
-    <span class="footer-copy">&copy; 2025 <span>ACOSER Taller Textil</span> &mdash; Hecho en Colombia</span>
-    <div class="footer-social"><a href="https://instagram.com/acoser_tallertextil" target="_blank" class="f-social-link">Instagram</a><a href="https://wa.me/573005206285" target="_blank" class="f-social-link">WhatsApp</a></div>
-  </div>
-</footer>
 
 <script src="../../js/whatsapp.js"></script>
 <script src="../../js/leads.js"></script>
-<script src="../../js/core.js"></script>
 <script>
-const TALLAS_HOMBRE = [
-  { talla:'XS', pechoMin:70,  pechoMax:86,  cinturaMin:55, cinturaMax:74,  desc:'Extra pequeño — 70 a 86 cm de pecho' },
-  { talla:'S',  pechoMin:87,  pechoMax:92,  cinturaMin:75, cinturaMax:80,  desc:'Pequeño — 87 a 92 cm de pecho' },
-  { talla:'M',  pechoMin:93,  pechoMax:99,  cinturaMin:81, cinturaMax:87,  desc:'Mediano — 93 a 99 cm de pecho' },
-  { talla:'L',  pechoMin:100, pechoMax:107, cinturaMin:88, cinturaMax:95,  desc:'Grande — 100 a 107 cm de pecho' },
-  { talla:'XL', pechoMin:108, pechoMax:116, cinturaMin:96, cinturaMax:104, desc:'Extra grande — 108 a 116 cm de pecho' },
-  { talla:'2XL',pechoMin:117, pechoMax:126, cinturaMin:105,cinturaMax:114, desc:'Doble XL — 117 a 126 cm de pecho' },
-  { talla:'3XL',pechoMin:127, pechoMax:136, cinturaMin:115,cinturaMax:124, desc:'Triple XL — 127 a 136 cm de pecho' },
-  { talla:'4XL',pechoMin:137, pechoMax:200, cinturaMin:125,cinturaMax:200, desc:'Cuádruple XL — más de 137 cm de pecho' },
-];
+/* ══════════════════════════════════════════
+   ACOSER Guía de Tallas Studio — v3 Premium
+   ══════════════════════════════════════════ */
 
-function calcTalla() {
-  const pecho   = parseInt(document.getElementById('medPecho').value)   || 0;
-  const cintura = parseInt(document.getElementById('medCintura').value) || 0;
-  if (!pecho) { document.getElementById('tallaResultado').style.display='none'; return; }
+const DATA = {
+  hombre: {
+    label:'Hombre',
+    sizes:['XS','S','M','L','XL','XXL','XXXL'],
+    d:{
+      XS:  {ancho:43,largo:68,manga:61,pw:25,ph:30,rec:22},
+      S:   {ancho:46,largo:70,manga:62,pw:28,ph:34,rec:26},
+      M:   {ancho:49,largo:73,manga:63,pw:30,ph:36,rec:28},
+      L:   {ancho:52,largo:76,manga:64,pw:32,ph:38,rec:30},
+      XL:  {ancho:55,largo:79,manga:65,pw:34,ph:40,rec:32},
+      XXL: {ancho:58,largo:82,manga:66,pw:36,ph:42,rec:34},
+      XXXL:{ancho:61,largo:85,manga:67,pw:38,ph:44,rec:36},
+    },
+    pechMin:{XS:70,S:87,M:93,L:100,XL:108,XXL:117,XXXL:127},
+  },
+  mujer: {
+    label:'Mujer',
+    sizes:['XS','S','M','L','XL','XXL'],
+    d:{
+      XS: {ancho:36,largo:58,manga:55,pw:22,ph:26,rec:20},
+      S:  {ancho:39,largo:61,manga:57,pw:24,ph:28,rec:22},
+      M:  {ancho:42,largo:64,manga:58,pw:26,ph:30,rec:24},
+      L:  {ancho:45,largo:67,manga:59,pw:28,ph:32,rec:26},
+      XL: {ancho:48,largo:70,manga:60,pw:30,ph:34,rec:28},
+      XXL:{ancho:51,largo:73,manga:61,pw:32,ph:36,rec:30},
+    },
+    pechMin:{XS:70,S:83,M:88,L:94,XL:101,XXL:109},
+  },
+  nino: {
+    label:'Niño',
+    sizes:['2','4','6','8','10','12','14','16'],
+    d:{
+      '2': {ancho:28,largo:38,manga:30,pw:16,ph:16,rec:14},
+      '4': {ancho:30,largo:41,manga:33,pw:17,ph:18,rec:15},
+      '6': {ancho:33,largo:44,manga:36,pw:19,ph:20,rec:16},
+      '8': {ancho:35,largo:47,manga:39,pw:20,ph:22,rec:18},
+      '10':{ancho:38,largo:50,manga:42,pw:22,ph:24,rec:20},
+      '12':{ancho:40,largo:53,manga:44,pw:23,ph:26,rec:21},
+      '14':{ancho:43,largo:56,manga:46,pw:25,ph:28,rec:22},
+      '16':{ancho:45,largo:59,manga:48,pw:26,ph:30,rec:24},
+    },
+    pechMin:null,
+  },
+  uniforme: {
+    label:'Uniforme',
+    sizes:['XS','S','M','L','XL','XXL','XXXL'],
+    d:{
+      XS:  {ancho:45,largo:70,manga:60,pw:26,ph:32,rec:24},
+      S:   {ancho:48,largo:73,manga:62,pw:28,ph:34,rec:26},
+      M:   {ancho:51,largo:76,manga:63,pw:30,ph:36,rec:28},
+      L:   {ancho:54,largo:79,manga:64,pw:32,ph:38,rec:30},
+      XL:  {ancho:57,largo:82,manga:65,pw:34,ph:40,rec:32},
+      XXL: {ancho:60,largo:85,manga:66,pw:36,ph:42,rec:34},
+      XXXL:{ancho:63,largo:88,manga:67,pw:38,ph:44,rec:36},
+    },
+    pechMin:{XS:70,S:87,M:93,L:100,XL:108,XXL:117,XXXL:127},
+  },
+};
 
-  /* Ajuste según tipo (slim fit reduce 1 talla) */
-  const tipo = document.getElementById('tipoPrenda').value;
-  const ajuste = (tipo === 'slim') ? 1 : 0;
+const TIPS = {
+  XS:'Talla XS — diseños compactos y centrados. No excedas el ancho recomendado para un acabado limpio.',
+  S:'Talla S — centra el diseño a 4 cm del cuello. Aprovecha el área vertical para logotipos verticales.',
+  M:'Talla M — la más común. El diseño puede ocupar generosamente el pecho manteniendo buen margen.',
+  L:'Talla L — centra a 3 cm del cuello. Diseños amplios se ven excelentes en esta talla.',
+  XL:'Talla XL — área generosa. Diseños hasta el ancho recomendado tienen gran impacto visual.',
+  XXL:'Talla XXL — aprovecha el área amplia. Mantén márgenes laterales de al menos 3 cm.',
+  XXXL:'Talla XXXL — máxima área de impresión. Diseños grandes quedan espectaculares.',
+  '2':'Talla infantil 2 — diseños muy simples y pequeños, preferiblemente icónicos.',
+  '4':'Talla infantil 4 — figuras y logos simples de hasta 15 cm de ancho.',
+  '6':'Talla infantil 6 — puedes incluir texto pequeño junto al logo.',
+  '8':'Talla infantil 8 — el área ya permite diseños con más detalle.',
+  '10':'Talla infantil 10 — buen espacio para diseños escolares y deportivos.',
+  '12':'Talla infantil 12 — acepta diseños con texto y gráfico combinados.',
+  '14':'Talla infantil 14 — área similar a talla S adulto en mujeres.',
+  '16':'Talla infantil 16 — ya acepta diseños de escala adulto pequeño.',
+};
 
-  let match = TALLAS_HOMBRE.find(t => pecho >= t.pechoMin && pecho <= t.pechoMax);
-  if (!match) match = TALLAS_HOMBRE[TALLAS_HOMBRE.length - 1];
+/* SVG body constants (viewBox 0 0 400 490) */
+const BX1=90, BX2=310, BY1=148, BY2=442;
+const BW=BX2-BX1, BH=BY2-BY1, BCX=(BX1+BX2)/2;
 
-  let idx = TALLAS_HOMBRE.indexOf(match) + ajuste;
-  idx = Math.max(0, Math.min(idx, TALLAS_HOMBRE.length - 1));
-  const talla = TALLAS_HOMBRE[idx];
+const ST = { cat:'hombre', size:'L' };
 
-  document.getElementById('tallaValor').textContent    = talla.talla;
-  document.getElementById('tallaDetalle').textContent  = talla.desc;
-  document.getElementById('tallaResultado').style.display = 'block';
+/* ── SVG UPDATE ── */
+function updateSvg() {
+  const spec = DATA[ST.cat].d[ST.size];
+  if (!spec) return;
 
-  /* Highlight en tabla */
-  document.querySelectorAll('.size-table tr').forEach(r => r.classList.remove('highlighted'));
-  const row = document.getElementById('sz-' + talla.talla);
-  if (row) { row.classList.add('highlighted'); row.scrollIntoView({ behavior:'smooth', block:'nearest' }); }
+  /* Print area proportions */
+  const pW = (spec.pw / spec.ancho) * BW;
+  const pHraw = (spec.ph / spec.largo) * BH;
+  const pH = Math.min(pHraw, BH * 0.76);
+  const pX = BCX - pW/2;
+  const pY = BY1 + 14;
 
-  window._tallaData = { talla: talla.talla, pecho, cintura, tipo };
+  /* Print area rect */
+  sa('paRect','x',pX); sa('paRect','y',pY);
+  sa('paRect','width',pW); sa('paRect','height',pH);
+
+  /* Top label */
+  sa('paTopLabel','x',BCX); sa('paTopLabel','y',pY - 7);
+
+  /* Recommended area */
+  const recRatio = spec.rec / spec.pw;
+  const rW = pW * recRatio;
+  const rH = pH * recRatio;
+  const rX = BCX - rW/2;
+  const rY = pY + (pH - rH)/2;
+  sa('recRect','x',rX); sa('recRect','y',rY);
+  sa('recRect','width',rW); sa('recRect','height',rH);
+  sa('recLabel','x',BCX); sa('recLabel','y',rY + rH/2 + 3);
+
+  /* Print width dim (below print area) */
+  const dimWY = pY + pH + 14;
+  sa('dimPWLine','x1',pX); sa('dimPWLine','y1',dimWY);
+  sa('dimPWLine','x2',pX+pW); sa('dimPWLine','y2',dimWY);
+  sa('dimPWTL','x1',pX); sa('dimPWTL','y1',dimWY-5);
+  sa('dimPWTL','x2',pX); sa('dimPWTL','y2',dimWY+5);
+  sa('dimPWTR','x1',pX+pW); sa('dimPWTR','y1',dimWY-5);
+  sa('dimPWTR','x2',pX+pW); sa('dimPWTR','y2',dimWY+5);
+  sa('dimPWText','x',BCX); sa('dimPWText','y',dimWY+13);
+  gt('dimPWText').textContent = spec.pw + ' cm';
+
+  /* Print height dim (right of print area) */
+  const dimHX = pX + pW + 14;
+  const midPY = pY + pH/2;
+  sa('dimPHLine','x1',dimHX); sa('dimPHLine','y1',pY);
+  sa('dimPHLine','x2',dimHX); sa('dimPHLine','y2',pY+pH);
+  sa('dimPHTT','x1',dimHX-5); sa('dimPHTT','y1',pY);
+  sa('dimPHTT','x2',dimHX+5); sa('dimPHTT','y2',pY);
+  sa('dimPHTB','x1',dimHX-5); sa('dimPHTB','y1',pY+pH);
+  sa('dimPHTB','x2',dimHX+5); sa('dimPHTB','y2',pY+pH);
+  const ht = gt('dimPHText');
+  ht.setAttribute('x', dimHX + 10);
+  ht.setAttribute('y', midPY);
+  ht.setAttribute('transform', `rotate(90,${dimHX+10},${midPY})`);
+  ht.textContent = spec.ph + ' cm';
+
+  /* Shirt overall dims */
+  gt('dimShirtW').textContent = spec.ancho + ' cm';
+  gt('dimShirtH').textContent = spec.largo + ' cm';
+  gt('dimManga').textContent = 'MANGA: ' + spec.manga + ' cm';
 }
 
-function cotizarTalla() {
-  const d = window._tallaData || {};
-  const msg = `👕 *Consulta de tallas — ACOSER*\n━━━━━━━━━━━━━━\n📐 Talla calculada: ${d.talla}\n↔️ Pecho: ${d.pecho} cm\n🔵 Cintura: ${d.cintura || '—'} cm\n👕 Tipo: ${d.tipo}\n━━━━━━━━━━━━━━\nNecesito cotizar prendas en esta talla.`;
-  window.open('https://wa.me/573005206285?text=' + encodeURIComponent(msg), '_blank');
+/* ── PANEL UPDATE ── */
+function updatePanel() {
+  const cat = DATA[ST.cat];
+  const spec = cat.d[ST.size];
+  if (!spec) return;
+
+  animNum('heroAncho', spec.ancho);
+  setText('mAncho', spec.ancho + ' cm');
+  setText('mLargo', spec.largo + ' cm');
+  setText('mManga', spec.manga + ' cm');
+  setText('mTalla', ST.size);
+  setText('mCat', cat.label);
+
+  const area = spec.pw * spec.ph;
+  const prendaArea = spec.ancho * spec.largo;
+  const cov = ((area / prendaArea) * 100).toFixed(1);
+  setText('impAncho', spec.pw + ' cm');
+  setText('impAlto', spec.ph + ' cm');
+  setText('impArea', area + ' cm²');
+  setText('impPct', cov + '%');
+  setText('covPct', cov + '%');
+  document.getElementById('covBar').style.width = Math.min(100, cov) + '%';
+
+  const recAlto = Math.round(spec.ph * (spec.rec / spec.pw));
+  const recArea = spec.rec * recAlto;
+  const recPct = ((recArea / area) * 100).toFixed(0);
+  setText('recSzVal', spec.rec + ' cm');
+  setText('recAncho', spec.rec + ' cm');
+  setText('recAlto', recAlto + ' cm');
+  setText('recArea', recArea + ' cm²');
+  setText('recPct', recPct + '%');
+  setText('recCovPct', recPct + '%');
+  document.getElementById('recCovBar').style.width = Math.min(100, recPct) + '%';
+
+  setText('tipText', TIPS[ST.size] || 'Centra el diseño dentro del área de impresión indicada.');
+  setText('badgeCat', cat.label);
+  setText('badgeSize', ST.size);
+  setText('badgeCatTop', cat.label);
 }
+
+/* ── INTERACTIONS ── */
+function setCategory(cat, btn) {
+  ST.cat = cat;
+  document.querySelectorAll('.cat-tile').forEach(b => {
+    b.classList.remove('active');
+    b.querySelector('.cat-ico').setAttribute('stroke','var(--s-ash)');
+  });
+  btn.classList.add('active');
+  btn.querySelector('.cat-ico').setAttribute('stroke','var(--s-gold)');
+  const sizes = DATA[cat].sizes;
+  ST.size = sizes[Math.floor(sizes.length/2)];
+  renderSizeGrid();
+  updateSvg();
+  updatePanel();
+}
+
+function selectSize(sz, btn) {
+  ST.size = sz;
+  document.querySelectorAll('.sz-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  updateSvg();
+  updatePanel();
+  try { ACOSER_LEADS.capturar({fuente:'guia-tallas',accion:'select-size',talla:sz,cat:ST.cat},{email:false}); } catch(e){}
+}
+
+function renderSizeGrid() {
+  const sizes = DATA[ST.cat].sizes;
+  document.getElementById('szGrid').innerHTML = sizes.map(s =>
+    `<button class="sz-pill${s===ST.size?' active':''}" onclick="selectSize('${s}',this)">${s}</button>`
+  ).join('');
+}
+
+function calcFromPecho() {
+  const val = parseInt(document.getElementById('qcPecho').value)||0;
+  const el = document.getElementById('qcResult');
+  if (!val) { el.textContent='Ingresa tu medida'; el.className='qc-result'; return; }
+  const pm = DATA[ST.cat].pechMin;
+  if (!pm) { el.textContent='Usa los botones de talla'; el.className='qc-result'; return; }
+  const entries = Object.entries(pm).reverse();
+  let found = DATA[ST.cat].sizes[0];
+  for (const [sz,min] of entries) { if (val >= min) { found=sz; break; } }
+  el.textContent = '→ Talla ' + found;
+  el.className = 'qc-result found';
+  ST.size = found;
+  renderSizeGrid();
+  updateSvg();
+  updatePanel();
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-body').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+function cotizarWA() {
+  const cat = DATA[ST.cat];
+  const sp = cat.d[ST.size];
+  const msg = `👕 *Guía de Tallas ACOSER*\n━━━━━━━━━━━━━━\n📂 Categoría: ${cat.label}\n📏 Talla: ${ST.size}\n↔️ Ancho: ${sp.ancho} cm\n↕️ Largo: ${sp.largo} cm\n💪 Manga: ${sp.manga} cm\n🖨️ Área impresión: ${sp.pw}×${sp.ph} cm\n✅ Diseño recomendado: ${sp.rec} cm ancho\n━━━━━━━━━━━━━━\nQuiero cotizar con estas especificaciones.`;
+  window.open('https://wa.me/573005206285?text='+encodeURIComponent(msg),'_blank');
+  try { ACOSER_LEADS.capturar({fuente:'guia-tallas',accion:'cotizar-wa',talla:ST.size,cat:ST.cat}); } catch(e){}
+}
+
+/* ── HELPERS ── */
+function sa(id, attr, val) {
+  const el = document.getElementById(id);
+  if (el) el.setAttribute(attr, val);
+}
+function gt(id) { return document.getElementById(id); }
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+function animNum(id, target) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const start = parseInt(el.textContent)||0;
+  const t0 = performance.now();
+  const dur = 380;
+  (function step(now) {
+    const p = Math.min(1,(now-t0)/dur);
+    const e = 1-Math.pow(1-p,3);
+    el.textContent = Math.round(start+(target-start)*e);
+    if (p < 1) requestAnimationFrame(step);
+  })(t0);
+}
+
+/* ── INIT ── */
+window.addEventListener('load', () => {
+  renderSizeGrid();
+  updateSvg();
+  updatePanel();
+});
 </script>
 </body>
 </html>

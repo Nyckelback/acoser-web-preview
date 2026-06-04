@@ -22,12 +22,12 @@
   --s-panel2:    #161411;
   --s-border:    rgba(184,151,90,0.10);
   --s-border2:   rgba(184,151,90,0.20);
-  --s-gold:      #b8975a;
-  --s-gold2:     #d4b278;
-  --s-gold-dim:  rgba(184,151,90,0.08);
-  --s-cream:     #f0ebe3;
-  --s-ash:       #6a6760;
-  --s-fog:       #8a8880;
+  --s-gold:      #c8a96a;
+  --s-gold2:     #e0c080;
+  --s-gold-dim:  rgba(200,169,106,0.10);
+  --s-cream:     #f5f0e8;
+  --s-ash:       #a8a5a0;
+  --s-fog:       #ccc9c4;
   --s-red:       #c0614a;
   --s-green:     #3a8a5a;
   --s-radius:    10px;
@@ -37,7 +37,7 @@
   --s-font:      'Inter', 'Barlow', sans-serif;
 }
 
-html, body { height: 100%; overflow: hidden; background: var(--s-bg); color: var(--s-cream); font-family: var(--s-font); }
+html, body { height: 100%; overflow: hidden; background: var(--s-bg); color: var(--s-cream); font-family: var(--s-font); overscroll-behavior: none; }
 
 /* ── STUDIO SHELL ── */
 .studio { display: flex; flex-direction: column; height: 100vh; }
@@ -45,9 +45,8 @@ html, body { height: 100%; overflow: hidden; background: var(--s-bg); color: var
 /* ── TOP BAR ── */
 .studio-bar {
   height: var(--s-bar-h);
-  background: rgba(10,9,8,0.95);
+  background: rgba(12,11,9,0.98);
   border-bottom: 1px solid var(--s-border);
-  backdrop-filter: blur(16px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -139,8 +138,8 @@ html, body { height: 100%; overflow: hidden; background: var(--s-bg); color: var
 .panel-section:last-child { border-bottom: none; flex: 1; overflow-y: auto; }
 .panel-label {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: .48rem; letter-spacing: .5em; text-transform: uppercase;
-  color: var(--s-gold); font-weight: 400; display: block; margin-bottom: 1rem;
+  font-size: .52rem; letter-spacing: .45em; text-transform: uppercase;
+  color: var(--s-gold); font-weight: 500; display: block; margin-bottom: 1rem;
 }
 
 /* Garment selector */
@@ -148,22 +147,26 @@ html, body { height: 100%; overflow: hidden; background: var(--s-bg); color: var
 .garment-tile {
   background: var(--s-panel2);
   border: 1px solid var(--s-border);
-  border-radius: var(--s-radius);
-  padding: 1rem .75rem .75rem;
+  border-radius: 10px;
+  padding: .9rem .65rem .75rem;
   cursor: pointer;
-  transition: all .2s cubic-bezier(.4,0,.2,1);
-  display: flex; flex-direction: column; align-items: center; gap: .6rem;
+  transition: border-color .18s, background .18s, transform .15s;
+  display: flex; flex-direction: column; align-items: center; gap: .5rem;
   position: relative; overflow: hidden;
 }
-.garment-tile:hover { border-color: var(--s-border2); background: #1a1815; }
+.garment-tile:hover {
+  border-color: rgba(200,169,106,.35);
+  background: #181612;
+  transform: translateY(-1px);
+}
 .garment-tile.active {
   border-color: var(--s-gold);
-  background: var(--s-gold-dim);
+  background: rgba(200,169,106,.09);
 }
 .garment-tile.active::after {
   content: '';
   position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--s-gold), var(--s-gold2));
+  background: linear-gradient(90deg, transparent, var(--s-gold), var(--s-gold2), transparent);
 }
 .garment-icon { width: 42px; height: 42px; opacity: .7; transition: opacity .2s; }
 .garment-tile.active .garment-icon, .garment-tile:hover .garment-icon { opacity: 1; }
@@ -199,23 +202,23 @@ html, body { height: 100%; overflow: hidden; background: var(--s-bg); color: var
 }
 .color-name-tag {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: .52rem; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--s-ash); margin-top: .6rem; display: block;
+  font-size: .58rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--s-fog); margin-top: .65rem; display: block; font-weight: 500;
 }
 
 /* ── CENTER: CANVAS ── */
 .studio-canvas-area {
-  background: #0d0c0a;
+  background: #0c0b09;
   display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden;
 }
 
-/* Dot grid background */
+/* Dot grid — subtle, non-distracting */
 .studio-canvas-area::before {
   content: '';
   position: absolute; inset: 0;
-  background-image: radial-gradient(circle, rgba(184,151,90,.12) 1px, transparent 1px);
-  background-size: 28px 28px;
+  background-image: radial-gradient(circle, rgba(200,169,106,.045) 1px, transparent 1px);
+  background-size: 24px 24px;
   pointer-events: none;
 }
 
@@ -228,6 +231,9 @@ html, body { height: 100%; overflow: hidden; background: var(--s-bg); color: var
 canvas#mc {
   display: block;
   cursor: default;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 canvas#mc.can-drag { cursor: grab; }
 canvas#mc.dragging { cursor: grabbing; }
@@ -239,11 +245,10 @@ canvas#mc.can-rotate { cursor: crosshair; }
   bottom: 1.5rem; left: 50%;
   transform: translateX(-50%);
   display: flex; align-items: center; gap: .35rem;
-  background: rgba(10,9,8,.9);
+  background: rgba(14,13,11,.96);
   border: 1px solid var(--s-border);
   border-radius: 100px;
   padding: .35rem .6rem;
-  backdrop-filter: blur(12px);
   z-index: 10;
 }
 .zoom-btn {
@@ -258,8 +263,8 @@ canvas#mc.can-rotate { cursor: crosshair; }
 .zoom-btn:hover { background: var(--s-panel2); color: var(--s-cream); }
 .zoom-label {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: .55rem; letter-spacing: .2em; color: var(--s-ash);
-  min-width: 44px; text-align: center;
+  font-size: .6rem; letter-spacing: .18em; color: var(--s-fog);
+  min-width: 44px; text-align: center; font-weight: 500;
 }
 .zoom-sep { width: 1px; height: 16px; background: var(--s-border); }
 
@@ -267,18 +272,17 @@ canvas#mc.can-rotate { cursor: crosshair; }
 .print-warning-bar {
   position: absolute; bottom: 4.5rem; left: 50%;
   transform: translateX(-50%) translateY(20px);
-  background: rgba(192,97,74,.12);
-  border: 1px solid rgba(192,97,74,.35);
+  background: rgba(192,97,74,.18);
+  border: 1px solid rgba(192,97,74,.5);
   border-radius: 100px;
   padding: .5rem 1.2rem;
   display: flex; align-items: center; gap: .6rem;
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: .6rem; letter-spacing: .2em; text-transform: uppercase;
-  color: #e07a62;
+  font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
+  color: #f09080;
   opacity: 0; pointer-events: none;
-  transition: all .3s cubic-bezier(.4,0,.2,1);
+  transition: all .25s cubic-bezier(.4,0,.2,1);
   white-space: nowrap;
-  backdrop-filter: blur(8px);
   z-index: 20;
 }
 .print-warning-bar.visible {
@@ -291,8 +295,8 @@ canvas#mc.can-rotate { cursor: crosshair; }
 .view-label-overlay {
   position: absolute; top: 1.2rem; left: 50%; transform: translateX(-50%);
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: .5rem; letter-spacing: .6em; text-transform: uppercase;
-  color: rgba(184,151,90,.45); pointer-events: none;
+  font-size: .54rem; letter-spacing: .55em; text-transform: uppercase;
+  color: rgba(200,169,106,.65); pointer-events: none;
 }
 
 /* ── RIGHT PANEL: TOOLS ── */
@@ -326,53 +330,62 @@ canvas#mc.can-rotate { cursor: crosshair; }
 
 /* Upload zone */
 .upload-zone {
-  margin: 1.25rem 1.1rem;
-  border: 1px dashed rgba(184,151,90,.25);
-  border-radius: var(--s-radius);
-  padding: 2rem 1.25rem;
+  margin: 1.1rem 1.1rem .5rem;
+  border: 1.5px dashed rgba(200,169,106,.28);
+  border-radius: 12px;
+  padding: 1.6rem 1.1rem 1.4rem;
   text-align: center;
   cursor: pointer;
-  transition: all .25s cubic-bezier(.4,0,.2,1);
-  background: transparent;
+  transition: border-color .2s, background .2s;
+  background: rgba(200,169,106,.02);
   position: relative; overflow: hidden;
 }
 .upload-zone::before {
   content: '';
-  position: absolute; inset: 0; border-radius: var(--s-radius);
-  background: var(--s-gold-dim);
-  opacity: 0; transition: opacity .25s;
+  position: absolute; inset: 0; border-radius: 12px;
+  background: rgba(200,169,106,.055);
+  opacity: 0; transition: opacity .2s;
 }
-.upload-zone:hover { border-color: rgba(184,151,90,.55); }
+.upload-zone:hover { border-color: rgba(200,169,106,.55); }
 .upload-zone:hover::before { opacity: 1; }
-.upload-zone.drag-over { border-color: var(--s-gold); }
+.upload-zone.drag-over { border-color: var(--s-gold); border-style: solid; }
 .upload-zone.drag-over::before { opacity: 1; }
 .upload-icon {
-  width: 40px; height: 40px; margin: 0 auto .75rem;
-  opacity: .4; transition: opacity .25s;
+  width: 42px; height: 38px; margin: 0 auto .6rem;
+  opacity: .45; transition: opacity .2s;
 }
-.upload-zone:hover .upload-icon { opacity: .7; }
+.upload-zone:hover .upload-icon { opacity: .85; }
 .upload-zone-title {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--s-cream); font-weight: 500; display: block; margin-bottom: .35rem;
+  font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--s-cream); font-weight: 600; display: block; margin-bottom: .25rem;
 }
 .upload-zone-sub {
-  font-size: .72rem; color: var(--s-ash); display: block;
-  line-height: 1.6;
+  font-size: .72rem; color: var(--s-ash); display: block; line-height: 1.55;
 }
 .upload-zone-sub span { color: var(--s-gold); }
+.upload-formats {
+  display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; margin-top: .55rem;
+}
+.fmt-badge {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .46rem; letter-spacing: .18em; text-transform: uppercase;
+  padding: .15rem .48rem; border-radius: 3px;
+  background: rgba(200,169,106,.07); border: 1px solid rgba(200,169,106,.18);
+  color: var(--s-fog); pointer-events: none;
+}
 
 /* Design controls */
 .design-controls-section { padding: 0 1.1rem 1.1rem; }
 .ctrl-label {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: .48rem; letter-spacing: .42em; text-transform: uppercase;
+  font-size: .52rem; letter-spacing: .38em; text-transform: uppercase;
   color: var(--s-gold); display: flex; align-items: center; justify-content: space-between;
   margin-bottom: .6rem;
 }
 .ctrl-val {
-  font-family: 'Inter', monospace; font-size: .65rem;
-  color: var(--s-cream); font-weight: 500;
+  font-family: 'Inter', monospace; font-size: .7rem;
+  color: var(--s-cream); font-weight: 600;
 }
 .ctrl-slider {
   -webkit-appearance: none; appearance: none;
@@ -450,30 +463,32 @@ canvas#mc.can-rotate { cursor: crosshair; }
   margin: 0 1.1rem;
   background: var(--s-panel2);
   border: 1px solid var(--s-border);
-  border-radius: var(--s-radius);
-  padding: 1rem;
+  border-radius: 12px;
+  padding: 1rem 1rem .85rem;
+  box-shadow: 0 1px 0 rgba(200,169,106,.06) inset;
 }
 .size-spec-title {
   font-family: 'Playfair Display', serif;
   font-size: 1rem; color: var(--s-cream); font-style: italic;
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: .8rem;
+  margin-bottom: .85rem; padding-bottom: .65rem;
+  border-bottom: 1px solid var(--s-border);
 }
 .size-spec-title span {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: .55rem; letter-spacing: .3em; text-transform: uppercase;
-  color: var(--s-gold); font-style: normal;
+  font-size: .58rem; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--s-gold); font-style: normal; font-weight: 600;
 }
 .size-spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
 .spec-item {}
 .spec-key {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: .46rem; letter-spacing: .35em; text-transform: uppercase;
-  color: var(--s-ash); display: block; margin-bottom: .25rem;
+  font-size: .5rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--s-fog); display: block; margin-bottom: .25rem;
 }
 .spec-val {
   font-family: 'Inter', sans-serif;
-  font-size: .82rem; font-weight: 600; color: var(--s-cream);
+  font-size: .86rem; font-weight: 600; color: var(--s-cream);
 }
 .spec-val.gold { color: var(--s-gold); }
 .print-area-visual {
@@ -531,9 +546,9 @@ canvas#mc.can-rotate { cursor: crosshair; }
 .quote-row:not(:last-child) { border-bottom: 1px solid var(--s-border); }
 .quote-key {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: .5rem; letter-spacing: .35em; text-transform: uppercase; color: var(--s-ash);
+  font-size: .54rem; letter-spacing: .3em; text-transform: uppercase; color: var(--s-fog);
 }
-.quote-val { font-family: 'Inter', sans-serif; font-size: .82rem; font-weight: 600; color: var(--s-cream); }
+.quote-val { font-family: 'Inter', sans-serif; font-size: .86rem; font-weight: 600; color: var(--s-cream); }
 .quote-val.gold { color: var(--s-gold2); font-size: 1rem; }
 .quote-val.green { color: #5aba85; }
 
@@ -632,6 +647,20 @@ canvas#mc.can-rotate { cursor: crosshair; }
 .panel-divider { height: 1px; background: var(--s-border); margin: .2rem 1.1rem; flex-shrink: 0; }
 .section-gap { height: 1.25rem; flex-shrink: 0; }
 
+/* Design metrics */
+.metric-chip {
+  background: var(--s-panel2); border: 1px solid var(--s-border);
+  border-radius: 7px; padding: .55rem .6rem;
+}
+.metric-chip-key {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .44rem; letter-spacing: .38em; text-transform: uppercase;
+  color: var(--s-ash); display: block; margin-bottom: .28rem;
+}
+.metric-chip-val {
+  font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 700; color: var(--s-gold2);
+}
+
 /* ── MOBILE ── */
 @media (max-width: 1100px) {
   :root { --s-sidebar-w: 220px; --s-tool-w: 270px; }
@@ -719,33 +748,38 @@ canvas#mc.can-rotate { cursor: crosshair; }
         <span class="panel-label">Prenda</span>
         <div class="garment-grid">
           <button class="garment-tile active" id="gt-tshirt" onclick="setGarment('tshirt',this)">
-            <svg class="garment-icon" viewBox="0 0 44 44" fill="none" stroke="var(--s-gold)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 4l-12 8 5 5 3-2v25h20V15l3 2 5-5-12-8c0 0-2 4-7 4s-5-4-5-4z"/>
+            <svg class="garment-icon" viewBox="0 0 44 44" fill="none" stroke="var(--s-gold)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 5c0 0 1.5 3.5 5 3.5s5-3.5 5-3.5"/>
+              <path d="M17 5l-13 9 4.5 4.5 3.5-2v24h20V16.5l3.5 2 4.5-4.5-13-9"/>
+              <path d="M17.5 15c1 1.5 2.5 2.5 4.5 2.5s3.5-1 4.5-2.5"/>
             </svg>
             <span class="garment-tile-name">Camiseta</span>
           </button>
           <button class="garment-tile" id="gt-polo" onclick="setGarment('polo',this)">
-            <svg class="garment-icon" viewBox="0 0 44 44" fill="none" stroke="var(--s-ash)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 4l-12 8 5 5 3-2v25h20V15l3 2 5-5-12-8c0 0-1 4-5 4-4 0-5-4-5-4z"/>
-              <path d="M19 4v10M25 4v10M19 4h6"/>
+            <svg class="garment-icon" viewBox="0 0 44 44" fill="none" stroke="var(--s-ash)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 5l-13 9 4.5 4.5 3.5-2v24h20V16.5l3.5 2 4.5-4.5-13-9c0 0-1 4-5 4s-5-4-5-4z"/>
+              <path d="M20 5v11M24 5v11"/>
+              <path d="M20 5h4"/>
+              <rect x="20" y="9" width="4" height="6" rx=".5"/>
             </svg>
             <span class="garment-tile-name">Polo</span>
           </button>
           <button class="garment-tile" id="gt-hoodie" onclick="setGarment('hoodie',this)">
-            <svg class="garment-icon" viewBox="0 0 44 44" fill="none" stroke="var(--s-ash)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 5l-12 9 5 5 3-2v23h20V17l3 2 5-5-12-9c0 0-1 5-5 7-4-2-5-7-5-7z"/>
-              <path d="M16 5c2 5 4 7 6 7s4-2 6-7"/>
-              <path d="M17 16h10v4l-1 1h-8l-1-1z"/>
+            <svg class="garment-icon" viewBox="0 0 44 44" fill="none" stroke="var(--s-ash)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 6l-12 9 5 5 3-2v23h20V18l3 2 5-5-12-9c0 0-1.5 5.5-6 7.5-4.5-2-6-7.5-6-7.5z"/>
+              <path d="M16 6c1.5 5 3.5 7.5 6 7.5s4.5-2.5 6-7.5"/>
+              <path d="M17.5 16.5h9v4l-1.5 1.5h-6l-1.5-1.5z"/>
+              <path d="M19 36h6"/>
             </svg>
             <span class="garment-tile-name">Hoodie</span>
           </button>
           <button class="garment-tile" id="gt-uniform" onclick="setGarment('uniform',this)">
-            <svg class="garment-icon" viewBox="0 0 44 44" fill="none" stroke="var(--s-ash)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 4l-12 8 5 5 3-2v25h20V15l3 2 5-5-12-8c0 0-1 3-4 3s-4-3-4-3z"/>
-              <line x1="22" y1="12" x2="22" y2="18"/>
-              <circle cx="22" cy="13.5" r="1.2" fill="var(--s-ash)"/>
-              <circle cx="22" cy="16.5" r="1.2" fill="var(--s-ash)"/>
-              <rect x="17" y="18" width="5" height="7" rx="0.5"/>
+            <svg class="garment-icon" viewBox="0 0 44 44" fill="none" stroke="var(--s-ash)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 5l-13 9 4.5 4.5 3.5-2v24h20V16.5l3.5 2 4.5-4.5-13-9c0 0-1 3-5 3s-4-3-4-3z"/>
+              <path d="M20 5l-1 6.5M24 5l1 6.5M19 11.5h6"/>
+              <circle cx="22" cy="13" r="1" fill="var(--s-ash)"/>
+              <circle cx="22" cy="16.5" r="1" fill="var(--s-ash)"/>
+              <rect x="17" y="20" width="5" height="6" rx=".5"/>
             </svg>
             <span class="garment-tile-name">Uniforme</span>
           </button>
@@ -830,15 +864,18 @@ canvas#mc.can-rotate { cursor: crosshair; }
              ondragover="e => {e.preventDefault(); this.classList.add('drag-over');}"
              ondragleave="this.classList.remove('drag-over');"
              ondrop="handleDrop(event)">
-          <svg class="upload-icon" viewBox="0 0 40 40" fill="none" stroke="var(--s-gold)" stroke-width="1.2" stroke-linecap="round">
-            <circle cx="20" cy="20" r="17"/>
-            <path d="M20 14v12M14 18l6-4 6 4"/>
+          <svg class="upload-icon" viewBox="0 0 48 40" fill="none" stroke="var(--s-gold)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M34 28c4.4 0 8-3.6 8-8 0-4.2-3.2-7.6-7.3-7.9C33.3 7.3 28.9 4 24 4c-5.5 0-10.3 3.5-12 9-.3-.1-.7-.1-1-.1-3.3 0-6 2.7-6 6s2.7 6 6 6h3"/>
+            <path d="M24 20v14M18 26l6-6 6 6"/>
           </svg>
           <span class="upload-zone-title">Subir diseño o logo</span>
-          <span class="upload-zone-sub">
-            Arrastra aquí o <span>haz clic para explorar</span><br>
-            PNG · JPG · SVG · máx 8MB
-          </span>
+          <span class="upload-zone-sub">Arrastra aquí o <span>selecciona un archivo</span></span>
+          <div class="upload-formats">
+            <span class="fmt-badge">PNG</span>
+            <span class="fmt-badge">JPG</span>
+            <span class="fmt-badge">SVG</span>
+            <span class="fmt-badge">máx 8MB</span>
+          </div>
         </div>
         <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="uploadDesign(this)">
 
@@ -885,14 +922,48 @@ canvas#mc.can-rotate { cursor: crosshair; }
                 Quitar
               </button>
             </div>
+
+            <!-- Real-time design metrics -->
+            <div class="panel-divider" style="margin: .85rem 0;"></div>
+            <div class="ctrl-label" style="margin-bottom:.55rem;">Medidas del diseño</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:.7rem;">
+              <div class="metric-chip">
+                <span class="metric-chip-key">Ancho</span>
+                <span class="metric-chip-val" id="mDesignW">— cm</span>
+              </div>
+              <div class="metric-chip">
+                <span class="metric-chip-key">Alto</span>
+                <span class="metric-chip-val" id="mDesignH">— cm</span>
+              </div>
+            </div>
+            <div class="ctrl-label">Cobertura del área <span class="ctrl-val" id="mCovPct">—</span></div>
+            <div class="pa-bar-wrap"><div class="pa-bar-fill" id="mCovBar" style="width:0%"></div></div>
           </div>
         </div>
 
+        <!-- Copy to other view (shown when design exists) -->
+        <div id="copyDesignRow" style="display:none;padding:0 1.1rem .65rem;">
+          <button class="ctrl-btn-pill" style="width:100%;justify-content:center;gap:.5rem;border-color:var(--s-border2);" onclick="copyDesignToOtherView()">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="3" width="7" height="7" rx="1"/><path d="M3 3V2a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H9"/>
+            </svg>
+            <span id="copyBtnLabel">Copiar diseño a Espalda</span>
+          </button>
+        </div>
+
         <!-- No design message -->
-        <div id="noDesignMsg" style="padding:1.5rem 1.1rem;text-align:center;color:var(--s-ash);display:flex;flex-direction:column;align-items:center;gap:.6rem;">
-          <div style="font-size:.78rem;line-height:1.7;">
-            Sube tu logo o diseño para visualizarlo sobre la prenda.
-            Puedes arrastrarlo, escalarlo y rotarlo libremente.
+        <div id="noDesignMsg" style="padding:1rem 1.1rem 1.4rem;display:flex;flex-direction:column;gap:.55rem;">
+          <div style="background:var(--s-panel2);border:1px solid var(--s-border);border-radius:8px;padding:.7rem .85rem;display:flex;align-items:flex-start;gap:.6rem;">
+            <span style="color:var(--s-gold);font-size:.9rem;line-height:1;margin-top:.05rem;flex-shrink:0;">①</span>
+            <span style="font-size:.72rem;color:var(--s-fog);line-height:1.6;">Sube tu logo o diseño en PNG, JPG o SVG</span>
+          </div>
+          <div style="background:var(--s-panel2);border:1px solid var(--s-border);border-radius:8px;padding:.7rem .85rem;display:flex;align-items:flex-start;gap:.6rem;">
+            <span style="color:var(--s-gold);font-size:.9rem;line-height:1;margin-top:.05rem;flex-shrink:0;">②</span>
+            <span style="font-size:.72rem;color:var(--s-fog);line-height:1.6;">Arrastra para posicionarlo sobre la prenda</span>
+          </div>
+          <div style="background:var(--s-panel2);border:1px solid var(--s-border);border-radius:8px;padding:.7rem .85rem;display:flex;align-items:flex-start;gap:.6rem;">
+            <span style="color:var(--s-gold);font-size:.9rem;line-height:1;margin-top:.05rem;flex-shrink:0;">③</span>
+            <span style="font-size:.72rem;color:var(--s-fog);line-height:1.6;">Escala y rota con los controles del panel</span>
           </div>
         </div>
       </div>
@@ -903,8 +974,7 @@ canvas#mc.can-rotate { cursor: crosshair; }
         <div class="size-cats">
           <button class="size-cat-btn active" onclick="setSizeCat('hombre',this)">Hombre</button>
           <button class="size-cat-btn" onclick="setSizeCat('mujer',this)">Mujer</button>
-          <button class="size-cat-btn" onclick="setSizeCat('ninos',this)">Niños</button>
-          <button class="size-cat-btn" onclick="setSizeCat('oversize',this)">Oversize</button>
+          <button class="size-cat-btn" onclick="setSizeCat('ninos',this)">Niño</button>
         </div>
 
         <!-- Size pills -->
@@ -920,11 +990,11 @@ canvas#mc.can-rotate { cursor: crosshair; }
           </div>
           <div class="size-spec-grid">
             <div class="spec-item">
-              <span class="spec-key">Ancho prenda</span>
+              <span class="spec-key">Ancho</span>
               <span class="spec-val" id="specAncho">52 cm</span>
             </div>
             <div class="spec-item">
-              <span class="spec-key">Largo prenda</span>
+              <span class="spec-key">Largo</span>
               <span class="spec-val" id="specLargo">76 cm</span>
             </div>
             <div class="spec-item">
@@ -932,13 +1002,19 @@ canvas#mc.can-rotate { cursor: crosshair; }
               <span class="spec-val gold" id="specArea">32×38 cm</span>
             </div>
             <div class="spec-item">
-              <span class="spec-key">Diseño recomendado</span>
-              <span class="spec-val" id="specRecom">≤ 30 cm</span>
+              <span class="spec-key">Diseño máx.</span>
+              <span class="spec-val gold" id="specRecom">≤ 30 cm</span>
             </div>
           </div>
           <div class="print-area-visual">
-            <div class="ctrl-label">Uso del área de impresión <span class="ctrl-val" id="areaUsoPct">—</span></div>
+            <div class="ctrl-label" style="margin-bottom:.55rem;">
+              Ocupación del área
+              <span class="ctrl-val" id="areaUsoPct">—</span>
+            </div>
             <div class="pa-bar-wrap"><div class="pa-bar-fill" id="paBarFill" style="width:0%"></div></div>
+            <div style="margin-top:.55rem;font-size:.66rem;color:var(--s-ash);line-height:1.55;">
+              Zona recomendada incluida. El área segura está indicada en la guía de la prenda.
+            </div>
           </div>
         </div>
         <div class="section-gap"></div>
@@ -1067,14 +1143,10 @@ const S = {
   view:       'front',
   color:      '#111111',
   colorName:  'Noir',
-  designImg:  null,
-  design: {
-    x: 250, y: 230,
-    scale: 1.0,
-    rot: 0,
-    opacity: 1,
-    flipH: false,
-    w: 0, h: 0,
+  /* Independent design per view */
+  designs: {
+    front: { img: null, x: 250, y: 230, scale: 1.0, rot: 0, opacity: 1, flipH: false, w: 0, h: 0 },
+    back:  { img: null, x: 250, y: 230, scale: 1.0, rot: 0, opacity: 1, flipH: false, w: 0, h: 0 },
   },
   sizeCategory: 'hombre',
   sizeLabel:    'L',
@@ -1086,25 +1158,28 @@ const S = {
   mouseX: 0, mouseY: 0,
   enterprise: {},
 };
+/* Active view design shortcut */
+function D() { return S.designs[S.view]; }
 
 /* ── SIZE DATA ── */
 const SIZES = {
   hombre: [
-    { label:'S',   ancho:46, largo:70, pw:28, ph:34, rec:26 },
-    { label:'M',   ancho:49, largo:73, pw:30, ph:36, rec:28 },
-    { label:'L',   ancho:52, largo:76, pw:32, ph:38, rec:30 },
-    { label:'XL',  ancho:55, largo:79, pw:34, ph:40, rec:32 },
-    { label:'2XL', ancho:58, largo:82, pw:36, ph:42, rec:34 },
-    { label:'3XL', ancho:61, largo:85, pw:38, ph:44, rec:36 },
-    { label:'4XL', ancho:64, largo:88, pw:40, ph:46, rec:38 },
+    { label:'XS',   ancho:43, largo:68, pw:25, ph:30, rec:22 },
+    { label:'S',    ancho:46, largo:70, pw:28, ph:34, rec:26 },
+    { label:'M',    ancho:49, largo:73, pw:30, ph:36, rec:28 },
+    { label:'L',    ancho:52, largo:76, pw:32, ph:38, rec:30 },
+    { label:'XL',   ancho:55, largo:79, pw:34, ph:40, rec:32 },
+    { label:'XXL',  ancho:58, largo:82, pw:36, ph:42, rec:34 },
+    { label:'XXXL', ancho:61, largo:85, pw:38, ph:44, rec:36 },
   ],
   mujer: [
-    { label:'XS',  ancho:36, largo:58, pw:22, ph:26, rec:20 },
-    { label:'S',   ancho:39, largo:61, pw:24, ph:28, rec:22 },
-    { label:'M',   ancho:42, largo:64, pw:26, ph:30, rec:24 },
-    { label:'L',   ancho:45, largo:67, pw:28, ph:32, rec:26 },
-    { label:'XL',  ancho:48, largo:70, pw:30, ph:34, rec:28 },
-    { label:'2XL', ancho:51, largo:73, pw:32, ph:36, rec:30 },
+    { label:'XS',   ancho:36, largo:58, pw:22, ph:26, rec:20 },
+    { label:'S',    ancho:39, largo:61, pw:24, ph:28, rec:22 },
+    { label:'M',    ancho:42, largo:64, pw:26, ph:30, rec:24 },
+    { label:'L',    ancho:45, largo:67, pw:28, ph:32, rec:26 },
+    { label:'XL',   ancho:48, largo:70, pw:30, ph:34, rec:28 },
+    { label:'XXL',  ancho:51, largo:73, pw:32, ph:36, rec:30 },
+    { label:'XXXL', ancho:54, largo:76, pw:34, ph:38, rec:32 },
   ],
   ninos: [
     { label:'2',  ancho:28, largo:38, pw:16, ph:16, rec:14 },
@@ -1145,45 +1220,49 @@ const GARMENTS = {
     name: 'Camiseta',
     front: (ctx) => {
       ctx.beginPath();
-      ctx.moveTo(196, 68);
-      ctx.quadraticCurveTo(250, 108, 304, 68);
-      ctx.lineTo(430, 106);
-      ctx.lineTo(468, 195);
-      ctx.lineTo(398, 215);
-      ctx.bezierCurveTo(380, 222, 368, 228, 360, 248);
-      ctx.lineTo(360, 545);
-      ctx.lineTo(140, 545);
-      ctx.lineTo(140, 248);
-      ctx.bezierCurveTo(132, 228, 120, 222, 102, 215);
-      ctx.lineTo(32, 195);
-      ctx.lineTo(70, 106);
+      ctx.moveTo(204, 78);
+      ctx.bezierCurveTo(214, 96, 238, 110, 250, 112);
+      ctx.bezierCurveTo(262, 110, 286, 96, 296, 78);
+      ctx.lineTo(330, 70);
+      ctx.bezierCurveTo(358, 66, 396, 78, 418, 102);
+      ctx.bezierCurveTo(434, 120, 440, 150, 432, 174);
+      ctx.bezierCurveTo(420, 182, 398, 188, 382, 194);
+      ctx.bezierCurveTo(366, 202, 358, 220, 358, 244);
+      ctx.bezierCurveTo(357, 372, 359, 462, 358, 550);
+      ctx.bezierCurveTo(310, 559, 190, 559, 142, 550);
+      ctx.bezierCurveTo(141, 462, 143, 372, 142, 244);
+      ctx.bezierCurveTo(142, 220, 134, 202, 118, 194);
+      ctx.bezierCurveTo(102, 188, 80, 182, 68, 174);
+      ctx.bezierCurveTo(60, 150, 66, 120, 82, 102);
+      ctx.bezierCurveTo(104, 78, 142, 66, 170, 70);
       ctx.closePath();
     },
     back: (ctx) => {
       ctx.beginPath();
-      ctx.moveTo(190, 68);
-      ctx.lineTo(150, 62);
-      ctx.lineTo(70, 106);
-      ctx.lineTo(32, 195);
-      ctx.lineTo(102, 215);
-      ctx.bezierCurveTo(120, 222, 132, 228, 140, 248);
-      ctx.lineTo(140, 545);
-      ctx.lineTo(360, 545);
-      ctx.lineTo(360, 248);
-      ctx.bezierCurveTo(368, 228, 380, 222, 398, 215);
-      ctx.lineTo(468, 195);
-      ctx.lineTo(430, 106);
-      ctx.lineTo(350, 62);
-      ctx.lineTo(310, 68);
-      ctx.bezierCurveTo(290, 80, 210, 80, 190, 68);
+      ctx.moveTo(200, 74);
+      ctx.bezierCurveTo(216, 82, 234, 88, 250, 88);
+      ctx.bezierCurveTo(266, 88, 284, 82, 300, 74);
+      ctx.lineTo(330, 70);
+      ctx.bezierCurveTo(358, 66, 396, 78, 418, 102);
+      ctx.bezierCurveTo(434, 120, 440, 150, 432, 174);
+      ctx.bezierCurveTo(420, 182, 398, 188, 382, 194);
+      ctx.bezierCurveTo(366, 202, 358, 220, 358, 244);
+      ctx.bezierCurveTo(357, 372, 359, 462, 358, 550);
+      ctx.bezierCurveTo(310, 559, 190, 559, 142, 550);
+      ctx.bezierCurveTo(141, 462, 143, 372, 142, 244);
+      ctx.bezierCurveTo(142, 220, 134, 202, 118, 194);
+      ctx.bezierCurveTo(102, 188, 80, 182, 68, 174);
+      ctx.bezierCurveTo(60, 150, 66, 120, 82, 102);
+      ctx.bezierCurveTo(104, 78, 142, 66, 170, 70);
       ctx.closePath();
     },
     collar_f: (ctx) => {
       ctx.beginPath();
-      ctx.moveTo(196, 68);
-      ctx.quadraticCurveTo(250, 118, 304, 68);
+      ctx.moveTo(204, 78);
+      ctx.bezierCurveTo(214, 96, 238, 110, 250, 112);
+      ctx.bezierCurveTo(262, 110, 286, 96, 296, 78);
     },
-    printArea: { front: {x:155, y:145, w:190, h:230}, back: {x:140, y:110, w:220, h:280} },
+    printArea: { front: {x:166, y:150, w:168, h:220}, back: {x:150, y:114, w:200, h:266} },
   },
   polo: {
     name: 'Polo',
@@ -1316,11 +1395,22 @@ function render() {
   const path = S.view === 'front' ? g.front : g.back;
   const pa = (S.view === 'front' ? g.printArea.front : g.printArea.back);
 
-  /* Drop shadow behind garment */
+  /* Ambient shadow (soft, spread) */
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,.35)';
+  ctx.shadowBlur = 42;
+  ctx.shadowOffsetY = 18;
+  ctx.shadowOffsetX = 0;
+  path(ctx);
+  ctx.fillStyle = 'rgba(0,0,0,.01)';
+  ctx.fill();
+  ctx.restore();
+  /* Contact shadow (crisp, close) */
   ctx.save();
   ctx.shadowColor = 'rgba(0,0,0,.55)';
-  ctx.shadowBlur = 32;
-  ctx.shadowOffsetY = 12;
+  ctx.shadowBlur = 12;
+  ctx.shadowOffsetY = 6;
+  ctx.shadowOffsetX = 2;
   path(ctx);
   ctx.fillStyle = '#000';
   ctx.fill();
@@ -1332,37 +1422,105 @@ function render() {
   ctx.fillStyle = S.color;
   ctx.fill();
 
-  /* Subtle highlight */
-  if (S.view === 'front') {
-    const highlight = ctx.createLinearGradient(CW*0.2, 0, CW*0.8, 0);
-    highlight.addColorStop(0, 'rgba(255,255,255,.07)');
-    highlight.addColorStop(0.3, 'rgba(255,255,255,.0)');
-    highlight.addColorStop(0.7, 'rgba(255,255,255,.0)');
-    highlight.addColorStop(1, 'rgba(0,0,0,.08)');
-    path(ctx);
-    ctx.fillStyle = highlight;
-    ctx.fill();
-  }
+  /* Multi-pass fabric shading */
+  const lum2 = getLuminance(S.color);
+  const isDark = lum2 < 80;
+  const hiAmt = isDark ? 0.16 : 0.06;
+  const shAmt = isDark ? 0.32 : 0.14;
+
+  /* Upper-left highlight (light source) */
+  const hlGrad = ctx.createLinearGradient(58, 68, 300, 320);
+  hlGrad.addColorStop(0, `rgba(255,255,255,${hiAmt})`);
+  hlGrad.addColorStop(0.5, 'rgba(255,255,255,0)');
+  path(ctx); ctx.fillStyle = hlGrad; ctx.fill();
+
+  /* Right-bottom shadow */
+  const shGrad = ctx.createLinearGradient(200, 120, 460, 560);
+  shGrad.addColorStop(0.35, 'rgba(0,0,0,0)');
+  shGrad.addColorStop(1, `rgba(0,0,0,${shAmt})`);
+  path(ctx); ctx.fillStyle = shGrad; ctx.fill();
+
+  /* Vertical fold (center body) */
+  const foldGrad = ctx.createLinearGradient(220, 200, 280, 200);
+  foldGrad.addColorStop(0, 'rgba(0,0,0,0)');
+  foldGrad.addColorStop(0.48, `rgba(0,0,0,${isDark ? 0.06 : 0.03})`);
+  foldGrad.addColorStop(0.52, `rgba(255,255,255,${isDark ? 0.05 : 0.02})`);
+  foldGrad.addColorStop(1, 'rgba(0,0,0,0)');
+  path(ctx); ctx.fillStyle = foldGrad; ctx.fill();
+
+  /* Bottom vignette (hem weight) */
+  const hemGrad = ctx.createLinearGradient(250, 420, 250, 560);
+  hemGrad.addColorStop(0, 'rgba(0,0,0,0)');
+  hemGrad.addColorStop(1, `rgba(0,0,0,${isDark ? 0.18 : 0.08})`);
+  path(ctx); ctx.fillStyle = hemGrad; ctx.fill();
 
   /* Garment stroke */
   const lum = getLuminance(S.color);
-  const strokeAlpha = lum > 200 ? 0.18 : 0.12;
+  const strokeAlpha = lum > 200 ? 0.22 : 0.14;
   path(ctx);
   ctx.strokeStyle = lum > 200 ? `rgba(0,0,0,${strokeAlpha})` : `rgba(255,255,255,${strokeAlpha})`;
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 1.5;
   ctx.stroke();
   ctx.restore();
 
-  /* Collar detail (t-shirt front) */
-  if (S.view === 'front' && S.garment === 'tshirt') {
+  /* ── Collar band, shadow & seam details (tshirt) ── */
+  if (S.garment === 'tshirt') {
+    const seamA = lum > 180 ? 0.16 : lum > 70 ? 0.20 : 0.12;
+    const seamC = lum > 130
+      ? `rgba(0,0,0,${seamA})`
+      : `rgba(255,255,255,${seamA * 0.7})`;
+
+    if (S.view === 'front') {
+      ctx.save();
+      /* Collar band — thick outer strip */
+      ctx.beginPath();
+      ctx.moveTo(204, 78);
+      ctx.bezierCurveTo(214, 96, 238, 110, 250, 112);
+      ctx.bezierCurveTo(262, 110, 286, 96, 296, 78);
+      ctx.strokeStyle = darken(S.color, lum < 60 ? -7 : 16);
+      ctx.lineWidth = 10;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+      /* Collar inner edge */
+      ctx.strokeStyle = lum > 130 ? 'rgba(0,0,0,0.14)' : 'rgba(255,255,255,0.09)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(207, 85);
+      ctx.bezierCurveTo(217, 100, 238, 112, 250, 114);
+      ctx.bezierCurveTo(262, 112, 283, 100, 293, 85);
+      ctx.stroke();
+      /* Collar opening shadow */
+      const csg = ctx.createRadialGradient(250, 115, 3, 250, 115, 54);
+      csg.addColorStop(0, `rgba(0,0,0,${lum > 130 ? 0.24 : 0.42})`);
+      csg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = csg;
+      ctx.fillRect(188, 72, 124, 58);
+      ctx.restore();
+    }
+
+    /* Seam lines — visible on both views */
     ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(196, 68);
-    ctx.quadraticCurveTo(250, 118, 304, 68);
-    ctx.strokeStyle = darken(S.color, lum < 60 ? -5 : 15);
-    ctx.lineWidth = 6;
+    ctx.strokeStyle = seamC;
     ctx.lineCap = 'round';
+    /* Shoulder seams */
+    ctx.lineWidth = 0.8;
+    ctx.beginPath(); ctx.moveTo(202, 78); ctx.lineTo(142, 198); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(298, 78); ctx.lineTo(358, 198); ctx.stroke();
+    /* Sleeve hem marks */
+    ctx.lineWidth = 0.6;
+    ctx.beginPath(); ctx.moveTo(67, 170); ctx.bezierCurveTo(63, 180, 64, 190, 70, 196); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(433, 170); ctx.bezierCurveTo(437, 180, 436, 190, 430, 196); ctx.stroke();
+    /* Bottom hem */
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(142, 550); ctx.bezierCurveTo(196, 558, 304, 558, 358, 550);
     ctx.stroke();
+    /* Armhole curves */
+    ctx.lineWidth = 0.6;
+    ctx.globalAlpha = 0.7;
+    ctx.beginPath(); ctx.moveTo(142, 244); ctx.bezierCurveTo(128, 226, 114, 208, 118, 194); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(358, 244); ctx.bezierCurveTo(372, 226, 386, 208, 382, 194); ctx.stroke();
+    ctx.globalAlpha = 1;
     ctx.restore();
   }
 
@@ -1424,20 +1582,44 @@ function render() {
   path(ctx);
   ctx.clip();
 
-  /* Print area indicator */
+  /* ── Print area — professional guides ── */
   ctx.save();
-  ctx.beginPath();
-  ctx.rect(pa.x, pa.y, pa.w, pa.h);
-  ctx.strokeStyle = 'rgba(184,151,90,.25)';
+  const pX = pa.x, pY = pa.y, pW = pa.w, pH = pa.h;
+  const cL = 13; /* corner L length */
+
+  /* Subtle zone fill */
+  ctx.fillStyle = 'rgba(200,169,106,.032)';
+  ctx.fillRect(pX, pY, pW, pH);
+
+  /* Dashed border */
+  ctx.strokeStyle = 'rgba(200,169,106,.20)';
   ctx.lineWidth = 1;
-  ctx.setLineDash([4, 4]);
-  ctx.stroke();
+  ctx.setLineDash([4, 5]);
+  ctx.strokeRect(pX, pY, pW, pH);
+  ctx.setLineDash([]);
+
+  /* Corner L-markers */
+  ctx.strokeStyle = 'rgba(200,169,106,.72)';
+  ctx.lineWidth = 1.5;
+  ctx.lineCap = 'square';
+  [[pX,pY,1,1],[pX+pW,pY,-1,1],[pX,pY+pH,1,-1],[pX+pW,pY+pH,-1,-1]].forEach(([cx,cy,dx,dy]) => {
+    ctx.beginPath();
+    ctx.moveTo(cx+dx*cL, cy); ctx.lineTo(cx, cy); ctx.lineTo(cx, cy+dy*cL);
+    ctx.stroke();
+  });
+
+  /* Inner safe-area guide */
+  const sm = 9;
+  ctx.strokeStyle = 'rgba(200,169,106,.11)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([2, 6]);
+  ctx.strokeRect(pX+sm, pY+sm, pW-sm*2, pH-sm*2);
   ctx.setLineDash([]);
   ctx.restore();
 
-  /* Design */
-  if (S.designImg) {
-    const d = S.design;
+  /* Design — uses active view's independent state */
+  if (D().img) {
+    const d = D();
     ctx.save();
     ctx.globalAlpha = d.opacity;
     ctx.translate(d.x, d.y);
@@ -1445,7 +1627,7 @@ function render() {
     if (d.flipH) ctx.scale(-1, 1);
     const dw = d.w * d.scale;
     const dh = d.h * d.scale;
-    ctx.drawImage(S.designImg, -dw/2, -dh/2, dw, dh);
+    ctx.drawImage(d.img, -dw/2, -dh/2, dw, dh);
     ctx.restore();
 
     /* Selection handles */
@@ -1504,8 +1686,8 @@ function render() {
 }
 
 function checkPrintAreaWarning(pa) {
-  if (!S.designImg) return;
-  const d = S.design;
+  if (!D().img) return;
+  const d = D();
   const dw2 = (d.w * d.scale) / 2;
   const dh2 = (d.h * d.scale) / 2;
   const dl = d.x - dw2, dr = d.x + dw2;
@@ -1526,6 +1708,33 @@ function checkPrintAreaWarning(pa) {
   }
   const pctEl = document.getElementById('areaUsoPct');
   if (pctEl) pctEl.textContent = usagePct + '%';
+
+  updateDesignMetrics();
+}
+
+function updateDesignMetrics() {
+  if (!D().img) return;
+  const sz = getCurrentSize();
+  const pa = GARMENTS[S.garment].printArea[S.view];
+  const d = D();
+  const dw = d.w * d.scale;
+  const dh = d.h * d.scale;
+  const dw_cm = ((dw / pa.w) * sz.pw).toFixed(1);
+  const dh_cm = ((dh / pa.h) * sz.ph).toFixed(1);
+  const cov = Math.min(999, Math.round((parseFloat(dw_cm) * parseFloat(dh_cm)) / (sz.pw * sz.ph) * 100));
+  const wEl = document.getElementById('mDesignW');
+  const hEl = document.getElementById('mDesignH');
+  const pEl = document.getElementById('mCovPct');
+  const bEl = document.getElementById('mCovBar');
+  if (wEl) wEl.textContent = dw_cm + ' cm';
+  if (hEl) hEl.textContent = dh_cm + ' cm';
+  if (pEl) pEl.textContent = cov + '%';
+  if (bEl) {
+    bEl.style.width = Math.min(100, cov) + '%';
+    bEl.style.background = cov > 100
+      ? 'linear-gradient(90deg,#c0614a,#e07a62)'
+      : 'linear-gradient(90deg,var(--s-gold),var(--s-gold2))';
+  }
 }
 
 /* ── INIT ── */
@@ -1540,9 +1749,10 @@ function init() {
   window.addEventListener('mouseup', onMouseUp);
   cvs.addEventListener('wheel', onWheel, { passive: false });
 
-  /* Touch */
+  /* Touch — non-passive to prevent page scroll */
   cvs.addEventListener('touchstart', onTouchStart, { passive: false });
   cvs.addEventListener('touchmove', onTouchMove, { passive: false });
+  cvs.addEventListener('touchend', onMouseUp);
   window.addEventListener('touchend', onMouseUp);
 
   /* Drag-drop on upload zone */
@@ -1567,29 +1777,29 @@ function canvasPoint(e) {
   };
 }
 function isInDesign(px, py) {
-  if (!S.designImg) return false;
-  const d = S.design;
+  if (!D().img) return false;
+  const d = D();
   const dw2 = (d.w * d.scale) / 2, dh2 = (d.h * d.scale) / 2;
   return px >= d.x - dw2 && px <= d.x + dw2 && py >= d.y - dh2 && py <= d.y + dh2;
 }
 function onMouseDown(e) {
   const p = canvasPoint(e);
-  if (S.designImg && isInDesign(p.x, p.y)) {
+  if (D().img && isInDesign(p.x, p.y)) {
     S.dragging = true;
-    S.dragOffX = p.x - S.design.x;
-    S.dragOffY = p.y - S.design.y;
+    S.dragOffX = p.x - D().x;
+    S.dragOffY = p.y - D().y;
     cvs.classList.add('dragging');
   }
 }
 function onMouseMove(e) {
   const p = canvasPoint(e);
   S.mouseX = p.x; S.mouseY = p.y;
-  if (S.designImg) {
+  if (D().img) {
     cvs.classList.toggle('can-drag', isInDesign(p.x, p.y) && !S.dragging);
   }
   if (S.dragging) {
-    S.design.x = p.x - S.dragOffX;
-    S.design.y = p.y - S.dragOffY;
+    D().x = p.x - S.dragOffX;
+    D().y = p.y - S.dragOffY;
     render();
     calcQuote();
   }
@@ -1599,12 +1809,12 @@ function onMouseUp() {
   cvs.classList.remove('dragging');
 }
 function onWheel(e) {
-  if (!S.designImg) return;
-  e.preventDefault();
+  e.preventDefault(); /* always prevent page scroll */
+  if (!D().img) return;
   const delta = e.deltaY > 0 ? -0.05 : 0.05;
-  S.design.scale = Math.max(0.05, Math.min(5, S.design.scale + delta));
-  document.getElementById('scaleSlider').value = Math.round(S.design.scale * 100);
-  document.getElementById('scaleLabel').textContent = Math.round(S.design.scale * 100) + '%';
+  D().scale = Math.max(0.05, Math.min(5, D().scale + delta));
+  document.getElementById('scaleSlider').value = Math.round(D().scale * 100);
+  document.getElementById('scaleLabel').textContent = Math.round(D().scale * 100) + '%';
   render();
   calcQuote();
 }
@@ -1612,13 +1822,14 @@ function onWheel(e) {
 /* Touch */
 let lastTouchDist = 0;
 function onTouchStart(e) {
+  e.preventDefault();
   if (e.touches.length === 1) {
     const t = e.touches[0];
     const p = canvasPoint(t);
-    if (S.designImg && isInDesign(p.x, p.y)) {
+    if (D().img && isInDesign(p.x, p.y)) {
       S.dragging = true;
-      S.dragOffX = p.x - S.design.x;
-      S.dragOffY = p.y - S.design.y;
+      S.dragOffX = p.x - D().x;
+      S.dragOffY = p.y - D().y;
     }
   } else if (e.touches.length === 2) {
     lastTouchDist = Math.hypot(
@@ -1631,8 +1842,8 @@ function onTouchMove(e) {
   e.preventDefault();
   if (e.touches.length === 1 && S.dragging) {
     const p = canvasPoint(e.touches[0]);
-    S.design.x = p.x - S.dragOffX;
-    S.design.y = p.y - S.dragOffY;
+    D().x = p.x - S.dragOffX;
+    D().y = p.y - S.dragOffY;
     render();
   } else if (e.touches.length === 2) {
     const dist = Math.hypot(
@@ -1640,7 +1851,7 @@ function onTouchMove(e) {
       e.touches[1].clientY - e.touches[0].clientY
     );
     const delta = (dist - lastTouchDist) * 0.008;
-    S.design.scale = Math.max(0.05, Math.min(5, S.design.scale + delta));
+    D().scale = Math.max(0.05, Math.min(5, D().scale + delta));
     lastTouchDist = dist;
     render();
   }
@@ -1672,6 +1883,24 @@ function setView(view, btn) {
   document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('viewLabel').textContent = view === 'front' ? 'Vista frontal' : 'Vista trasera';
+  /* Sync design controls to this view's state */
+  const d = D();
+  const hasDesign = !!d.img;
+  document.getElementById('designControlsPanel').style.display = hasDesign ? 'block' : 'none';
+  document.getElementById('noDesignMsg').style.display = hasDesign ? 'none' : 'flex';
+  const copyRow = document.getElementById('copyDesignRow');
+  if (copyRow) copyRow.style.display = hasDesign ? 'block' : 'none';
+  if (!hasDesign) document.getElementById('printWarning').classList.remove('visible');
+  if (hasDesign) {
+    document.getElementById('scaleSlider').value = Math.round(d.scale * 100);
+    document.getElementById('scaleLabel').textContent = Math.round(d.scale * 100) + '%';
+    document.getElementById('rotSlider').value = d.rot;
+    document.getElementById('rotLabel').textContent = d.rot + '°';
+    document.getElementById('opacitySlider').value = Math.round(d.opacity * 100);
+    document.getElementById('opacityLabel').textContent = Math.round(d.opacity * 100) + '%';
+  }
+  const copyLbl = document.getElementById('copyBtnLabel');
+  if (copyLbl) copyLbl.textContent = view === 'front' ? 'Copiar diseño a Espalda' : 'Copiar diseño a Frente';
   render();
 }
 
@@ -1683,19 +1912,16 @@ function uploadDesign(input) {
   reader.onload = (e) => {
     const img = new Image();
     img.onload = () => {
-      S.designImg = img;
-      /* Size relative to print area */
-      const pa = GARMENTS[S.garment].printArea.front;
+      const pa = GARMENTS[S.garment].printArea[S.view];
       const maxW = pa.w * 0.85;
       const aspect = img.naturalWidth / img.naturalHeight;
-      S.design.w = maxW;
-      S.design.h = maxW / aspect;
-      S.design.x = pa.x + pa.w / 2;
-      S.design.y = pa.y + pa.h / 2;
-      S.design.scale = 1;
-      S.design.rot = 0;
-      S.design.opacity = 1;
-      S.design.flipH = false;
+      const d = D();
+      d.img = img;
+      d.w = maxW;
+      d.h = maxW / aspect;
+      d.x = pa.x + pa.w / 2;
+      d.y = pa.y + pa.h / 2;
+      d.scale = 1; d.rot = 0; d.opacity = 1; d.flipH = false;
       document.getElementById('scaleSlider').value = 100;
       document.getElementById('scaleLabel').textContent = '100%';
       document.getElementById('rotSlider').value = 0;
@@ -1704,9 +1930,12 @@ function uploadDesign(input) {
       document.getElementById('opacityLabel').textContent = '100%';
       document.getElementById('designControlsPanel').style.display = 'block';
       document.getElementById('noDesignMsg').style.display = 'none';
-      ACOSER_LEADS.capturar({ fuente: 'mockup-studio', accion: 'upload-design' }, { email: false });
-      render();
-      calcQuote();
+      const copyRow = document.getElementById('copyDesignRow');
+      if (copyRow) copyRow.style.display = 'block';
+      const copyLbl = document.getElementById('copyBtnLabel');
+      if (copyLbl) copyLbl.textContent = S.view === 'front' ? 'Copiar diseño a Espalda' : 'Copiar diseño a Frente';
+      try { ACOSER_LEADS.capturar({ fuente: 'mockup-studio', accion: 'upload-design' }, { email: false }); } catch(e){}
+      render(); calcQuote();
     };
     img.src = e.target.result;
   };
@@ -1726,36 +1955,36 @@ function handleDrop(e) {
 }
 
 function onScaleChange(v) {
-  S.design.scale = parseInt(v) / 100;
+  D().scale = parseInt(v) / 100;
   document.getElementById('scaleLabel').textContent = v + '%';
-  render();
-  calcQuote();
+  render(); calcQuote();
 }
 function onRotChange(v) {
-  S.design.rot = parseInt(v);
+  D().rot = parseInt(v);
   document.getElementById('rotLabel').textContent = v + '°';
   render();
 }
 function onOpacityChange(v) {
-  S.design.opacity = parseInt(v) / 100;
+  D().opacity = parseInt(v) / 100;
   document.getElementById('opacityLabel').textContent = v + '%';
   render();
 }
 
 function centerDesign() {
-  if (!S.designImg) return;
+  if (!D().img) return;
   const pa = GARMENTS[S.garment].printArea[S.view];
-  S.design.x = pa.x + pa.w / 2;
-  S.design.y = pa.y + pa.h / 2;
+  D().x = pa.x + pa.w / 2;
+  D().y = pa.y + pa.h / 2;
   render();
 }
 function flipDesign() {
-  S.design.flipH = !S.design.flipH;
+  D().flipH = !D().flipH;
   render();
 }
 function resetDesignTransform() {
-  if (!S.designImg) return;
-  S.design.scale = 1; S.design.rot = 0; S.design.opacity = 1; S.design.flipH = false;
+  if (!D().img) return;
+  const d = D();
+  d.scale = 1; d.rot = 0; d.opacity = 1; d.flipH = false;
   document.getElementById('scaleSlider').value = 100;
   document.getElementById('scaleLabel').textContent = '100%';
   document.getElementById('rotSlider').value = 0;
@@ -1765,10 +1994,12 @@ function resetDesignTransform() {
   centerDesign();
 }
 function removeDesign() {
-  S.designImg = null;
+  D().img = null;
   document.getElementById('fileInput').value = '';
   document.getElementById('designControlsPanel').style.display = 'none';
   document.getElementById('noDesignMsg').style.display = 'flex';
+  const copyRow = document.getElementById('copyDesignRow');
+  if (copyRow) copyRow.style.display = 'none';
   document.getElementById('printWarning').classList.remove('visible');
   render();
 }
@@ -2126,6 +2357,20 @@ function showToast(msg) {
   document.body.appendChild(t);
   requestAnimationFrame(() => { t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; });
   setTimeout(() => { t.style.opacity='0'; setTimeout(() => t.remove(), 300); }, 2800);
+}
+
+/* ── COPY DESIGN ── */
+function copyDesignToOtherView() {
+  const src = D();
+  if (!src.img) { showToast('No hay diseño en esta vista.'); return; }
+  const other = S.view === 'front' ? 'back' : 'front';
+  const dst = S.designs[other];
+  dst.img = src.img;
+  dst.w = src.w; dst.h = src.h;
+  dst.x = src.x; dst.y = src.y;
+  dst.scale = src.scale; dst.rot = src.rot;
+  dst.opacity = src.opacity; dst.flipH = src.flipH;
+  showToast('Diseño copiado a ' + (other === 'front' ? 'frente' : 'espalda'));
 }
 
 window.addEventListener('load', init);

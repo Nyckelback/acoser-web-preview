@@ -10,7 +10,7 @@ window.addEventListener('load', () => {
   setTimeout(() => {
     const loader = document.getElementById('loader');
     if (loader) loader.classList.add('out');
-  }, 2200);
+  }, 700);
 });
 
 /* ─── TEMA ───────────────────────────────────────────── */
@@ -48,16 +48,21 @@ if (themeBtn) {
   const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
   if (isTouch) return;
 
-  let mx = 0, my = 0, rx = 0, ry = 0;
+  let mx = 0, my = 0, rx = 0, ry = 0, rafId = null;
   document.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
     dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+    if (!rafId) rafId = requestAnimationFrame(animRing);
   });
-  (function animRing() {
-    rx += (mx - rx) * .1; ry += (my - ry) * .1;
-    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-    requestAnimationFrame(animRing);
-  })();
+  function animRing() {
+    rafId = null;
+    const dx = mx - rx, dy = my - ry;
+    if (Math.abs(dx) > 0.3 || Math.abs(dy) > 0.3) {
+      rx += dx * .14; ry += dy * .14;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      rafId = requestAnimationFrame(animRing);
+    }
+  }
 
   const hoverEls = 'a,button,.p-item,.ws-item,.about-media-item,.brand-feat,.service-row,.test-card,.brands-photo-item';
   document.querySelectorAll(hoverEls).forEach(el => {
@@ -129,7 +134,7 @@ function closeMob() {
   if (!processSection || !processBar) return;
   const pbo = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) { processBar.style.width = '100%'; pbo.disconnect(); }
-  }, { threshold: .3 });
+  }, { threshold: .2 });
   pbo.observe(processSection);
 })();
 
@@ -159,23 +164,7 @@ function moveTest(dir) {
   if (bar) bar.style.width = ((tidx / maxIdx) * 100 || 50) + '%';
 }
 
-/* ─── PARALLAX ───────────────────────────────────────── */
-(function initParallax() {
-  let ticking = false;
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        const y = window.scrollY;
-        const heroLeft = document.querySelector('.hero-left');
-        if (heroLeft && y < window.innerHeight) {
-          heroLeft.style.transform = `translateY(${y * 0.12}px)`;
-        }
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
-})();
+/* Parallax removido — causaba layout repaints en cada scroll */
 
 /* ─── FORM SUCCESS ───────────────────────────────────── */
 function cerrarExito() {

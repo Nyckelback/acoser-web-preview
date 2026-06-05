@@ -1220,49 +1220,67 @@ const GARMENTS = {
     name: 'Camiseta',
     front: (ctx) => {
       ctx.beginPath();
-      ctx.moveTo(204, 78);
-      ctx.bezierCurveTo(214, 96, 238, 110, 250, 112);
-      ctx.bezierCurveTo(262, 110, 286, 96, 296, 78);
-      ctx.lineTo(330, 70);
-      ctx.bezierCurveTo(358, 66, 396, 78, 418, 102);
-      ctx.bezierCurveTo(434, 120, 440, 150, 432, 174);
-      ctx.bezierCurveTo(420, 182, 398, 188, 382, 194);
-      ctx.bezierCurveTo(366, 202, 358, 220, 358, 244);
-      ctx.bezierCurveTo(357, 372, 359, 462, 358, 550);
-      ctx.bezierCurveTo(310, 559, 190, 559, 142, 550);
-      ctx.bezierCurveTo(141, 462, 143, 372, 142, 244);
-      ctx.bezierCurveTo(142, 220, 134, 202, 118, 194);
-      ctx.bezierCurveTo(102, 188, 80, 182, 68, 174);
-      ctx.bezierCurveTo(60, 150, 66, 120, 82, 102);
-      ctx.bezierCurveTo(104, 78, 142, 66, 170, 70);
+      // Crew neck collar
+      ctx.moveTo(201, 74);
+      ctx.bezierCurveTo(212, 90, 234, 104, 250, 106);
+      ctx.bezierCurveTo(266, 104, 288, 90, 299, 74);
+      // Right shoulder — nearly horizontal (drops 4px over 67px = 3.4°)
+      ctx.lineTo(366, 78);
+      // Right sleeve top — smooth outward curve
+      ctx.bezierCurveTo(392, 80, 422, 90, 438, 104);
+      // Right sleeve outer edge
+      ctx.bezierCurveTo(450, 128, 446, 158, 434, 176);
+      // Right sleeve bottom toward armhole
+      ctx.bezierCurveTo(424, 183, 406, 190, 390, 193);
+      // Right armhole — smooth curve into body
+      ctx.bezierCurveTo(374, 196, 362, 212, 362, 238);
+      // Right body side — straight
+      ctx.lineTo(362, 540);
+      // Bottom hem — minimal curve
+      ctx.bezierCurveTo(308, 546, 192, 546, 138, 540);
+      // Left body side — straight
+      ctx.lineTo(138, 238);
+      // Left armhole
+      ctx.bezierCurveTo(138, 212, 126, 196, 110, 193);
+      // Left sleeve bottom
+      ctx.bezierCurveTo(94, 190, 76, 183, 66, 176);
+      // Left sleeve outer edge
+      ctx.bezierCurveTo(54, 158, 50, 128, 62, 104);
+      // Left sleeve top
+      ctx.bezierCurveTo(78, 90, 108, 80, 134, 78);
+      // Left shoulder
+      ctx.lineTo(201, 74);
       ctx.closePath();
     },
     back: (ctx) => {
       ctx.beginPath();
-      ctx.moveTo(200, 74);
-      ctx.bezierCurveTo(216, 82, 234, 88, 250, 88);
-      ctx.bezierCurveTo(266, 88, 284, 82, 300, 74);
-      ctx.lineTo(330, 70);
-      ctx.bezierCurveTo(358, 66, 396, 78, 418, 102);
-      ctx.bezierCurveTo(434, 120, 440, 150, 432, 174);
-      ctx.bezierCurveTo(420, 182, 398, 188, 382, 194);
-      ctx.bezierCurveTo(366, 202, 358, 220, 358, 244);
-      ctx.bezierCurveTo(357, 372, 359, 462, 358, 550);
-      ctx.bezierCurveTo(310, 559, 190, 559, 142, 550);
-      ctx.bezierCurveTo(141, 462, 143, 372, 142, 244);
-      ctx.bezierCurveTo(142, 220, 134, 202, 118, 194);
-      ctx.bezierCurveTo(102, 188, 80, 182, 68, 174);
-      ctx.bezierCurveTo(60, 150, 66, 120, 82, 102);
-      ctx.bezierCurveTo(104, 78, 142, 66, 170, 70);
+      // Back neck — shallower and slightly wider than front
+      ctx.moveTo(196, 72);
+      ctx.bezierCurveTo(214, 78, 232, 82, 250, 82);
+      ctx.bezierCurveTo(268, 82, 286, 78, 304, 72);
+      // Same body as front
+      ctx.lineTo(366, 78);
+      ctx.bezierCurveTo(392, 80, 422, 90, 438, 104);
+      ctx.bezierCurveTo(450, 128, 446, 158, 434, 176);
+      ctx.bezierCurveTo(424, 183, 406, 190, 390, 193);
+      ctx.bezierCurveTo(374, 196, 362, 212, 362, 238);
+      ctx.lineTo(362, 540);
+      ctx.bezierCurveTo(308, 546, 192, 546, 138, 540);
+      ctx.lineTo(138, 238);
+      ctx.bezierCurveTo(138, 212, 126, 196, 110, 193);
+      ctx.bezierCurveTo(94, 190, 76, 183, 66, 176);
+      ctx.bezierCurveTo(54, 158, 50, 128, 62, 104);
+      ctx.bezierCurveTo(78, 90, 108, 80, 134, 78);
+      ctx.lineTo(196, 72);
       ctx.closePath();
     },
     collar_f: (ctx) => {
       ctx.beginPath();
-      ctx.moveTo(204, 78);
-      ctx.bezierCurveTo(214, 96, 238, 110, 250, 112);
-      ctx.bezierCurveTo(262, 110, 286, 96, 296, 78);
+      ctx.moveTo(201, 74);
+      ctx.bezierCurveTo(212, 90, 234, 104, 250, 106);
+      ctx.bezierCurveTo(266, 104, 288, 90, 299, 74);
     },
-    printArea: { front: {x:166, y:150, w:168, h:220}, back: {x:150, y:114, w:200, h:266} },
+    printArea: { front: {x:166, y:148, w:168, h:220}, back: {x:150, y:112, w:200, h:266} },
   },
   polo: {
     name: 'Polo',
@@ -1440,43 +1458,45 @@ function render() {
 
     if (S.view === 'front') {
       ctx.save();
-      /* Collar ribbing band */
+      /* Collar ribbing band — matches new front path collar */
       ctx.beginPath();
-      ctx.moveTo(204, 78);
-      ctx.bezierCurveTo(214, 96, 238, 110, 250, 112);
-      ctx.bezierCurveTo(262, 110, 286, 96, 296, 78);
+      ctx.moveTo(201, 74);
+      ctx.bezierCurveTo(212, 90, 234, 104, 250, 106);
+      ctx.bezierCurveTo(266, 104, 288, 90, 299, 74);
       ctx.strokeStyle = darken(S.color, lum < 60 ? -12 : 22);
       ctx.lineWidth = 7;
       ctx.lineCap = 'round';
       ctx.stroke();
-      /* Inner collar line */
+      /* Inner collar edge */
       ctx.strokeStyle = lum > 130 ? 'rgba(0,0,0,0.10)' : 'rgba(255,255,255,0.07)';
       ctx.lineWidth = 0.8;
       ctx.beginPath();
-      ctx.moveTo(207, 84);
-      ctx.bezierCurveTo(216, 99, 238, 112, 250, 113);
-      ctx.bezierCurveTo(262, 112, 284, 99, 293, 84);
+      ctx.moveTo(204, 80);
+      ctx.bezierCurveTo(213, 94, 235, 107, 250, 109);
+      ctx.bezierCurveTo(265, 107, 287, 94, 296, 80);
       ctx.stroke();
-      /* Collar depth */
-      const csg = ctx.createRadialGradient(250, 106, 2, 250, 106, 38);
+      /* Collar depth shadow */
+      const csg = ctx.createRadialGradient(250, 106, 2, 250, 106, 36);
       csg.addColorStop(0, `rgba(0,0,0,${lum > 130 ? 0.14 : 0.26})`);
       csg.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = csg;
-      ctx.fillRect(196, 70, 108, 44);
+      ctx.fillRect(192, 68, 116, 46);
       ctx.restore();
     }
 
-    /* Minimal seam lines — shoulder + hem only */
+    /* Seam lines — shoulder (near-horizontal) + hem */
     ctx.save();
-    ctx.globalAlpha = 0.65;
+    ctx.globalAlpha = 0.6;
     ctx.strokeStyle = seamC;
     ctx.lineCap = 'round';
     ctx.lineWidth = 0.6;
-    ctx.beginPath(); ctx.moveTo(203, 78); ctx.lineTo(142, 196); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(297, 78); ctx.lineTo(358, 196); ctx.stroke();
+    /* Shoulder seams: collar point → sleeve shoulder (nearly flat) */
+    ctx.beginPath(); ctx.moveTo(201, 74); ctx.lineTo(134, 78); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(299, 74); ctx.lineTo(366, 78); ctx.stroke();
+    /* Bottom hem */
     ctx.lineWidth = 0.5;
     ctx.beginPath();
-    ctx.moveTo(142, 550); ctx.bezierCurveTo(196, 557, 304, 557, 358, 550);
+    ctx.moveTo(138, 540); ctx.bezierCurveTo(192, 546, 308, 546, 362, 540);
     ctx.stroke();
     ctx.globalAlpha = 1;
     ctx.restore();

@@ -1395,70 +1395,38 @@ function render() {
   const path = S.view === 'front' ? g.front : g.back;
   const pa = (S.view === 'front' ? g.printArea.front : g.printArea.back);
 
-  /* Ambient shadow (soft, spread) */
+  /* Clean drop shadow */
   ctx.save();
-  ctx.shadowColor = 'rgba(0,0,0,.35)';
-  ctx.shadowBlur = 42;
-  ctx.shadowOffsetY = 18;
-  ctx.shadowOffsetX = 0;
+  ctx.shadowColor = 'rgba(0,0,0,.20)';
+  ctx.shadowBlur = 18;
+  ctx.shadowOffsetY = 8;
   path(ctx);
-  ctx.fillStyle = 'rgba(0,0,0,.01)';
-  ctx.fill();
-  ctx.restore();
-  /* Contact shadow (crisp, close) */
-  ctx.save();
-  ctx.shadowColor = 'rgba(0,0,0,.55)';
-  ctx.shadowBlur = 12;
-  ctx.shadowOffsetY = 6;
-  ctx.shadowOffsetX = 2;
-  path(ctx);
-  ctx.fillStyle = '#000';
+  ctx.fillStyle = '#1c1a18';
   ctx.fill();
   ctx.restore();
 
-  /* Garment fill */
+  /* Garment base fill */
   ctx.save();
   path(ctx);
   ctx.fillStyle = S.color;
   ctx.fill();
 
-  /* Multi-pass fabric shading */
-  const lum2 = getLuminance(S.color);
-  const isDark = lum2 < 80;
-  const hiAmt = isDark ? 0.16 : 0.06;
-  const shAmt = isDark ? 0.32 : 0.14;
-
-  /* Upper-left highlight (light source) */
-  const hlGrad = ctx.createLinearGradient(58, 68, 300, 320);
-  hlGrad.addColorStop(0, `rgba(255,255,255,${hiAmt})`);
-  hlGrad.addColorStop(0.5, 'rgba(255,255,255,0)');
-  path(ctx); ctx.fillStyle = hlGrad; ctx.fill();
-
-  /* Right-bottom shadow */
-  const shGrad = ctx.createLinearGradient(200, 120, 460, 560);
-  shGrad.addColorStop(0.35, 'rgba(0,0,0,0)');
-  shGrad.addColorStop(1, `rgba(0,0,0,${shAmt})`);
-  path(ctx); ctx.fillStyle = shGrad; ctx.fill();
-
-  /* Vertical fold (center body) */
-  const foldGrad = ctx.createLinearGradient(220, 200, 280, 200);
-  foldGrad.addColorStop(0, 'rgba(0,0,0,0)');
-  foldGrad.addColorStop(0.48, `rgba(0,0,0,${isDark ? 0.06 : 0.03})`);
-  foldGrad.addColorStop(0.52, `rgba(255,255,255,${isDark ? 0.05 : 0.02})`);
-  foldGrad.addColorStop(1, 'rgba(0,0,0,0)');
-  path(ctx); ctx.fillStyle = foldGrad; ctx.fill();
-
-  /* Bottom vignette (hem weight) */
-  const hemGrad = ctx.createLinearGradient(250, 420, 250, 560);
-  hemGrad.addColorStop(0, 'rgba(0,0,0,0)');
-  hemGrad.addColorStop(1, `rgba(0,0,0,${isDark ? 0.18 : 0.08})`);
-  path(ctx); ctx.fillStyle = hemGrad; ctx.fill();
-
-  /* Garment stroke */
+  /* Single clean shading pass — diagonal light source */
   const lum = getLuminance(S.color);
-  const strokeAlpha = lum > 200 ? 0.22 : 0.14;
+  const isDark = lum < 80;
+  const shade = ctx.createLinearGradient(CW * 0.14, CH * 0.08, CW * 0.86, CH * 0.92);
+  shade.addColorStop(0, `rgba(255,255,255,${isDark ? 0.07 : 0.03})`);
+  shade.addColorStop(0.42, 'rgba(0,0,0,0)');
+  shade.addColorStop(1, `rgba(0,0,0,${isDark ? 0.13 : 0.06})`);
   path(ctx);
-  ctx.strokeStyle = lum > 200 ? `rgba(0,0,0,${strokeAlpha})` : `rgba(255,255,255,${strokeAlpha})`;
+  ctx.fillStyle = shade;
+  ctx.fill();
+
+  /* Clean garment outline */
+  path(ctx);
+  ctx.strokeStyle = lum > 180
+    ? 'rgba(0,0,0,0.16)'
+    : (lum > 55 ? 'rgba(0,0,0,0.20)' : 'rgba(255,255,255,0.11)');
   ctx.lineWidth = 1.5;
   ctx.stroke();
   ctx.restore();
@@ -1472,54 +1440,44 @@ function render() {
 
     if (S.view === 'front') {
       ctx.save();
-      /* Collar band — thick outer strip */
+      /* Collar ribbing band */
       ctx.beginPath();
       ctx.moveTo(204, 78);
       ctx.bezierCurveTo(214, 96, 238, 110, 250, 112);
       ctx.bezierCurveTo(262, 110, 286, 96, 296, 78);
-      ctx.strokeStyle = darken(S.color, lum < 60 ? -7 : 16);
-      ctx.lineWidth = 10;
+      ctx.strokeStyle = darken(S.color, lum < 60 ? -12 : 22);
+      ctx.lineWidth = 7;
       ctx.lineCap = 'round';
       ctx.stroke();
-      /* Collar inner edge */
-      ctx.strokeStyle = lum > 130 ? 'rgba(0,0,0,0.14)' : 'rgba(255,255,255,0.09)';
-      ctx.lineWidth = 1;
+      /* Inner collar line */
+      ctx.strokeStyle = lum > 130 ? 'rgba(0,0,0,0.10)' : 'rgba(255,255,255,0.07)';
+      ctx.lineWidth = 0.8;
       ctx.beginPath();
-      ctx.moveTo(207, 85);
-      ctx.bezierCurveTo(217, 100, 238, 112, 250, 114);
-      ctx.bezierCurveTo(262, 112, 283, 100, 293, 85);
+      ctx.moveTo(207, 84);
+      ctx.bezierCurveTo(216, 99, 238, 112, 250, 113);
+      ctx.bezierCurveTo(262, 112, 284, 99, 293, 84);
       ctx.stroke();
-      /* Collar opening shadow */
-      const csg = ctx.createRadialGradient(250, 115, 3, 250, 115, 54);
-      csg.addColorStop(0, `rgba(0,0,0,${lum > 130 ? 0.24 : 0.42})`);
+      /* Collar depth */
+      const csg = ctx.createRadialGradient(250, 106, 2, 250, 106, 38);
+      csg.addColorStop(0, `rgba(0,0,0,${lum > 130 ? 0.14 : 0.26})`);
       csg.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = csg;
-      ctx.fillRect(188, 72, 124, 58);
+      ctx.fillRect(196, 70, 108, 44);
       ctx.restore();
     }
 
-    /* Seam lines — visible on both views */
+    /* Minimal seam lines — shoulder + hem only */
     ctx.save();
+    ctx.globalAlpha = 0.65;
     ctx.strokeStyle = seamC;
     ctx.lineCap = 'round';
-    /* Shoulder seams */
-    ctx.lineWidth = 0.8;
-    ctx.beginPath(); ctx.moveTo(202, 78); ctx.lineTo(142, 198); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(298, 78); ctx.lineTo(358, 198); ctx.stroke();
-    /* Sleeve hem marks */
     ctx.lineWidth = 0.6;
-    ctx.beginPath(); ctx.moveTo(67, 170); ctx.bezierCurveTo(63, 180, 64, 190, 70, 196); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(433, 170); ctx.bezierCurveTo(437, 180, 436, 190, 430, 196); ctx.stroke();
-    /* Bottom hem */
-    ctx.lineWidth = 0.8;
+    ctx.beginPath(); ctx.moveTo(203, 78); ctx.lineTo(142, 196); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(297, 78); ctx.lineTo(358, 196); ctx.stroke();
+    ctx.lineWidth = 0.5;
     ctx.beginPath();
-    ctx.moveTo(142, 550); ctx.bezierCurveTo(196, 558, 304, 558, 358, 550);
+    ctx.moveTo(142, 550); ctx.bezierCurveTo(196, 557, 304, 557, 358, 550);
     ctx.stroke();
-    /* Armhole curves */
-    ctx.lineWidth = 0.6;
-    ctx.globalAlpha = 0.7;
-    ctx.beginPath(); ctx.moveTo(142, 244); ctx.bezierCurveTo(128, 226, 114, 208, 118, 194); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(358, 244); ctx.bezierCurveTo(372, 226, 386, 208, 382, 194); ctx.stroke();
     ctx.globalAlpha = 1;
     ctx.restore();
   }

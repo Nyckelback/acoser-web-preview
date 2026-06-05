@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ACOSER Studio — Camiseta profesional flat-lay
+  ViewBox: 0 0 500 580  (coincide con canvas del Mockup Studio)
+
+  Proporciones reales:
+  · Cuello redondo (crew neck):  y 66–104  (38 px de profundidad)
+  · Hombro: casi horizontal, caída de 6 px sobre 64 px (5.4°)
+  · Manga: transición suave desde el hombro, sin pico
+  · Cuerpo: costados rectos desde axila (y 238) hasta ruedo (y 534)
+  · Ruedo: apenas curvo (+6 px al centro)
+
+  Secciones identificadas por id:
+    shirt-body   → relleno principal  (cambiar fill para color dinámico)
+    shirt-front  → grupo vista frontal
+    shirt-back   → grupo vista trasera
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 580" width="500" height="580">
+  <title>ACOSER — Camiseta estándar</title>
+
+  <defs>
+    <!-- Sombra suave del cuerpo -->
+    <filter id="garment-shadow" x="-14%" y="-6%" width="130%" height="124%">
+      <feDropShadow dx="0" dy="9" stdDeviation="15" flood-color="#000" flood-opacity="0.22"/>
+    </filter>
+
+    <!-- Degradado de luz (esquina sup-izq → inf-der) -->
+    <linearGradient id="light-shade" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.07"/>
+      <stop offset="42%"  stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.10"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ════════════════════════════════════════
+       VISTA FRONTAL  (id="shirt-front")
+       ════════════════════════════════════════ -->
+  <g id="shirt-front">
+
+    <!-- Path maestro — FRENTE
+         Empieza en cuello izquierdo, sentido horario -->
+    <path id="shirt-front-body"
+      d="M196,66
+         C208,84 230,100 250,104
+         C270,100 292,84  304,66
+         L368,72
+         C390,74 422,86  442,98
+         C454,116 452,148 440,168
+         C430,176 414,184 396,190
+         C380,196 364,212 364,238
+         L364,534
+         C316,540 184,540 136,534
+         L136,238
+         C136,212 120,196 104,190
+         C86,184  70,176  60,168
+         C48,148  46,116  58,98
+         C78,86  110,74  132,72
+         Z"
+      fill="#f4f0ea"
+      stroke="rgba(0,0,0,0.15)"
+      stroke-width="1.5"
+      filter="url(#garment-shadow)"/>
+
+    <!-- Capa de iluminación (no interactiva) -->
+    <path
+      d="M196,66 C208,84 230,100 250,104 C270,100 292,84 304,66
+         L368,72 C390,74 422,86 442,98 C454,116 452,148 440,168
+         C430,176 414,184 396,190 C380,196 364,212 364,238
+         L364,534 C316,540 184,540 136,534 L136,238
+         C136,212 120,196 104,190 C86,184 70,176 60,168
+         C48,148 46,116 58,98 C78,86 110,74 132,72 Z"
+      fill="url(#light-shade)"
+      pointer-events="none"/>
+
+    <!-- Canalillo del cuello (crew neck band) -->
+    <path
+      d="M196,66 C208,84 230,100 250,104 C270,100 292,84 304,66"
+      fill="none"
+      stroke="rgba(0,0,0,0.18)"
+      stroke-width="7"
+      stroke-linecap="round"
+      pointer-events="none"/>
+
+    <!-- Línea interior del cuello -->
+    <path
+      d="M199,72 C210,88 232,103 250,106 C268,103 290,88 301,72"
+      fill="none"
+      stroke="rgba(0,0,0,0.09)"
+      stroke-width="0.8"
+      pointer-events="none"/>
+
+    <!-- Costura de hombros (casi horizontales) -->
+    <line x1="196" y1="66"  x2="132" y2="72" stroke="rgba(0,0,0,0.10)" stroke-width="0.65" stroke-linecap="round"/>
+    <line x1="304" y1="66"  x2="368" y2="72" stroke="rgba(0,0,0,0.10)" stroke-width="0.65" stroke-linecap="round"/>
+
+    <!-- Costura del ruedo -->
+    <path
+      d="M136,534 C188,540 312,540 364,534"
+      fill="none"
+      stroke="rgba(0,0,0,0.09)"
+      stroke-width="0.6"
+      pointer-events="none"/>
+
+    <!-- Área de impresión recomendada (referencia, se dibuja en canvas) -->
+    <rect x="166" y="148" width="168" height="220"
+      fill="none"
+      stroke="rgba(184,151,90,0.28)"
+      stroke-width="1"
+      stroke-dasharray="5,4"
+      pointer-events="none"/>
+
+  </g>
+
+  <!-- ════════════════════════════════════════
+       VISTA TRASERA  (id="shirt-back")
+       ════════════════════════════════════════ -->
+  <g id="shirt-back" display="none">
+
+    <!-- Path maestro — ESPALDA
+         Cuello trasero: más ancho (192–308), solo 10 px de profundidad -->
+    <path id="shirt-back-body"
+      d="M192,68
+         C210,74 230,78  250,78
+         C270,78 290,74  308,68
+         L368,72
+         C390,74 422,86  442,98
+         C454,116 452,148 440,168
+         C430,176 414,184 396,190
+         C380,196 364,212 364,238
+         L364,534
+         C316,540 184,540 136,534
+         L136,238
+         C136,212 120,196 104,190
+         C86,184  70,176  60,168
+         C48,148  46,116  58,98
+         C78,86  110,74  132,72
+         Z"
+      fill="#f4f0ea"
+      stroke="rgba(0,0,0,0.15)"
+      stroke-width="1.5"
+      filter="url(#garment-shadow)"/>
+
+    <path
+      d="M192,68 C210,74 230,78 250,78 C270,78 290,74 308,68
+         L368,72 C390,74 422,86 442,98 C454,116 452,148 440,168
+         C430,176 414,184 396,190 C380,196 364,212 364,238
+         L364,534 C316,540 184,540 136,534 L136,238
+         C136,212 120,196 104,190 C86,184 70,176 60,168
+         C48,148 46,116 58,98 C78,86 110,74 132,72 Z"
+      fill="url(#light-shade)"
+      pointer-events="none"/>
+
+    <!-- Canalillo trasero -->
+    <path
+      d="M192,68 C210,74 230,78 250,78 C270,78 290,74 308,68"
+      fill="none"
+      stroke="rgba(0,0,0,0.16)"
+      stroke-width="6"
+      stroke-linecap="round"
+      pointer-events="none"/>
+
+    <line x1="192" y1="68" x2="132" y2="72" stroke="rgba(0,0,0,0.10)" stroke-width="0.65" stroke-linecap="round"/>
+    <line x1="308" y1="68" x2="368" y2="72" stroke="rgba(0,0,0,0.10)" stroke-width="0.65" stroke-linecap="round"/>
+
+    <path
+      d="M136,534 C188,540 312,540 364,534"
+      fill="none"
+      stroke="rgba(0,0,0,0.09)"
+      stroke-width="0.6"
+      pointer-events="none"/>
+
+    <rect x="150" y="112" width="200" height="266"
+      fill="none"
+      stroke="rgba(184,151,90,0.28)"
+      stroke-width="1"
+      stroke-dasharray="5,4"
+      pointer-events="none"/>
+
+  </g>
+
+</svg>

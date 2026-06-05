@@ -1218,67 +1218,50 @@ const PRICES = {
 const GARMENTS = {
   tshirt: {
     name: 'Camiseta',
+    /* Canvas paths used for CLIPPING only — visual drawn by SVG */
     front: (ctx) => {
       ctx.beginPath();
-      // Crew neck collar
-      ctx.moveTo(201, 74);
-      ctx.bezierCurveTo(212, 90, 234, 104, 250, 106);
-      ctx.bezierCurveTo(266, 104, 288, 90, 299, 74);
-      // Right shoulder — nearly horizontal (drops 4px over 67px = 3.4°)
-      ctx.lineTo(366, 78);
-      // Right sleeve top — smooth outward curve
-      ctx.bezierCurveTo(392, 80, 422, 90, 438, 104);
-      // Right sleeve outer edge
-      ctx.bezierCurveTo(450, 128, 446, 158, 434, 176);
-      // Right sleeve bottom toward armhole
-      ctx.bezierCurveTo(424, 183, 406, 190, 390, 193);
-      // Right armhole — smooth curve into body
-      ctx.bezierCurveTo(374, 196, 362, 212, 362, 238);
-      // Right body side — straight
-      ctx.lineTo(362, 540);
-      // Bottom hem — minimal curve
-      ctx.bezierCurveTo(308, 546, 192, 546, 138, 540);
-      // Left body side — straight
-      ctx.lineTo(138, 238);
-      // Left armhole
-      ctx.bezierCurveTo(138, 212, 126, 196, 110, 193);
-      // Left sleeve bottom
-      ctx.bezierCurveTo(94, 190, 76, 183, 66, 176);
-      // Left sleeve outer edge
-      ctx.bezierCurveTo(54, 158, 50, 128, 62, 104);
-      // Left sleeve top
-      ctx.bezierCurveTo(78, 90, 108, 80, 134, 78);
-      // Left shoulder
-      ctx.lineTo(201, 74);
+      ctx.moveTo(196, 66);
+      ctx.bezierCurveTo(208, 84, 230, 100, 250, 104);
+      ctx.bezierCurveTo(270, 100, 292, 84, 304, 66);
+      ctx.lineTo(368, 72);
+      ctx.bezierCurveTo(390, 74, 422, 86, 442, 98);
+      ctx.bezierCurveTo(454, 116, 452, 148, 440, 168);
+      ctx.bezierCurveTo(430, 176, 414, 184, 396, 190);
+      ctx.bezierCurveTo(380, 196, 364, 212, 364, 238);
+      ctx.lineTo(364, 534);
+      ctx.bezierCurveTo(316, 540, 184, 540, 136, 534);
+      ctx.lineTo(136, 238);
+      ctx.bezierCurveTo(136, 212, 120, 196, 104, 190);
+      ctx.bezierCurveTo(86, 184, 70, 176, 60, 168);
+      ctx.bezierCurveTo(48, 148, 46, 116, 58, 98);
+      ctx.bezierCurveTo(78, 86, 110, 74, 132, 72);
       ctx.closePath();
     },
     back: (ctx) => {
       ctx.beginPath();
-      // Back neck — shallower and slightly wider than front
-      ctx.moveTo(196, 72);
-      ctx.bezierCurveTo(214, 78, 232, 82, 250, 82);
-      ctx.bezierCurveTo(268, 82, 286, 78, 304, 72);
-      // Same body as front
-      ctx.lineTo(366, 78);
-      ctx.bezierCurveTo(392, 80, 422, 90, 438, 104);
-      ctx.bezierCurveTo(450, 128, 446, 158, 434, 176);
-      ctx.bezierCurveTo(424, 183, 406, 190, 390, 193);
-      ctx.bezierCurveTo(374, 196, 362, 212, 362, 238);
-      ctx.lineTo(362, 540);
-      ctx.bezierCurveTo(308, 546, 192, 546, 138, 540);
-      ctx.lineTo(138, 238);
-      ctx.bezierCurveTo(138, 212, 126, 196, 110, 193);
-      ctx.bezierCurveTo(94, 190, 76, 183, 66, 176);
-      ctx.bezierCurveTo(54, 158, 50, 128, 62, 104);
-      ctx.bezierCurveTo(78, 90, 108, 80, 134, 78);
-      ctx.lineTo(196, 72);
+      ctx.moveTo(192, 68);
+      ctx.bezierCurveTo(210, 74, 230, 78, 250, 78);
+      ctx.bezierCurveTo(270, 78, 290, 74, 308, 68);
+      ctx.lineTo(368, 72);
+      ctx.bezierCurveTo(390, 74, 422, 86, 442, 98);
+      ctx.bezierCurveTo(454, 116, 452, 148, 440, 168);
+      ctx.bezierCurveTo(430, 176, 414, 184, 396, 190);
+      ctx.bezierCurveTo(380, 196, 364, 212, 364, 238);
+      ctx.lineTo(364, 534);
+      ctx.bezierCurveTo(316, 540, 184, 540, 136, 534);
+      ctx.lineTo(136, 238);
+      ctx.bezierCurveTo(136, 212, 120, 196, 104, 190);
+      ctx.bezierCurveTo(86, 184, 70, 176, 60, 168);
+      ctx.bezierCurveTo(48, 148, 46, 116, 58, 98);
+      ctx.bezierCurveTo(78, 86, 110, 74, 132, 72);
       ctx.closePath();
     },
     collar_f: (ctx) => {
       ctx.beginPath();
-      ctx.moveTo(201, 74);
-      ctx.bezierCurveTo(212, 90, 234, 104, 250, 106);
-      ctx.bezierCurveTo(266, 104, 288, 90, 299, 74);
+      ctx.moveTo(196, 66);
+      ctx.bezierCurveTo(208, 84, 230, 100, 250, 104);
+      ctx.bezierCurveTo(270, 100, 292, 84, 304, 66);
     },
     printArea: { front: {x:166, y:148, w:168, h:220}, back: {x:150, y:112, w:200, h:266} },
   },
@@ -1405,6 +1388,46 @@ function getLuminance(hex) {
   return 0.299*r + 0.587*g + 0.114*b;
 }
 
+/* ── SVG SHIRT CACHE ── */
+let SHIRT_CACHE = {};
+let SHIRT_LOADING = {};
+
+/* SVG path data matching the canvas clip paths */
+const TSHIRT_D = {
+  front: "M196,66 C208,84 230,100 250,104 C270,100 292,84 304,66 L368,72 C390,74 422,86 442,98 C454,116 452,148 440,168 C430,176 414,184 396,190 C380,196 364,212 364,238 L364,534 C316,540 184,540 136,534 L136,238 C136,212 120,196 104,190 C86,184 70,176 60,168 C48,148 46,116 58,98 C78,86 110,74 132,72 Z",
+  back:  "M192,68 C210,74 230,78 250,78 C270,78 290,74 308,68 L368,72 C390,74 422,86 442,98 C454,116 452,148 440,168 C430,176 414,184 396,190 C380,196 364,212 364,238 L364,534 C316,540 184,540 136,534 L136,238 C136,212 120,196 104,190 C86,184 70,176 60,168 C48,148 46,116 58,98 C78,86 110,74 132,72 Z",
+};
+
+function buildTshirtSvg(view, color) {
+  const lum = getLuminance(color);
+  const dk = lum < 80;
+  const d = TSHIRT_D[view];
+  const outline = lum > 180 ? 'rgba(0,0,0,.16)' : (lum > 55 ? 'rgba(0,0,0,.20)' : 'rgba(255,255,255,.11)');
+  const collar  = dk ? 'rgba(255,255,255,.14)' : 'rgba(0,0,0,.18)';
+  const seam    = dk ? 'rgba(255,255,255,.09)' : 'rgba(0,0,0,.10)';
+  const hi = dk ? .07 : .03;
+  const sh = dk ? .13 : .07;
+  const cv = view === 'front'
+    ? `M196,66 C208,84 230,100 250,104 C270,100 292,84 304,66`
+    : `M192,68 C210,74 230,78 250,78 C270,78 290,74 308,68`;
+  const ci = view === 'front'
+    ? `<path d="M199,72 C210,88 232,103 250,106 C268,103 290,88 301,72" fill="none" stroke="${seam}" stroke-width=".8"/>`
+    : '';
+  const cw = view === 'front' ? 7 : 6;
+  const sx = view === 'front' ? 196 : 192;
+  const ex = view === 'front' ? 304 : 308;
+  const sy = view === 'front' ? 66 : 68;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 580"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fff" stop-opacity="${hi}"/><stop offset="42%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="${sh}"/></linearGradient></defs><path d="${d}" fill="${color}" stroke="${outline}" stroke-width="1.5"/><path d="${d}" fill="url(#g)"/><path d="${cv}" fill="none" stroke="${collar}" stroke-width="${cw}" stroke-linecap="round"/>${ci}<line x1="${sx}" y1="${sy}" x2="132" y2="72" stroke="${seam}" stroke-width=".65" stroke-linecap="round"/><line x1="${ex}" y1="${sy}" x2="368" y2="72" stroke="${seam}" stroke-width=".65" stroke-linecap="round"/><path d="M136,534 C188,540 312,540 364,534" fill="none" stroke="${seam}" stroke-width=".6"/></svg>`;
+}
+
+function loadShirtImg(key, view, color) {
+  if (SHIRT_LOADING[key]) return;
+  SHIRT_LOADING[key] = true;
+  const img = new Image();
+  img.onload = () => { SHIRT_CACHE[key] = img; SHIRT_LOADING[key] = false; render(); };
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(buildTshirtSvg(view, color));
+}
+
 /* ── RENDER ── */
 function render() {
   ctx.clearRect(0, 0, CW, CH);
@@ -1413,92 +1436,43 @@ function render() {
   const path = S.view === 'front' ? g.front : g.back;
   const pa = (S.view === 'front' ? g.printArea.front : g.printArea.back);
 
-  /* Clean drop shadow */
-  ctx.save();
-  ctx.shadowColor = 'rgba(0,0,0,.20)';
-  ctx.shadowBlur = 18;
-  ctx.shadowOffsetY = 8;
-  path(ctx);
-  ctx.fillStyle = '#1c1a18';
-  ctx.fill();
-  ctx.restore();
-
-  /* Garment base fill */
-  ctx.save();
-  path(ctx);
-  ctx.fillStyle = S.color;
-  ctx.fill();
-
-  /* Single clean shading pass — diagonal light source */
+  /* ── GARMENT RENDERING ── */
   const lum = getLuminance(S.color);
   const isDark = lum < 80;
-  const shade = ctx.createLinearGradient(CW * 0.14, CH * 0.08, CW * 0.86, CH * 0.92);
-  shade.addColorStop(0, `rgba(255,255,255,${isDark ? 0.07 : 0.03})`);
-  shade.addColorStop(0.42, 'rgba(0,0,0,0)');
-  shade.addColorStop(1, `rgba(0,0,0,${isDark ? 0.13 : 0.06})`);
-  path(ctx);
-  ctx.fillStyle = shade;
-  ctx.fill();
 
-  /* Clean garment outline */
-  path(ctx);
-  ctx.strokeStyle = lum > 180
-    ? 'rgba(0,0,0,0.16)'
-    : (lum > 55 ? 'rgba(0,0,0,0.20)' : 'rgba(255,255,255,0.11)');
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.restore();
-
-  /* ── Collar band, shadow & seam details (tshirt) ── */
   if (S.garment === 'tshirt') {
-    const seamA = lum > 180 ? 0.16 : lum > 70 ? 0.20 : 0.12;
-    const seamC = lum > 130
-      ? `rgba(0,0,0,${seamA})`
-      : `rgba(255,255,255,${seamA * 0.7})`;
-
-    if (S.view === 'front') {
-      ctx.save();
-      /* Collar ribbing band — matches new front path collar */
-      ctx.beginPath();
-      ctx.moveTo(201, 74);
-      ctx.bezierCurveTo(212, 90, 234, 104, 250, 106);
-      ctx.bezierCurveTo(266, 104, 288, 90, 299, 74);
-      ctx.strokeStyle = darken(S.color, lum < 60 ? -12 : 22);
-      ctx.lineWidth = 7;
-      ctx.lineCap = 'round';
-      ctx.stroke();
-      /* Inner collar edge */
-      ctx.strokeStyle = lum > 130 ? 'rgba(0,0,0,0.10)' : 'rgba(255,255,255,0.07)';
-      ctx.lineWidth = 0.8;
-      ctx.beginPath();
-      ctx.moveTo(204, 80);
-      ctx.bezierCurveTo(213, 94, 235, 107, 250, 109);
-      ctx.bezierCurveTo(265, 107, 287, 94, 296, 80);
-      ctx.stroke();
-      /* Collar depth shadow */
-      const csg = ctx.createRadialGradient(250, 106, 2, 250, 106, 36);
-      csg.addColorStop(0, `rgba(0,0,0,${lum > 130 ? 0.14 : 0.26})`);
-      csg.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = csg;
-      ctx.fillRect(192, 68, 116, 46);
-      ctx.restore();
-    }
-
-    /* Seam lines — shoulder (near-horizontal) + hem */
+    /* Canvas drop shadow (SVG filter would be clipped at canvas edge) */
     ctx.save();
-    ctx.globalAlpha = 0.6;
-    ctx.strokeStyle = seamC;
-    ctx.lineCap = 'round';
-    ctx.lineWidth = 0.6;
-    /* Shoulder seams: collar point → sleeve shoulder (nearly flat) */
-    ctx.beginPath(); ctx.moveTo(201, 74); ctx.lineTo(134, 78); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(299, 74); ctx.lineTo(366, 78); ctx.stroke();
-    /* Bottom hem */
-    ctx.lineWidth = 0.5;
-    ctx.beginPath();
-    ctx.moveTo(138, 540); ctx.bezierCurveTo(192, 546, 308, 546, 362, 540);
-    ctx.stroke();
-    ctx.globalAlpha = 1;
+    ctx.shadowColor = 'rgba(0,0,0,.20)';
+    ctx.shadowBlur = 18;
+    ctx.shadowOffsetY = 8;
+    path(ctx); ctx.fillStyle = '#1c1a18'; ctx.fill();
+    ctx.restore();
+    /* SVG-rendered shirt (shading, collar, seams all inside SVG) */
+    const key = `tshirt_${S.view}_${S.color}`;
+    if (!SHIRT_CACHE[key]) {
+      loadShirtImg(key, S.view, S.color);
+      /* Flat fill fallback while loading */
+      path(ctx); ctx.fillStyle = S.color; ctx.fill();
+    } else {
+      ctx.drawImage(SHIRT_CACHE[key], 0, 0, CW, CH);
+    }
+  } else {
+    /* Canvas rendering for polo/hoodie/uniform */
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,.20)'; ctx.shadowBlur = 18; ctx.shadowOffsetY = 8;
+    path(ctx); ctx.fillStyle = '#1c1a18'; ctx.fill();
+    ctx.restore();
+    ctx.save();
+    path(ctx); ctx.fillStyle = S.color; ctx.fill();
+    const shade = ctx.createLinearGradient(CW*.14, CH*.08, CW*.86, CH*.92);
+    shade.addColorStop(0, `rgba(255,255,255,${isDark?.07:.03})`);
+    shade.addColorStop(0.42, 'rgba(0,0,0,0)');
+    shade.addColorStop(1, `rgba(0,0,0,${isDark?.13:.06})`);
+    path(ctx); ctx.fillStyle = shade; ctx.fill();
+    path(ctx);
+    ctx.strokeStyle = lum > 180 ? 'rgba(0,0,0,.16)' : (lum > 55 ? 'rgba(0,0,0,.20)' : 'rgba(255,255,255,.11)');
+    ctx.lineWidth = 1.5; ctx.stroke();
     ctx.restore();
   }
 
@@ -1850,6 +1824,7 @@ function setGarment(type, btn) {
 
 function setColor(hex, name, dot) {
   S.color = hex; S.colorName = name;
+  SHIRT_CACHE = {}; /* invalidate SVG cache on color change */
   document.querySelectorAll('.color-swatch').forEach(d => d.classList.remove('active'));
   dot.classList.add('active');
   document.getElementById('colorNameTag').textContent = name;

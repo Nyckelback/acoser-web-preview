@@ -20,21 +20,21 @@
 .tela-card.selected { border-color: var(--gold); background: rgba(184,151,90,.05); }
 .tela-card.selected::after { width: 100%; }
 .tela-name { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--cream); font-weight: 400; margin-bottom: .3rem; }
-.tela-comp { font-family: 'Barlow Condensed', sans-serif; font-size: .55rem; letter-spacing: .3em; color: var(--gold); text-transform: uppercase; font-weight: 300; margin-bottom: 1.2rem; display: block; }
+.tela-comp { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .26em; color: var(--gold); text-transform: uppercase; font-weight: 300; margin-bottom: 1.2rem; display: block; }
 .rating-row { display: flex; align-items: center; gap: 1rem; margin-bottom: .6rem; }
-.rating-label { font-family: 'Barlow Condensed', sans-serif; font-size: .5rem; letter-spacing: .25em; text-transform: uppercase; color: var(--ash); width: 90px; flex-shrink: 0; }
+.rating-label { font-family: 'Barlow Condensed', sans-serif; font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--fog); width: 118px; flex-shrink: 0; }
 .rating-bar { flex: 1; height: 2px; background: var(--dust); position: relative; }
 .rating-fill { height: 100%; background: linear-gradient(90deg, var(--gold3), var(--gold2)); transition: width .8s cubic-bezier(.4,0,.2,1); width: 0; }
-.rating-val { font-family: 'Barlow Condensed', sans-serif; font-size: .55rem; color: var(--ash); width: 20px; text-align: right; flex-shrink: 0; }
+.rating-val { font-family: 'Barlow Condensed', sans-serif; font-size: .74rem; color: var(--ash); width: 28px; text-align: right; flex-shrink: 0; }
 .tag-list { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 1.2rem; }
-.tag { font-family: 'Barlow Condensed', sans-serif; font-size: .48rem; letter-spacing: .25em; text-transform: uppercase; border: 1px solid var(--dust); color: var(--ash); padding: .3rem .7rem; }
+.tag { font-family: 'Barlow Condensed', sans-serif; font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; border: 1px solid var(--dust); color: var(--ash); padding: .3rem .7rem; }
 .compare-panel { background: var(--ink3); border: 1px solid var(--dust); padding: 2.5rem; display: none; }
 .compare-row { display: flex; align-items: center; border-bottom: 1px solid var(--dust); }
 .compare-row:last-child { border-bottom: none; }
-.compare-attr { font-family: 'Barlow Condensed', sans-serif; font-size: .52rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ash); width: 130px; flex-shrink: 0; padding: 1rem 0; }
+.compare-attr { font-family: 'Barlow Condensed', sans-serif; font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ash); width: 150px; flex-shrink: 0; padding: 1rem 0; }
 .compare-val { flex: 1; padding: 1rem 1.5rem; font-size: .82rem; color: var(--fog); border-left: 1px solid var(--dust); text-align: center; }
 .compare-val.best { color: var(--gold2); font-weight: 500; }
-.compare-header { font-family: 'Barlow Condensed', sans-serif; font-size: .6rem; letter-spacing: .3em; text-transform: uppercase; font-weight: 500; }
+.compare-header { font-family: 'Barlow Condensed', sans-serif; font-size: 1.05rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; color: var(--cream); }
 .grid-telas { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--dust); }
 @media(max-width:900px){ .grid-telas{grid-template-columns:1fr 1fr;} }
 @media(max-width:600px){ .grid-telas{grid-template-columns:1fr;} }
@@ -81,14 +81,14 @@
 <div style="padding:calc(88px + 6vh) 4rem 4vh;background:var(--ink2);border-bottom:1px solid var(--dust);">
   <div class="section-label">Guía de materiales textiles</div>
   <h1 class="sec-h2">Comparador de<br><em>Tipos de Tela</em></h1>
-  <p style="font-size:.88rem;color:var(--fog);line-height:1.9;max-width:540px;margin-top:1.5rem;font-weight:300;">Elige el material correcto para tu proyecto. Compara propiedades, durabilidad y compatibilidad con técnicas de impresión.</p>
+  <p style="font-size:.95rem;color:var(--fog);line-height:1.7;max-width:540px;margin-top:1.5rem;font-weight:300;">Elige el material correcto: compara propiedades, durabilidad y compatibilidad con técnicas de impresión.</p>
 </div>
 
 <div style="padding:6vh 4rem;max-width:1200px;margin:0 auto;">
   <div class="r" style="margin-bottom:4vh;">
     <div class="section-label">Materiales disponibles</div>
-    <p style="font-size:.82rem;color:var(--ash);margin-bottom:2rem;">Haz clic en una tela para seleccionarla y comparar. Puedes seleccionar hasta 3.</p>
-    <div id="telaMessage" style="display:none;font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;"></div>
+    <p style="font-size:.95rem;color:var(--fog);line-height:1.7;margin-bottom:2rem;">Haz clic en una tela para seleccionarla y comparar. Puedes seleccionar hasta 3.</p>
+    <div id="telaMessage" style="display:none;font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;"></div>
   </div>
 
   <div class="grid-telas r d1" id="telaGrid">
@@ -194,10 +194,10 @@ function renderTelas() {
           <span class="rating-val">${t[attr]}/5</span>
         </div>`).join('')}
       <div style="margin-top:1rem;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.5rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ash);margin-bottom:.5rem;">Compatible con</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--fog);margin-bottom:.5rem;">Compatible con</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
           ${['dtf','bordado','sublimacion'].map(tech => `
-            <span style="font-family:'Barlow Condensed',sans-serif;font-size:.46rem;letter-spacing:.2em;text-transform:uppercase;padding:.3rem .7rem;border:1px solid ${t[tech]==='Excelente'?'rgba(184,151,90,.4)':t[tech]==='Bueno'?'rgba(58,55,48,.6)':'rgba(58,55,48,.3)'};color:${t[tech]==='Excelente'?'var(--gold)':t[tech]==='Bueno'?'var(--fog)':'var(--ash)'};">${{dtf:'DTF',bordado:'Bordado',sublimacion:'Sublimación'}[tech]}: ${t[tech]}</span>`).join('')}
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .7rem;border:1px solid ${t[tech]==='Excelente'?'rgba(184,151,90,.4)':t[tech]==='Bueno'?'rgba(58,55,48,.6)':'rgba(58,55,48,.3)'};color:${t[tech]==='Excelente'?'var(--gold)':t[tech]==='Bueno'?'var(--fog)':'var(--ash)'};">${{dtf:'DTF',bordado:'Bordado',sublimacion:'Sublimación'}[tech]}: ${t[tech]}</span>`).join('')}
         </div>
       </div>
       <div class="tag-list">${t.usos.map(u => `<span class="tag">${u}</span>`).join('')}</div>
@@ -244,7 +244,7 @@ function renderCompare() {
     <div style="overflow-x:auto;">
       <div class="compare-row">
         <div class="compare-attr"></div>
-        ${telas.map(t => `<div class="compare-val"><div class="compare-header">${t.nombre}</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:.48rem;letter-spacing:.2em;color:var(--ash);text-transform:uppercase;">${t.composicion}</div></div>`).join('')}
+        ${telas.map(t => `<div class="compare-val"><div class="compare-header">${t.nombre}</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.1em;color:var(--ash);text-transform:uppercase;">${t.composicion}</div></div>`).join('')}
       </div>
       ${attrs.map(attr => {
         const vals = telas.map(t => t[attr.key]);

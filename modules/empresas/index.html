@@ -22,18 +22,19 @@
 .svc-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--gold); transition: width .5s cubic-bezier(.77,0,.175,1); }
 .svc-card:hover { background: var(--ink3); }
 .svc-card:hover::after { width: 100%; }
-.svc-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: rgba(184,151,90,.15); font-style: italic; line-height: 1; margin-bottom: 1.5rem; }
-.svc-title { font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--cream); font-weight: 500; margin-bottom: .8rem; }
-.svc-desc { font-size: .8rem; color: var(--ash); line-height: 1.75; font-weight: 300; }
+.svc-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: rgba(184,151,90,.28); font-style: italic; line-height: 1; margin-bottom: 1.5rem; transition: color .35s ease; }
+.svc-card:hover .svc-num { color: var(--gold); }
+.svc-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--cream); font-weight: 500; line-height: 1.25; margin-bottom: .8rem; }
+.svc-desc { font-size: .95rem; color: var(--fog); line-height: 1.7; font-weight: 300; }
 .benefit-row { display: flex; align-items: flex-start; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--dust); }
 .benefit-row:last-child { border-bottom: none; }
 .benefit-icon { width: 48px; height: 48px; border: 1px solid rgba(184,151,90,.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--gold); }
-.benefit-title { font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cream); font-weight: 500; margin-bottom: .4rem; }
-.benefit-text { font-size: .8rem; color: var(--ash); line-height: 1.75; font-weight: 300; }
+.benefit-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--cream); font-weight: 500; line-height: 1.25; margin-bottom: .4rem; }
+.benefit-text { font-size: .95rem; color: var(--fog); line-height: 1.7; font-weight: 300; }
 .emp-form { display: grid; grid-template-columns: 1fr 1fr; gap: 0; background: var(--dust); }
 .form-field { background: var(--ink2); padding: 1.5rem 2rem; border: none; display: flex; flex-direction: column; gap: .6rem; }
 .form-field.span2 { grid-column: span 2; }
-.form-label { font-family: 'Barlow Condensed', sans-serif; font-size: .5rem; letter-spacing: .4em; color: var(--ash); text-transform: uppercase; font-weight: 300; }
+.form-label { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .24em; color: var(--fog); text-transform: uppercase; font-weight: 300; }
 .form-input { background: none; border: none; border-bottom: 1px solid transparent; color: var(--linen); font-family: 'Barlow', sans-serif; font-size: .9rem; font-weight: 300; padding: .4rem 0; outline: none; transition: border-color .35s; width: 100%; }
 .form-input:focus { border-color: var(--gold); }
 .form-input::placeholder { color: var(--ash); }
@@ -43,15 +44,15 @@
 .dot-fechas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--dust); margin: 4vh 0; }
 .dot-fecha { background: var(--ink2); padding: 2rem; }
 .dot-fecha-dia { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold2); font-style: italic; display: block; line-height: 1.1; }
-.dot-fecha-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: .54rem; letter-spacing: .28em; color: var(--ash); text-transform: uppercase; font-weight: 300; display: block; margin-top: .6rem; }
+.dot-fecha-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: .74rem; letter-spacing: .22em; color: var(--ash); text-transform: uppercase; font-weight: 300; display: block; margin-top: .6rem; }
 .evid-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--dust); margin-top: 4vh; }
 .evid-item { background: var(--ink); padding: 2.2rem 2rem; }
-.evid-tag { font-family: 'Barlow Condensed', sans-serif; font-size: .54rem; letter-spacing: .3em; color: var(--gold); text-transform: uppercase; font-weight: 500; display: block; margin-bottom: .8rem; }
-.evid-txt { font-size: .8rem; color: var(--ash); line-height: 1.75; font-weight: 300; }
+.evid-tag { font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .26em; color: var(--gold); text-transform: uppercase; font-weight: 500; display: block; margin-bottom: .8rem; }
+.evid-txt { font-size: .95rem; color: var(--fog); line-height: 1.7; font-weight: 300; }
 @media(max-width:768px){ .dot-fechas{grid-template-columns:1fr;} .evid-grid{grid-template-columns:1fr;} }
 .num-item { background: var(--ink); padding: 2.5rem 2rem; }
 .num-val { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--gold2); font-weight: 400; display: block; line-height: 1; }
-.num-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: .54rem; letter-spacing: .3em; color: var(--ash); text-transform: uppercase; font-weight: 300; display: block; margin-top: .5rem; }
+.num-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: .74rem; letter-spacing: .22em; color: var(--ash); text-transform: uppercase; font-weight: 300; display: block; margin-top: .5rem; }
 @media(max-width:1024px){ .emp-hero{grid-template-columns:1fr;} .emp-hero-right{display:none;} .services-grid{grid-template-columns:1fr 1fr;} .numbers-strip{grid-template-columns:1fr 1fr;} }
 @media(max-width:768px){ .services-grid{grid-template-columns:1fr;} .emp-form{grid-template-columns:1fr;} .form-field.span2{grid-column:span 1;} .numbers-strip{grid-template-columns:1fr 1fr;} .emp-hero-left{padding:calc(62px + 5vh) 1.5rem 5vh;} }
 </style>
@@ -106,7 +107,7 @@
     <div class="r">
       <div class="section-label">Para empresas e instituciones</div>
       <h1 class="sec-h2">Soluciones<br>textiles <em>a escala</em><br><em>empresarial.</em></h1>
-      <p style="font-size:.9rem;color:var(--fog);line-height:1.9;max-width:480px;margin-top:2rem;font-weight:300;">Uniformes corporativos, dotaciones, producción masiva y private label. Fabricamos para empresas que necesitan calidad constante, plazos cumplidos y precios justos desde 10 unidades.</p>
+      <p style="font-size:.95rem;color:var(--fog);line-height:1.7;max-width:480px;margin-top:2rem;font-weight:300;">Uniformes corporativos, dotaciones, producción masiva y private label. Calidad constante, plazos cumplidos y precios justos desde 10 unidades.</p>
       <div style="display:flex;gap:1.5rem;margin-top:3rem;flex-wrap:wrap;" class="r d2">
         <button class="btn-module-primary" onclick="document.getElementById('emp-form').scrollIntoView({behavior:'smooth'})">
           <span>Solicitar propuesta</span>
@@ -123,19 +124,19 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(184,151,90,.1);">
         <div style="background:rgba(12,11,9,.7);padding:2rem;border-bottom:1px solid rgba(184,151,90,.1);">
           <span style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);display:block;line-height:1;">+500</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.3em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Prendas producidas</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.22em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Prendas producidas</span>
         </div>
         <div style="background:rgba(12,11,9,.7);padding:2rem;border-bottom:1px solid rgba(184,151,90,.1);">
           <span style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);display:block;line-height:1;">Desde 10</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.3em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Unidades por pedido</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.22em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Unidades por pedido</span>
         </div>
         <div style="background:rgba(12,11,9,.7);padding:2rem;">
           <span style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);display:block;line-height:1;">Directo</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.3em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Atención del taller</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.22em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Atención del taller</span>
         </div>
         <div style="background:rgba(12,11,9,.7);padding:2rem;">
           <span style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);display:block;line-height:1;">Col.</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.3em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Cobertura nacional</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.22em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Cobertura nacional</span>
         </div>
       </div>
     </div>
@@ -152,32 +153,32 @@
     <div class="svc-card">
       <div class="svc-num">01</div>
       <div class="svc-title">Uniformes corporativos</div>
-      <p class="svc-desc">Camisa, pantalón, chaleco, chaqueta. Materiales seleccionados, cortes precisos y bordado de logo. Ideal para retail, hospitality y oficinas.</p>
+      <p class="svc-desc">Camisa, pantalón, chaleco y chaqueta con su logo bordado.</p>
     </div>
     <div class="svc-card">
       <div class="svc-num">02</div>
       <div class="svc-title">Dotaciones industriales</div>
-      <p class="svc-desc">Ropa de trabajo resistente que cumple normas de seguridad. Carnaza, alta visibilidad, ignífugos. Sin sacrificar presentación ni identidad.</p>
+      <p class="svc-desc">Carnaza, alta visibilidad e ignífugos que cumplen normas de seguridad.</p>
     </div>
     <div class="svc-card">
       <div class="svc-num">03</div>
       <div class="svc-title">Bordados computarizados</div>
-      <p class="svc-desc">Logo empresarial en alta definición sobre cualquier prenda. Digitalización profesional incluida. Durabilidad superior al estampado.</p>
+      <p class="svc-desc">Su logo en alta definición, con digitalización profesional incluida.</p>
     </div>
     <div class="svc-card">
       <div class="svc-num">04</div>
       <div class="svc-title">Estampados DTF masivos</div>
-      <p class="svc-desc">Para campañas, eventos y merchandising corporativo. Colores exactos de branding, alta definición, desde 10 unidades sin costo de fotolito.</p>
+      <p class="svc-desc">Campañas, eventos y merchandising con colores exactos desde 10 unidades.</p>
     </div>
     <div class="svc-card">
       <div class="svc-num">05</div>
       <div class="svc-title">Private label</div>
-      <p class="svc-desc">Producción con sus etiquetas, etiquetas de composición y empaque personalizado. Confidencialidad total. Para marcas que buscan maquila de calidad.</p>
+      <p class="svc-desc">Maquila confidencial con sus etiquetas y empaque personalizado.</p>
     </div>
     <div class="svc-card">
       <div class="svc-num">06</div>
       <div class="svc-title">Sublimación all-over</div>
-      <p class="svc-desc">Prendas con diseño completo a todo color. Perfectas para equipos deportivos, uniformes de colección y activaciones de marca.</p>
+      <p class="svc-desc">Diseño completo a todo color para equipos y colecciones.</p>
     </div>
   </div>
 </div>
@@ -188,24 +189,24 @@
     <div class="r">
       <div class="section-label">¿Por qué ACOSER?</div>
       <h2 class="sec-h2">Fabricamos como<br>si fuera <em>nuestra</em><br><em>propia marca.</em></h2>
-      <p style="font-size:.88rem;color:var(--fog);line-height:2;max-width:440px;margin-top:2rem;font-weight:300;">Trabajamos con pocas empresas a la vez para ofrecer atención dedicada y calidad constante. No somos una fábrica masiva: somos su aliado de producción, con trato directo del taller.</p>
+      <p style="font-size:.95rem;color:var(--fog);line-height:1.7;max-width:440px;margin-top:2rem;font-weight:300;">No somos una fábrica masiva: somos su aliado de producción, con atención dedicada y trato directo.</p>
     </div>
     <div class="r d2">
       <div class="benefit-row">
         <div class="benefit-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M10 2l2.4 5 5.6.8-4 3.9.9 5.5L10 14.5l-4.9 2.7.9-5.5L2 7.8l5.6-.8z"/></svg></div>
-        <div><div class="benefit-title">Calidad garantizada</div><p class="benefit-text">Control pieza por pieza. Si algo no cumple estándar lo rehacemos sin costo adicional. Garantía en cada pedido.</p></div>
+        <div><div class="benefit-title">Calidad garantizada</div><p class="benefit-text">Control pieza por pieza; si algo no cumple, lo rehacemos sin costo.</p></div>
       </div>
       <div class="benefit-row">
         <div class="benefit-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="4" width="16" height="12" rx="1"/><path d="M2 8h16M6 4V2M14 4V2"/></svg></div>
-        <div><div class="benefit-title">Plazos cumplidos</div><p class="benefit-text">Producción planificada con fechas definidas desde el primer día. Su empresa no puede esperar — nosotros tampoco.</p></div>
+        <div><div class="benefit-title">Plazos cumplidos</div><p class="benefit-text">Producción planificada con fechas definidas desde el primer día.</p></div>
       </div>
       <div class="benefit-row">
         <div class="benefit-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 10a6 6 0 1112 0 6 6 0 01-12 0zm6-3v3l2 2"/></svg></div>
-        <div><div class="benefit-title">Flexibilidad de volumen</div><p class="benefit-text">Desde 10 hasta miles de unidades. Sin mínimos prohibitivos ni costos ocultos. Precio justo según volumen real.</p></div>
+        <div><div class="benefit-title">Flexibilidad de volumen</div><p class="benefit-text">Desde 10 hasta miles de unidades, sin mínimos prohibitivos.</p></div>
       </div>
       <div class="benefit-row">
         <div class="benefit-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 6l7-3 7 3v8l-7 3-7-3V6z"/></svg></div>
-        <div><div class="benefit-title">Envíos a toda Colombia</div><p class="benefit-text">Coordinamos el despacho a cualquier ciudad. Embalaje profesional, trazabilidad y seguro incluido en grandes pedidos.</p></div>
+        <div><div class="benefit-title">Envíos a toda Colombia</div><p class="benefit-text">Despacho con trazabilidad a cualquier ciudad; seguro incluido en grandes pedidos.</p></div>
       </div>
     </div>
   </div>
@@ -217,7 +218,7 @@
     <div class="r">
       <div class="section-label">Dotación obligatoria en Colombia</div>
       <h2 class="sec-h2">Se acerca la fecha de entrega.<br><em>Resuelva su dotación a tiempo.</em></h2>
-      <p style="font-size:.88rem;color:var(--fog);line-height:2;max-width:640px;margin-top:2rem;font-weight:300;">El artículo 230 del Código Sustantivo del Trabajo establece la entrega de calzado y vestido de labor a los trabajadores que devengan hasta dos salarios mínimos, en tres fechas al año. Planificar la producción con anticipación le permite cumplir cada entrega sin contratiempos: cuéntenos cuántos trabajadores tiene y nosotros nos encargamos de la confección.</p>
+      <p style="font-size:.95rem;color:var(--fog);line-height:1.7;max-width:640px;margin-top:2rem;font-weight:300;">El artículo 230 del Código Sustantivo del Trabajo establece la entrega de calzado y vestido de labor a los trabajadores que devengan hasta dos salarios mínimos, en tres fechas al año. Cuéntenos cuántos trabajadores tiene y nosotros nos encargamos de la confección.</p>
     </div>
     <div class="dot-fechas r d2">
       <div class="dot-fecha"><span class="dot-fecha-dia">30 de abril</span><span class="dot-fecha-lbl">Primera entrega del año</span></div>
@@ -244,15 +245,15 @@
     <div class="evid-grid r d2">
       <div class="evid-item">
         <span class="evid-tag">Corozal, Sucre</span>
-        <p class="evid-txt">Entrega completa de uniformes a una institución educativa de Corozal, confeccionados de principio a fin en nuestro taller.</p>
+        <p class="evid-txt">Uniformes entregados a una institución educativa, confeccionados en nuestro taller.</p>
       </div>
       <div class="evid-item">
         <span class="evid-tag">Barranquilla</span>
-        <p class="evid-txt">Contrato adjudicado con el colegio Happy Time de Barranquilla para los uniformes de sus estudiantes.</p>
+        <p class="evid-txt">Contrato adjudicado para los uniformes del colegio Happy Time.</p>
       </div>
       <div class="evid-item">
         <span class="evid-tag">Marca propia</span>
-        <p class="evid-txt">Noah's Clothing, nuestra línea propia de ropa infantil, se produce en el mismo taller con los mismos estándares que aplicamos a cada pedido empresarial.</p>
+        <p class="evid-txt">Noah's Clothing, nuestra línea infantil, se produce con los mismos estándares.</p>
       </div>
     </div>
   </div>
@@ -274,13 +275,13 @@
     <div class="r" style="margin-bottom:4vh;">
       <div class="section-label">Formulario exclusivo para empresas</div>
       <h2 class="sec-h2">Cuéntenos su<br><em>proyecto corporativo.</em></h2>
-      <p style="font-size:.88rem;color:var(--fog);line-height:1.9;max-width:500px;margin-top:1.5rem;font-weight:300;">Complete el formulario y un asesor especializado le contactará en menos de 24 horas con una propuesta detallada.</p>
+      <p style="font-size:.95rem;color:var(--fog);line-height:1.7;max-width:500px;margin-top:1.5rem;font-weight:300;">Complete el formulario y un asesor le contactará en menos de 24 horas.</p>
     </div>
 
     <div id="formSuccessEmp" style="display:none;background:rgba(184,151,90,.06);border:1px solid rgba(184,151,90,.25);padding:3rem;text-align:center;">
       <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="margin:0 auto 1.5rem;display:block;"><circle cx="20" cy="20" r="18" stroke="var(--gold)" stroke-width="1.2"/><polyline points="12,20 17,26 28,14" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <p style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--linen);font-style:italic;margin-bottom:.8rem;">Solicitud recibida.</p>
-      <p style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);">Nos comunicamos en menos de 24 horas hábiles.</p>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--fog);">Nos comunicamos en menos de 24 horas hábiles.</p>
     </div>
 
     <form id="empresasForm" onsubmit="enviarEmpresa(event)" class="r d2">
@@ -308,7 +309,7 @@
         </div>
         <div class="form-field span2"><label class="form-label">Descripción del proyecto</label><textarea class="form-input" id="e-desc" rows="4" placeholder="Cuéntenos sobre los uniformes, colores de su marca, logotipo, plazos de entrega y cualquier detalle relevante..." style="resize:none;height:auto;"></textarea></div>
       </div>
-      <p id="empError" style="font-family:'Barlow Condensed',sans-serif;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:#c0614a;margin-bottom:1rem;min-height:1rem;"></p>
+      <p id="empError" style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:#c0614a;margin-bottom:1rem;min-height:1rem;"></p>
       <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
         <button type="submit" class="btn-module-primary" id="empBtn"><span id="empBtnTxt">Enviar solicitud empresarial</span></button>
         <a href="https://wa.me/573005206285?text=Hola%2C+quiero+cotizar+uniformes+para+mi+empresa." class="btn-wa-module" target="_blank">Hablar por WhatsApp</a>

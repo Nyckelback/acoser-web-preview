@@ -196,7 +196,7 @@ nav.solid .nav-logo-img { height: 66px; }
 
 .nav-cta-btn {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: .62rem;
+  font-size: .72rem;
   letter-spacing: .32em;
   text-transform: uppercase;
   color: var(--gold) !important;
@@ -282,7 +282,7 @@ nav.solid .nav-logo-img { height: 66px; }
   display: flex; align-items: center; justify-content: center;
   flex-direction: column; gap: 1rem;
 }
-.ph-label { font-family: 'Barlow Condensed', sans-serif; font-size: .58rem; letter-spacing: .4em; color: var(--ash); text-transform: uppercase; }
+.ph-label { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .4em; color: var(--ash); text-transform: uppercase; }
 .ph-line { width: 36px; height: 1px; background: var(--dust); }
 .hero-overlay {
   position: absolute; inset: 0;
@@ -290,7 +290,7 @@ nav.solid .nav-logo-img { height: 66px; }
   z-index: 1;
 }
 .hero-tag {
-  font-family: 'Barlow Condensed', sans-serif; font-size: .58rem; letter-spacing: .5em;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .38em;
   color: var(--gold); text-transform: uppercase; font-weight: 300;
   margin-bottom: 2.5rem; opacity: 0; animation: fadeSlideUp .8s .8s ease forwards;
 }
@@ -315,7 +315,7 @@ nav.solid .nav-logo-img { height: 66px; }
 }
 .btn-primary {
   display: inline-flex; align-items: center; gap: 1rem;
-  font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .3em;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .78rem; letter-spacing: .28em;
   text-transform: uppercase; color: var(--ink); background: var(--gold);
   padding: 1.1rem 2.4rem; text-decoration: none;
   position: relative; overflow: hidden; font-weight: 500; transition: color .4s ease;
@@ -328,7 +328,7 @@ nav.solid .nav-logo-img { height: 66px; }
 .btn-primary span, .btn-primary svg { position: relative; }
 .btn-ghost {
   display: inline-flex; align-items: center; gap: .8rem;
-  font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .3em;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .74rem; letter-spacing: .28em;
   text-transform: uppercase; color: var(--fog); text-decoration: none;
   transition: color .35s ease; font-weight: 300;
 }
@@ -369,8 +369,8 @@ nav.solid .nav-logo-img { height: 66px; }
 }
 .hero-counter-num.small { font-size: 1.1rem; letter-spacing: .05em; }
 .hero-counter-lbl {
-  font-family: 'Barlow Condensed', sans-serif; font-size: .52rem; letter-spacing: .3em;
-  color: var(--ash); text-transform: uppercase; font-weight: 300; display: block; margin-top: .35rem;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .24em;
+  color: var(--fog); text-transform: uppercase; font-weight: 300; display: block; margin-top: .35rem;
 }
 @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -381,14 +381,14 @@ nav.solid .nav-logo-img { height: 66px; }
 }
 .marquee-track { display: flex; gap: 0; white-space: nowrap; animation: marquee 30s linear infinite; }
 .marquee-item { display: inline-flex; align-items: center; gap: 3rem; padding: 0 3rem; flex-shrink: 0; }
-.marquee-text { font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .5em; text-transform: uppercase; color: var(--ash); font-weight: 300; }
+.marquee-text { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .5em; text-transform: uppercase; color: var(--ash); font-weight: 300; }
 .marquee-dot { width: 3px; height: 3px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
 @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
 /* ─── SECTION BASE ───────────────────────────────────── */
 .section-label {
-  font-family: 'Barlow Condensed', sans-serif; font-size: .56rem; letter-spacing: .55em;
-  text-transform: uppercase; color: var(--gold); font-weight: 300;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .35em;
+  text-transform: uppercase; color: var(--gold); font-weight: 400;
   margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;
 }
 .section-label::before { content: ''; width: 28px; height: 1px; background: var(--gold); display: block; }
@@ -470,11 +470,11 @@ nav.solid .nav-logo-img { height: 66px; }
 }
 .media-ph-rule { width: 28px; height: 1px; background: rgba(184,151,90,.2); }
 .media-ph-num {
-  font-family: 'Playfair Display', serif; font-size: .65rem; font-style: italic;
+  font-family: 'Playfair Display', serif; font-size: .7rem; font-style: italic;
   color: var(--gold); opacity: .5; letter-spacing: .1em;
 }
 .media-ph-tag {
-  font-family: 'Barlow Condensed', sans-serif; font-size: .48rem; letter-spacing: .5em;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .5em;
   color: var(--ash); text-transform: uppercase; opacity: .7;
 }
 .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--dust); border: 1px solid var(--dust); }
@@ -494,8 +494,8 @@ nav.solid .nav-logo-img { height: 66px; }
 }
 .stat-val.stat-word { font-size: 1.3rem; letter-spacing: .03em; }
 .stat-desc {
-  font-family: 'Barlow Condensed', sans-serif; font-size: .58rem; letter-spacing: .25em;
-  color: var(--ash); text-transform: uppercase; display: block; margin-top: .5rem; font-weight: 300;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .2em;
+  color: var(--fog); text-transform: uppercase; display: block; margin-top: .5rem; font-weight: 300;
 }
 
 /* ─── SERVICES ───────────────────────────────────────── */
@@ -504,7 +504,7 @@ nav.solid .nav-logo-img { height: 66px; }
   padding: 0 4rem; display: grid; grid-template-columns: 1fr 1fr;
   align-items: end; margin-bottom: 8vh; gap: 4rem;
 }
-.services-header-text { font-size: .88rem; color: var(--fog); line-height: 1.95; font-weight: 300; max-width: 380px; }
+.services-header-text { font-size: .95rem; color: var(--fog); line-height: 1.95; font-weight: 300; max-width: 380px; }
 .services-list { border-top: 1px solid var(--dust); }
 .service-row {
   display: grid; grid-template-columns: 72px 1fr auto;
@@ -544,7 +544,7 @@ nav.solid .nav-logo-img { height: 66px; }
 .process-step:hover .process-step-dot { border-color: var(--gold); background: rgba(184,151,90,.07); }
 .process-step-n { font-family: 'Playfair Display', serif; font-size: .9rem; font-style: italic; color: var(--ash); transition: color .35s; }
 .process-step:hover .process-step-n { color: var(--gold); }
-.process-step-title { font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .25em; text-transform: uppercase; color: var(--linen); font-weight: 500; margin-bottom: .8rem; }
+.process-step-title { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .25em; text-transform: uppercase; color: var(--linen); font-weight: 500; margin-bottom: .8rem; }
 .process-step-text { font-size: .78rem; color: var(--ash); line-height: 1.7; font-weight: 400; }
 
 /* ─── PORTFOLIO ──────────────────────────────────────── */
@@ -555,7 +555,7 @@ nav.solid .nav-logo-img { height: 66px; }
 }
 .portfolio-filters { display: flex; gap: 0; }
 .pf-btn {
-  font-family: 'Barlow Condensed', sans-serif; font-size: .58rem; letter-spacing: .3em;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .3em;
   text-transform: uppercase; background: none; border: none;
   border-bottom: 1px solid var(--dust); color: var(--ash);
   padding: .7rem 1.3rem; cursor: none; transition: color .3s, border-color .3s; font-weight: 300;
@@ -597,7 +597,7 @@ nav.solid .nav-logo-img { height: 66px; }
   color: rgba(184,151,90,.06); font-style: italic; font-weight: 400; line-height: 1;
 }
 .p-cat-label {
-  font-family: 'Barlow Condensed', sans-serif; font-size: .46rem; letter-spacing: .5em;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .5em;
   color: var(--dust); text-transform: uppercase;
 }
 .p-item .p-overlay {
@@ -608,7 +608,7 @@ nav.solid .nav-logo-img { height: 66px; }
 }
 .p-item:hover .p-overlay { opacity: 1; }
 .p-info-cat {
-  display: block; font-family: 'Barlow Condensed', sans-serif; font-size: .5rem;
+  display: block; font-family: 'Barlow Condensed', sans-serif; font-size: .7rem;
   letter-spacing: .4em; color: var(--gold); text-transform: uppercase; margin-bottom: .3rem;
 }
 .p-info-title { font-family: 'Playfair Display', serif; font-size: .95rem; color: var(--cream); font-weight: 400; }
@@ -637,7 +637,7 @@ nav.solid .nav-logo-img { height: 66px; }
 .workshop-left-ph { position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 3rem; }
 .workshop-left-caption { border-left: 2px solid var(--gold); padding-left: 1.2rem; }
 .workshop-left-caption-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--cream); font-weight: 400; font-style: italic; display: block; }
-.workshop-left-caption-sub { font-family: 'Barlow Condensed', sans-serif; font-size: .52rem; letter-spacing: .4em; color: var(--ash); text-transform: uppercase; display: block; margin-top: .3rem; }
+.workshop-left-caption-sub { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .4em; color: var(--ash); text-transform: uppercase; display: block; margin-top: .3rem; }
 .workshop-play {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
   width: 76px; height: 76px; border: 1px solid rgba(184,151,90,.25); border-radius: 50%;
@@ -653,12 +653,12 @@ nav.solid .nav-logo-img { height: 66px; }
 .w-stat:last-child { border-right: none; }
 .w-stat-num { font-family: 'Playfair Display', serif; font-size: 2.1rem; font-weight: 400; color: var(--gold); line-height: 1; }
 .w-stat-num.w-word { font-size: 1.4rem; letter-spacing: .03em; }
-.w-stat-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: .56rem; letter-spacing: .3em; color: var(--ash); text-transform: uppercase; margin-top: .6rem; font-weight: 300; line-height: 1.5; }
+.w-stat-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .3em; color: var(--ash); text-transform: uppercase; margin-top: .6rem; font-weight: 300; line-height: 1.5; }
 .workshop-small-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; padding: 0 4rem; }
 .ws-item { aspect-ratio: 4/3; background: var(--ink3); position: relative; overflow: hidden; }
 .ws-item-bg { position: absolute; inset: 0; background: linear-gradient(150deg, var(--ink3), var(--ink4)); transition: transform .7s ease; }
 .ws-item:hover .ws-item-bg { transform: scale(1.05); }
-.ws-item-label { position: absolute; bottom: 1rem; left: 1rem; font-family: 'Barlow Condensed', sans-serif; font-size: .48rem; letter-spacing: .4em; color: var(--dust); text-transform: uppercase; }
+.ws-item-label { position: absolute; bottom: 1rem; left: 1rem; font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .4em; color: var(--dust); text-transform: uppercase; }
 
 /* ─── BRANDS ─────────────────────────────────────────── */
 #brands { background: var(--ink); padding: 14vh 0; position: relative; overflow: hidden; }
@@ -695,7 +695,7 @@ nav.solid .nav-logo-img { height: 66px; }
   display: flex; flex-direction: column; justify-content: flex-end; padding: 1.4rem 1.5rem;
 }
 .brands-photo-item:hover .brands-photo-overlay { opacity: 1; }
-.brands-photo-cat { font-family: 'Barlow Condensed', sans-serif; font-size: .48rem; letter-spacing: .45em; color: var(--gold); text-transform: uppercase; margin-bottom: .3rem; display: block; }
+.brands-photo-cat { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .45em; color: var(--gold); text-transform: uppercase; margin-bottom: .3rem; display: block; }
 .brands-photo-title { font-family: 'Playfair Display', serif; font-size: .95rem; color: var(--cream); font-style: italic; display: block; }
 
 /* ─── TESTIMONIALS ───────────────────────────────────── */
@@ -716,7 +716,7 @@ nav.solid .nav-logo-img { height: 66px; }
 .test-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--dust); padding-top: 1.5rem; }
 .test-person-name { font-family: 'Barlow Condensed', sans-serif; font-size: .78rem; letter-spacing: .15em; color: var(--cream); text-transform: uppercase; font-weight: 500; display: block; }
 .test-person-role { font-size: .74rem; color: var(--ash); font-weight: 300; display: block; margin-top: .2rem; }
-.test-stars { font-size: .62rem; letter-spacing: .2em; color: var(--gold); }
+.test-stars { font-size: .7rem; letter-spacing: .2em; color: var(--gold); }
 .test-controls { display: flex; align-items: center; gap: 1rem; margin-top: 3rem; padding: 0 4rem; }
 .tc-btn { width: 46px; height: 46px; border: 1px solid var(--dust); background: none; color: var(--fog); cursor: none; transition: all .35s ease; font-family: inherit; display: flex; align-items: center; justify-content: center; }
 .tc-btn:hover { border-color: var(--gold); color: var(--gold); }
@@ -727,13 +727,13 @@ nav.solid .nav-logo-img { height: 66px; }
 #contact { background: var(--ink); padding: 14vh 0 0; }
 .contact-split { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--dust); }
 .contact-left { padding: 8vh 5vw 8vh 4rem; border-right: 1px solid var(--dust); display: flex; flex-direction: column; justify-content: space-between; }
-.contact-intro { font-size: .9rem; color: var(--fog); line-height: 1.9; font-weight: 400; max-width: 400px; margin-top: 2rem; }
+.contact-intro { font-size: 1rem; color: var(--fog); line-height: 1.9; font-weight: 400; max-width: 400px; margin-top: 2rem; }
 .contact-channels { display: flex; flex-direction: column; gap: 0; margin-top: 4rem; border-top: 1px solid var(--dust); }
 .c-channel { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 0; border-bottom: 1px solid var(--dust); text-decoration: none; transition: padding-left .35s ease; cursor: none; }
 .c-channel:hover { padding-left: .8rem; }
 .c-channel-left { display: flex; flex-direction: column; gap: .3rem; }
-.c-channel-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: .52rem; letter-spacing: .45em; color: var(--ash); text-transform: uppercase; font-weight: 300; }
-.c-channel-val { font-size: .88rem; color: var(--linen); font-weight: 300; }
+.c-channel-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .3em; color: var(--fog); text-transform: uppercase; font-weight: 300; }
+.c-channel-val { font-size: .95rem; color: var(--linen); font-weight: 300; }
 .c-channel-arr { color: var(--dust); font-size: .78rem; transition: transform .35s ease, color .35s ease; }
 .c-channel:hover .c-channel-arr { transform: translateX(6px); color: var(--gold); }
 .contact-right { padding: 8vh 4rem 8vh 5vw; }
@@ -742,10 +742,10 @@ nav.solid .nav-logo-img { height: 66px; }
 .c-form-row.single { grid-template-columns: 1fr; }
 .c-field { background: none; border: none; padding: 1.8rem 0; display: flex; flex-direction: column; gap: .6rem; position: relative; }
 .c-field + .c-field { border-left: 1px solid var(--dust); padding-left: 2rem; }
-.c-label { font-family: 'Barlow Condensed', sans-serif; font-size: .52rem; letter-spacing: .4em; color: var(--ash); text-transform: uppercase; font-weight: 300; }
+.c-label { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .26em; color: var(--fog); text-transform: uppercase; font-weight: 300; }
 .c-input, .c-select, .c-textarea {
   background: none; border: none; border-bottom: 1px solid transparent;
-  color: var(--linen); font-family: 'Barlow', sans-serif; font-size: .9rem;
+  color: var(--linen); font-family: 'Barlow', sans-serif; font-size: .95rem;
   font-weight: 300; padding: .4rem 0; outline: none; transition: border-color .35s ease; -webkit-appearance: none; appearance: none; width: 100%;
 }
 .c-input:focus, .c-select:focus, .c-textarea:focus { border-color: var(--gold); }
@@ -768,22 +768,22 @@ nav.solid .nav-logo-img { height: 66px; }
   color: var(--linen); margin-bottom: .9rem; font-style: italic;
 }
 .form-success-sub {
-  font-family: 'Barlow Condensed', sans-serif; font-size: .62rem;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .74rem;
   letter-spacing: .2em; text-transform: uppercase; color: var(--ash); line-height: 2;
 }
 .form-success-close {
   margin-top: 2.2rem;
   background: none; border: 1px solid var(--dust);
-  font-family: 'Barlow Condensed', sans-serif; font-size: .55rem; letter-spacing: .35em;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .25em;
   text-transform: uppercase; color: var(--ash); padding: .8rem 2rem; cursor: pointer;
   transition: border-color .35s, color .35s;
 }
 .form-success-close:hover { border-color: var(--gold); color: var(--gold); }
 .c-form-actions { display: flex; gap: 1.5rem; padding-top: 2.5rem; }
-.c-form-error { font-family: 'Barlow Condensed', sans-serif; font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: #c0614a; margin-top: 1.2rem; min-height: 1rem; transition: opacity .3s; }
+.c-form-error { font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: #c0614a; margin-top: 1.2rem; min-height: 1rem; transition: opacity .3s; }
 .btn-send {
   flex: 1; background: var(--gold); color: var(--ink); border: none;
-  font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .3em;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .74rem; letter-spacing: .26em;
   text-transform: uppercase; padding: 1.2rem 2rem; cursor: none; font-weight: 500;
   position: relative; overflow: hidden; transition: color .4s ease, opacity .3s ease;
 }
@@ -793,7 +793,7 @@ nav.solid .nav-logo-img { height: 66px; }
 .btn-send span { position: relative; }
 .btn-wa-link {
   display: inline-flex; align-items: center; gap: .8rem;
-  font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .25em;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .74rem; letter-spacing: .22em;
   text-transform: uppercase; color: var(--ash); text-decoration: none;
   border: 1px solid var(--dust); padding: 1.2rem 1.6rem; transition: all .35s ease; font-weight: 300;
 }
@@ -804,18 +804,18 @@ nav.solid .nav-logo-img { height: 66px; }
 footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8vh 4rem 4vh; }
 .footer-top { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 5rem; padding-bottom: 6vh; border-bottom: 1px solid var(--dust); }
 .footer-brand-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; letter-spacing: .32em; color: var(--cream); font-weight: 400; text-transform: uppercase; display: block; margin-bottom: .3rem; }
-.footer-brand-sub { font-family: 'Barlow Condensed', sans-serif; font-size: .48rem; letter-spacing: .55em; color: var(--gold); text-transform: uppercase; font-weight: 300; display: block; margin-bottom: 1.5rem; }
-.footer-brand-desc { font-size: .84rem; color: var(--ash); line-height: 1.85; font-weight: 400; max-width: 300px; }
+.footer-brand-sub { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .55em; color: var(--gold); text-transform: uppercase; font-weight: 300; display: block; margin-bottom: 1.5rem; }
+.footer-brand-desc { font-size: .92rem; color: var(--fog); line-height: 1.85; font-weight: 400; max-width: 300px; }
 .footer-links a { word-break: break-word; }
-.footer-col-head { font-family: 'Barlow Condensed', sans-serif; font-size: .56rem; letter-spacing: .45em; text-transform: uppercase; color: var(--bone); font-weight: 400; display: block; margin-bottom: 2rem; }
+.footer-col-head { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .3em; text-transform: uppercase; color: var(--bone); font-weight: 400; display: block; margin-bottom: 2rem; }
 .footer-links { list-style: none; display: flex; flex-direction: column; gap: .8rem; }
-.footer-links a { font-size: .84rem; color: var(--ash); text-decoration: none; font-weight: 400; transition: color .25s ease; }
+.footer-links a { font-size: .92rem; color: var(--fog); text-decoration: none; font-weight: 400; transition: color .25s ease; }
 .footer-links a:hover { color: var(--gold); }
 .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 3vh; flex-wrap: wrap; gap: 1rem; }
-.footer-copy { font-family: 'Barlow Condensed', sans-serif; font-size: .56rem; letter-spacing: .25em; color: var(--ash); text-transform: uppercase; font-weight: 300; }
+.footer-copy { font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .25em; color: var(--ash); text-transform: uppercase; font-weight: 300; }
 .footer-copy span { color: var(--gold); }
 .footer-social { display: flex; gap: 1.5rem; }
-.f-social-link { font-family: 'Barlow Condensed', sans-serif; font-size: .56rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ash); text-decoration: none; transition: color .35s; font-weight: 300; }
+.f-social-link { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ash); text-decoration: none; transition: color .35s; font-weight: 300; }
 .f-social-link:hover { color: var(--gold); }
 
 /* ─── FLOATING WA ────────────────────────────────────── */
@@ -842,7 +842,7 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
 .mob-nav-links { list-style: none; display: flex; flex-direction: column; gap: 0; text-align: center; border-top: 1px solid var(--dust); }
 .mob-nav-links a { display: block; font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 5vw, 2.4rem); font-weight: 400; color: var(--cream); text-decoration: none; padding: 1.1rem 3rem; border-bottom: 1px solid var(--dust); transition: color .35s; }
 .mob-nav-links a:hover { color: var(--gold); }
-.mob-close { position: absolute; top: 2rem; right: 2rem; background: none; border: none; color: var(--ash); font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; cursor: none; padding: .5rem; }
+.mob-close { position: absolute; top: 2rem; right: 2rem; background: none; border: none; color: var(--ash); font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .3em; text-transform: uppercase; cursor: none; padding: .5rem; }
 .mob-overlay { position: fixed; inset: 0; background: rgba(12,11,9,.8); z-index: 790; opacity: 0; visibility: hidden; transition: all .4s; }
 .mob-overlay.open { opacity: 1; visibility: visible; }
 
@@ -880,7 +880,7 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
   .nav-links { display: none; }
   .burger { display: flex; cursor: pointer; }
   .theme-btn { width: 42px; height: 42px; cursor: pointer; }
-  .mob-close { cursor: pointer; padding: 1rem 1.2rem; font-size: .65rem; }
+  .mob-close { cursor: pointer; padding: 1rem 1.2rem; font-size: .7rem; }
   .btn-send, .tc-btn, .pf-btn, .c-channel, .brand-feat, .service-row { cursor: pointer; }
   .btn-send:disabled { cursor: not-allowed; }
   .r-left { transform: translateY(24px); }
@@ -947,7 +947,7 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
   .nav-logo-img { height: 52px; }
   nav.solid .nav-logo-img { height: 42px; }
   .hero-h1 { font-size: clamp(2rem, 9vw, 2.8rem); }
-  .hero-tag { font-size: .5rem; letter-spacing: .2em; }
+  .hero-tag { font-size: .7rem; letter-spacing: .2em; }
   .hero-actions { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
   .hero-counter-strip { flex-direction: column; }
   .hero-counter-item { border-right: none; border-bottom: 1px solid var(--dust); padding: .9rem 1.5rem; }

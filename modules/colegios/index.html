@@ -22,40 +22,41 @@
 .svc-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--gold); transition: width .5s cubic-bezier(.77,0,.175,1); }
 .svc-card:hover { background: var(--ink3); }
 .svc-card:hover::after { width: 100%; }
-.svc-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: rgba(184,151,90,.15); font-style: italic; line-height: 1; margin-bottom: 1.5rem; }
-.svc-title { font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--cream); font-weight: 500; margin-bottom: .8rem; }
-.svc-desc { font-size: .8rem; color: var(--ash); line-height: 1.75; font-weight: 300; }
+.svc-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: rgba(184,151,90,.28); font-style: italic; line-height: 1; margin-bottom: 1.5rem; transition: color .35s ease; }
+.svc-card:hover .svc-num { color: var(--gold); }
+.svc-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--cream); font-weight: 500; line-height: 1.25; margin-bottom: .8rem; }
+.svc-desc { font-size: .95rem; color: var(--fog); line-height: 1.7; font-weight: 300; }
 .proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--dust); }
 .proof-card { background: var(--ink); padding: 3rem 2.5rem; position: relative; }
-.proof-badge { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-size: .56rem; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(184,151,90,.3); padding: .45rem 1rem; margin-bottom: 1.5rem; font-weight: 500; }
+.proof-badge { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .28em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(184,151,90,.3); padding: .45rem 1rem; margin-bottom: 1.5rem; font-weight: 500; }
 .proof-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--linen); font-weight: 400; margin-bottom: .9rem; line-height: 1.4; }
-.proof-text { font-size: .82rem; color: var(--ash); line-height: 1.8; font-weight: 300; }
+.proof-text { font-size: .95rem; color: var(--fog); line-height: 1.7; font-weight: 300; }
 .step-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--dust); }
 .step-card { background: var(--ink2); padding: 2.5rem 2rem; }
 .step-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-style: italic; color: var(--gold2); line-height: 1; margin-bottom: 1.3rem; }
-.step-title { font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--cream); font-weight: 500; margin-bottom: .7rem; }
-.step-text { font-size: .78rem; color: var(--ash); line-height: 1.75; font-weight: 300; }
+.step-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--cream); font-weight: 500; line-height: 1.25; margin-bottom: .7rem; }
+.step-text { font-size: .95rem; color: var(--fog); line-height: 1.7; font-weight: 300; }
 .modal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--dust); }
 .modal-card { background: var(--ink); padding: 2.8rem 2.2rem; }
 .modal-icon { width: 48px; height: 48px; border: 1px solid rgba(184,151,90,.2); display: flex; align-items: center; justify-content: center; color: var(--gold); margin-bottom: 1.5rem; }
-.modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cream); font-weight: 500; margin-bottom: .7rem; }
-.modal-text { font-size: .8rem; color: var(--ash); line-height: 1.8; font-weight: 300; }
+.modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.05rem; letter-spacing: .14em; text-transform: uppercase; color: var(--cream); font-weight: 500; margin-bottom: .7rem; }
+.modal-text { font-size: .95rem; color: var(--fog); line-height: 1.7; font-weight: 300; }
 .cal-band { background: var(--ink2); border-top: 1px solid var(--dust); border-bottom: 1px solid var(--dust); padding: 7vh 4rem; }
 .cal-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: center; }
 .cal-icon { width: 64px; height: 64px; border: 1px solid rgba(184,151,90,.25); display: flex; align-items: center; justify-content: center; color: var(--gold); flex-shrink: 0; }
 .faq-list { max-width: 800px; }
 .faq-list details { border-bottom: 1px solid var(--dust); }
 .faq-list details:first-child { border-top: 1px solid var(--dust); }
-.faq-list summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; padding: 1.6rem 0; font-family: 'Barlow Condensed', sans-serif; font-size: .78rem; letter-spacing: .18em; text-transform: uppercase; color: var(--cream); font-weight: 500; transition: color .3s; }
+.faq-list summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; padding: 1.6rem 0; font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--cream); font-weight: 500; transition: color .3s; }
 .faq-list summary:hover { color: var(--gold2); }
 .faq-list summary::-webkit-details-marker { display: none; }
 .faq-list summary::after { content: '+'; font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); flex-shrink: 0; transition: transform .35s ease; line-height: 1; }
 .faq-list details[open] summary::after { transform: rotate(45deg); }
-.faq-list details p { font-size: .82rem; color: var(--ash); line-height: 1.85; font-weight: 300; padding: 0 2.5rem 1.8rem 0; max-width: 680px; }
+.faq-list details p { font-size: .95rem; color: var(--fog); line-height: 1.7; font-weight: 300; padding: 0 2.5rem 1.8rem 0; max-width: 680px; }
 .emp-form { display: grid; grid-template-columns: 1fr 1fr; gap: 0; background: var(--dust); }
 .form-field { background: var(--ink2); padding: 1.5rem 2rem; border: none; display: flex; flex-direction: column; gap: .6rem; }
 .form-field.span2 { grid-column: span 2; }
-.form-label { font-family: 'Barlow Condensed', sans-serif; font-size: .5rem; letter-spacing: .4em; color: var(--ash); text-transform: uppercase; font-weight: 300; }
+.form-label { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .22em; color: var(--fog); text-transform: uppercase; font-weight: 400; }
 .form-input { background: none; border: none; border-bottom: 1px solid transparent; color: var(--linen); font-family: 'Barlow', sans-serif; font-size: .9rem; font-weight: 300; padding: .4rem 0; outline: none; transition: border-color .35s; width: 100%; }
 .form-input:focus { border-color: var(--gold); }
 .form-input::placeholder { color: var(--ash); }
@@ -113,7 +114,7 @@
     <div class="r">
       <div class="section-label">Para colegios e instituciones educativas</div>
       <h1 class="sec-h2">Uniformes escolares<br>con <em>taller propio</em><br>y <em>muestra aprobada.</em></h1>
-      <p style="font-size:.9rem;color:var(--fog);line-height:1.9;max-width:480px;margin-top:2rem;font-weight:300;">Confeccionamos el uniforme de diario, el de educación física y las sudaderas de su institución, con el escudo bordado y el pedido organizado por curso y talla. Taller en Corozal, Sucre, con entregas en Sincelejo, Barranquilla y la región Caribe.</p>
+      <p style="font-size:.95rem;color:var(--fog);line-height:1.7;max-width:480px;margin-top:2rem;font-weight:300;">Uniforme de diario, educación física y sudaderas con el escudo bordado, entregados por curso y talla.</p>
       <div style="display:flex;gap:1.5rem;margin-top:3rem;flex-wrap:wrap;" class="r d2">
         <button class="btn-module-primary" onclick="document.getElementById('col-form').scrollIntoView({behavior:'smooth'})">
           <span>Solicitar propuesta</span>
@@ -130,19 +131,19 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(184,151,90,.1);">
         <div style="background:rgba(12,11,9,.7);padding:2rem;border-bottom:1px solid rgba(184,151,90,.1);">
           <span style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold);display:block;line-height:1.2;font-style:italic;">Entregado</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.3em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Institución educativa · Corozal</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.18em;color:var(--fog);text-transform:uppercase;display:block;margin-top:.4rem;">Institución educativa · Corozal</span>
         </div>
         <div style="background:rgba(12,11,9,.7);padding:2rem;border-bottom:1px solid rgba(184,151,90,.1);">
           <span style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold);display:block;line-height:1.2;font-style:italic;">Adjudicado</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.3em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Colegio Happy Time · B/quilla</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.18em;color:var(--fog);text-transform:uppercase;display:block;margin-top:.4rem;">Colegio Happy Time · B/quilla</span>
         </div>
         <div style="background:rgba(12,11,9,.7);padding:2rem;">
           <span style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);display:block;line-height:1;">+500</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.3em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Prendas producidas</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.18em;color:var(--fog);text-transform:uppercase;display:block;margin-top:.4rem;">Prendas producidas</span>
         </div>
         <div style="background:rgba(12,11,9,.7);padding:2rem;">
           <span style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);display:block;line-height:1;">Col.</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.3em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Envíos a nivel nacional</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.18em;color:var(--fog);text-transform:uppercase;display:block;margin-top:.4rem;">Envíos a nivel nacional</span>
         </div>
       </div>
     </div>
@@ -154,18 +155,18 @@
   <div class="r" style="margin-bottom:6vh;">
     <div class="section-label">Trayectoria verificable</div>
     <h2 class="sec-h2">Colegios que ya<br><em>confiaron en ACOSER.</em></h2>
-    <p style="font-size:.88rem;color:var(--fog);line-height:1.9;max-width:520px;margin-top:1.5rem;font-weight:300;">Más que promesas, mostramos entregas. Con gusto compartimos referencias con los rectores y administradores que deseen confirmarlas directamente.</p>
+    <p style="font-size:.95rem;color:var(--fog);line-height:1.7;max-width:520px;margin-top:1.5rem;font-weight:300;">Más que promesas, entregas. Compartimos referencias con los rectores que deseen confirmarlas.</p>
   </div>
   <div class="proof-grid r d2">
     <div class="proof-card">
       <span class="proof-badge">Entrega completa</span>
       <h3 class="proof-title">Institución educativa en Corozal, Sucre</h3>
-      <p class="proof-text">Dotación de uniformes para los estudiantes, confeccionada y entregada por nuestro taller con el tallaje de cada curso y los acabados aprobados por la institución.</p>
+      <p class="proof-text">Dotación confeccionada y entregada con el tallaje de cada curso.</p>
     </div>
     <div class="proof-card">
       <span class="proof-badge">Contrato adjudicado</span>
       <h3 class="proof-title">Colegio Happy Time, Barranquilla</h3>
-      <p class="proof-text">Seleccionados para confeccionar los uniformes de los estudiantes. La producción parte de una muestra física aprobada antes del lote completo, con entrega organizada por curso.</p>
+      <p class="proof-text">Seleccionados para confeccionar los uniformes de sus estudiantes.</p>
     </div>
   </div>
 </div>
@@ -175,38 +176,38 @@
   <div class="r" style="margin-bottom:6vh;">
     <div class="section-label">Líneas escolares</div>
     <h2 class="sec-h2">Todo el uniforme,<br>en <em>un solo taller.</em></h2>
-    <p style="font-size:.88rem;color:var(--fog);line-height:1.9;max-width:520px;margin-top:1.5rem;font-weight:300;">Cada prenda se confecciona según el manual de uniforme de la institución: telas, colores, escudo y acabados se aprueban antes de producir el lote.</p>
+    <p style="font-size:.95rem;color:var(--fog);line-height:1.7;max-width:520px;margin-top:1.5rem;font-weight:300;">Cada prenda sigue el manual de su institución y se aprueba antes de producir.</p>
   </div>
   <div class="services-grid r d2">
     <div class="svc-card">
       <div class="svc-num">01</div>
       <div class="svc-title">Uniforme de diario</div>
-      <p class="svc-desc">Camisas, blusas, pantalones, faldas y jardineras con el calce y los colores del manual de la institución.</p>
+      <p class="svc-desc">Camisas, blusas, pantalones, faldas y jardineras según el manual del colegio.</p>
     </div>
     <div class="svc-card">
       <div class="svc-num">02</div>
       <div class="svc-title">Educación física</div>
-      <p class="svc-desc">Camisetas y pantalonetas en telas deportivas resistentes al uso diario, con estampado o sublimación del escudo.</p>
+      <p class="svc-desc">Camisetas y pantalonetas deportivas con el escudo estampado o sublimado.</p>
     </div>
     <div class="svc-card">
       <div class="svc-num">03</div>
       <div class="svc-title">Sudaderas</div>
-      <p class="svc-desc">Sudaderas institucionales cómodas y durables, fieles a los colores del colegio y pensadas para el clima de la región.</p>
+      <p class="svc-desc">Sudaderas durables, fieles a los colores del colegio.</p>
     </div>
     <div class="svc-card">
       <div class="svc-num">04</div>
       <div class="svc-title">Bordado del escudo</div>
-      <p class="svc-desc">Bordado computarizado de alta definición del escudo institucional, con durabilidad superior al estampado, lavada tras lavada.</p>
+      <p class="svc-desc">Bordado computarizado del escudo, más durable que el estampado.</p>
     </div>
     <div class="svc-card">
       <div class="svc-num">05</div>
       <div class="svc-title">Jardines y preescolar</div>
-      <p class="svc-desc">Uniformes y delantales para los más pequeños, con tallas desde jardín y materiales suaves y lavables.</p>
+      <p class="svc-desc">Uniformes y delantales en tallas pequeñas, con materiales suaves y lavables.</p>
     </div>
     <div class="svc-card">
       <div class="svc-num">06</div>
       <div class="svc-title">Dotación del personal</div>
-      <p class="svc-desc">Uniformes para docentes, administrativos y personal de servicios de la misma institución, con identidad consistente.</p>
+      <p class="svc-desc">Uniformes para docentes, administrativos y personal de servicios.</p>
     </div>
   </div>
 </div>
@@ -216,28 +217,28 @@
   <div class="r" style="margin-bottom:6vh;">
     <div class="section-label">Proceso</div>
     <h2 class="sec-h2">De la muestra aprobada<br>a la <em>entrega por curso.</em></h2>
-    <p style="font-size:.88rem;color:var(--fog);line-height:1.9;max-width:520px;margin-top:1.5rem;font-weight:300;">Un proceso pensado para rectores y administradores: la institución aprueba antes de que se produzca, y recibe el pedido organizado para entregar sin desorden.</p>
+    <p style="font-size:.95rem;color:var(--fog);line-height:1.7;max-width:520px;margin-top:1.5rem;font-weight:300;">La institución aprueba antes de producir y recibe el pedido organizado.</p>
   </div>
   <div class="step-row r d2">
     <div class="step-card">
       <div class="step-num">1</div>
       <div class="step-title">Muestra física sin costo</div>
-      <p class="step-text">Recibimos el manual de uniforme o una prenda de referencia y entregamos una muestra real de cada prenda para aprobación, sin costo para la institución.</p>
+      <p class="step-text">Entregamos una muestra real de cada prenda, sin costo.</p>
     </div>
     <div class="step-card">
       <div class="step-num">2</div>
       <div class="step-title">Tallaje por curso</div>
-      <p class="step-text">Tomamos tallas por curso en la institución o trabajamos con la tabla de tallas que el colegio apruebe.</p>
+      <p class="step-text">Tomamos tallas en la institución o usamos su tabla aprobada.</p>
     </div>
     <div class="step-card">
       <div class="step-num">3</div>
       <div class="step-title">Producción</div>
-      <p class="step-text">Confección por lotes con control de calidad prenda por prenda en nuestro taller de Corozal, Sucre.</p>
+      <p class="step-text">Control de calidad prenda por prenda en nuestro taller de Corozal.</p>
     </div>
     <div class="step-card">
       <div class="step-num">4</div>
       <div class="step-title">Entrega organizada</div>
-      <p class="step-text">Pedido marcado y separado por curso y talla, con reposición disponible durante el año escolar.</p>
+      <p class="step-text">Pedido separado por curso y talla, con reposición durante el año.</p>
     </div>
   </div>
 </div>
@@ -247,23 +248,23 @@
   <div class="r" style="margin-bottom:6vh;">
     <div class="section-label">Modalidades</div>
     <h2 class="sec-h2">Tres formas de trabajar<br>con <em>su institución.</em></h2>
-    <p style="font-size:.88rem;color:var(--fog);line-height:1.9;max-width:520px;margin-top:1.5rem;font-weight:300;">Cada colegio maneja los uniformes a su manera. Nos adaptamos a la modalidad que ya usa su institución.</p>
+    <p style="font-size:.95rem;color:var(--fog);line-height:1.7;max-width:520px;margin-top:1.5rem;font-weight:300;">Nos adaptamos a la modalidad que ya usa su institución.</p>
   </div>
   <div class="modal-grid r d2">
     <div class="modal-card">
       <div class="modal-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 17V5l7-3 7 3v12M3 17h14M8 17v-4h4v4"/></svg></div>
       <div class="modal-title">Contrato con el colegio</div>
-      <p class="modal-text">La institución contrata la dotación completa y nosotros entregamos el lote terminado, listo para distribuir por curso y talla.</p>
+      <p class="modal-text">La institución contrata la dotación y recibe el lote listo.</p>
     </div>
     <div class="modal-card">
       <div class="modal-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="7" cy="6" r="2.5"/><circle cx="13" cy="6" r="2.5"/><path d="M2 16c0-2.8 2.2-5 5-5s5 2.2 5 5M11 11.5c.6-.3 1.3-.5 2-.5 2.8 0 5 2.2 5 5"/></svg></div>
       <div class="modal-title">Convenio con los padres</div>
-      <p class="modal-text">El colegio nos autoriza como proveedor y los padres compran directamente con nosotros, con precios acordados con la institución.</p>
+      <p class="modal-text">El colegio nos autoriza y los padres compran directamente con nosotros.</p>
     </div>
     <div class="modal-card">
       <div class="modal-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 16h10M10 16V8M6 4l4-2 4 2M4 8l3-4M16 8l-3-4M2.5 8a2.5 2.5 0 005 0zM12.5 8a2.5 2.5 0 005 0z"/></svg></div>
       <div class="modal-title">Procesos de selección</div>
-      <p class="modal-text">Participamos en invitaciones y procesos de selección públicos y privados, con muestra física, ficha técnica y propuesta formal.</p>
+      <p class="modal-text">Participamos con muestra física, ficha técnica y propuesta formal.</p>
     </div>
   </div>
 </div>
@@ -275,7 +276,7 @@
     <div>
       <div class="section-label">Calendario escolar</div>
       <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--linen);font-weight:400;margin:.6rem 0 .9rem;">El proveedor del año siguiente <em style="color:var(--gold2);">suele definirse entre septiembre y noviembre.</em></h3>
-      <p style="font-size:.85rem;color:var(--ash);line-height:1.85;font-weight:300;max-width:640px;">Los colegios habitualmente eligen su proveedor de uniformes en ese periodo, antes del cierre del año lectivo. Por eso conviene coordinar la muestra física con anticipación: así la institución alcanza a evaluarla con calma y la producción llega a tiempo para el inicio de clases.</p>
+      <p style="font-size:.95rem;color:var(--fog);line-height:1.7;font-weight:300;max-width:640px;">Conviene coordinar la muestra con anticipación para que la producción llegue antes del inicio de clases.</p>
     </div>
   </div>
 </div>
@@ -289,27 +290,27 @@
   <div class="faq-list r d2">
     <details>
       <summary>¿Pueden replicar nuestro uniforme actual tal cual?</summary>
-      <p>Sí. Trabajamos a partir del manual de uniforme o de una prenda física de referencia: buscamos igualar telas, colores y acabados, y entregamos una muestra para aprobación antes de producir el lote.</p>
+      <p>Sí. Partimos del manual o de una prenda de referencia y entregamos una muestra para aprobación.</p>
     </details>
     <details>
       <summary>¿Cuál es el pedido mínimo?</summary>
-      <p>Cotizamos desde grupos pequeños hasta la dotación completa de la institución. La cantidad influye en el precio por prenda, y eso queda claro en la propuesta.</p>
+      <p>Cotizamos desde grupos pequeños hasta la dotación completa. La cantidad influye en el precio por prenda.</p>
     </details>
     <details>
       <summary>¿Cuánto tarda una dotación completa?</summary>
-      <p>Depende del número de estudiantes y de las prendas del manual. En la propuesta incluimos un cronograma de producción y entrega acordado con la institución, pensado para llegar antes del inicio de clases.</p>
+      <p>Depende del número de estudiantes y prendas. La propuesta incluye un cronograma pensado para llegar antes del inicio de clases.</p>
     </details>
     <details>
       <summary>¿Atienden colegios fuera de Sucre?</summary>
-      <p>Sí. Trabajamos con instituciones en Barranquilla y despachamos a nivel nacional. Para Sucre y los departamentos vecinos coordinamos visitas presenciales de muestra y tallaje.</p>
+      <p>Sí. Atendemos Barranquilla y despachamos a nivel nacional. En Sucre y departamentos vecinos coordinamos visitas presenciales de muestra y tallaje.</p>
     </details>
     <details>
       <summary>¿La muestra tiene algún costo o compromiso?</summary>
-      <p>La muestra física no tiene costo para la institución. Es la forma de que el colegio evalúe telas, calce y acabados antes de tomar cualquier decisión.</p>
+      <p>No tiene costo ni compromiso. Así el colegio evalúa telas, calce y acabados antes de decidir.</p>
     </details>
     <details>
       <summary>¿Qué pasa con las tallas que falten durante el año?</summary>
-      <p>Guardamos las fichas técnicas del uniforme de su institución, de modo que las reposiciones de tallas y prendas se pueden pedir durante el año escolar manteniendo los mismos materiales y acabados.</p>
+      <p>Guardamos las fichas técnicas de su uniforme. Las reposiciones durante el año mantienen los mismos materiales y acabados.</p>
     </details>
   </div>
 </div>
@@ -320,13 +321,13 @@
     <div class="r" style="margin-bottom:4vh;">
       <div class="section-label">Formulario para instituciones educativas</div>
       <h2 class="sec-h2">Solicite una propuesta<br>para <em>su colegio.</em></h2>
-      <p style="font-size:.88rem;color:var(--fog);line-height:1.9;max-width:500px;margin-top:1.5rem;font-weight:300;">Complete el formulario y le respondemos con propuesta, muestra y cronograma. También puede escribirnos directamente por WhatsApp o al correo acosertallertextilinfo@gmail.com.</p>
+      <p style="font-size:.95rem;color:var(--fog);line-height:1.7;max-width:500px;margin-top:1.5rem;font-weight:300;">Le respondemos con propuesta, muestra y cronograma. También por WhatsApp o al correo acosertallertextilinfo@gmail.com.</p>
     </div>
 
     <div id="formSuccessCol" style="display:none;background:rgba(184,151,90,.06);border:1px solid rgba(184,151,90,.25);padding:3rem;text-align:center;">
       <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="margin:0 auto 1.5rem;display:block;"><circle cx="20" cy="20" r="18" stroke="var(--gold)" stroke-width="1.2"/><polyline points="12,20 17,26 28,14" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <p style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--linen);font-style:italic;margin-bottom:.8rem;">Solicitud recibida.</p>
-      <p style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);">Nos comunicamos en menos de 24 horas hábiles.</p>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--fog);">Nos comunicamos en menos de 24 horas hábiles.</p>
     </div>
 
     <form id="colegiosForm" onsubmit="enviarColegio(event)" class="r d2">
@@ -340,7 +341,7 @@
         <div class="form-field span2"><label class="form-label">Número aproximado de estudiantes</label><input type="number" class="form-input" id="c-estudiantes" min="1" inputmode="numeric" placeholder="350"></div>
         <div class="form-field span2"><label class="form-label">Mensaje</label><textarea class="form-input" id="c-mensaje" rows="4" placeholder="Cuéntenos sobre el manual de uniforme, las prendas que necesita, fechas de entrega y cualquier requisito de la institución..." style="resize:none;height:auto;"></textarea></div>
       </div>
-      <p id="colError" style="font-family:'Barlow Condensed',sans-serif;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:#c0614a;margin-bottom:1rem;min-height:1rem;"></p>
+      <p id="colError" style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:#c0614a;margin-bottom:1rem;min-height:1rem;"></p>
       <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
         <button type="submit" class="btn-module-primary" id="colBtn"><span id="colBtnTxt">Solicitar propuesta</span></button>
         <a href="https://wa.me/573005206285?text=Hola%2C+escribo+de+parte+de+una+instituci%C3%B3n+educativa+y+quiero+cotizar+uniformes+escolares." class="btn-wa-module" target="_blank">Hablar por WhatsApp</a>

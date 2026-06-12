@@ -16,26 +16,26 @@
 .recurso-card { background: var(--ink2); border: 1px solid var(--dust); padding: 2.5rem 2rem; display: flex; flex-direction: column; gap: 1rem; transition: border-color .35s, background .35s; text-decoration: none; }
 .recurso-card:hover { border-color: rgba(184,151,90,.28); background: var(--ink3); }
 .recurso-icon { width: 48px; height: 48px; border: 1px solid rgba(184,151,90,.2); display: flex; align-items: center; justify-content: center; color: var(--gold); flex-shrink: 0; }
-.recurso-tag { font-family: 'Barlow Condensed', sans-serif; font-size: .48rem; letter-spacing: .45em; text-transform: uppercase; color: var(--gold); font-weight: 300; }
-.recurso-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--cream); font-weight: 400; line-height: 1.3; }
-.recurso-desc { font-size: .78rem; color: var(--ash); line-height: 1.75; font-weight: 300; flex: 1; }
-.recurso-link { font-family: 'Barlow Condensed', sans-serif; font-size: .56rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: .6rem; margin-top: auto; }
+.recurso-tag { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); font-weight: 300; }
+.recurso-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--cream); font-weight: 400; line-height: 1.3; }
+.recurso-desc { font-size: .95rem; color: var(--fog); line-height: 1.7; font-weight: 300; flex: 1; }
+.recurso-link { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: .6rem; margin-top: auto; }
 .recurso-link::after { content: '→'; transition: transform .3s ease; }
 .recurso-card:hover .recurso-link::after { transform: translateX(5px); }
 .recursos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--dust); }
 .accordion-item { border-bottom: 1px solid var(--dust); }
 .accordion-header { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 0; cursor: pointer; transition: color .3s; }
 .accordion-header:hover .accordion-q { color: var(--gold2); }
-.accordion-q { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 400; color: var(--linen); line-height: 1.3; }
+.accordion-q { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 400; color: var(--linen); line-height: 1.3; }
 .accordion-icon { color: var(--gold); font-size: 1.2rem; flex-shrink: 0; transition: transform .35s ease; }
 .accordion-item.open .accordion-icon { transform: rotate(45deg); }
 .accordion-body { max-height: 0; overflow: hidden; transition: max-height .5s cubic-bezier(.4,0,.2,1); }
-.accordion-body p { font-size: .85rem; color: var(--fog); line-height: 1.9; font-weight: 300; padding-bottom: 1.5rem; }
+.accordion-body p { font-size: .95rem; color: var(--fog); line-height: 1.7; font-weight: 300; padding-bottom: 1.5rem; }
 .care-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
 .care-item { text-align: center; padding: 1.5rem 1rem; background: var(--ink2); border: 1px solid var(--dust); }
 .care-icon { font-size: 2rem; margin-bottom: .8rem; }
-.care-label { font-family: 'Barlow Condensed', sans-serif; font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cream); font-weight: 500; margin-bottom: .4rem; display: block; }
-.care-desc { font-size: .75rem; color: var(--ash); line-height: 1.6; }
+.care-label { font-family: 'Barlow Condensed', sans-serif; font-size: 1.05rem; letter-spacing: .14em; text-transform: uppercase; color: var(--cream); font-weight: 500; margin-bottom: .4rem; display: block; }
+.care-desc { font-size: .95rem; color: var(--fog); line-height: 1.7; }
 @media(max-width:900px){ .recursos-grid{grid-template-columns:1fr 1fr;} .care-grid{grid-template-columns:1fr 1fr;} }
 @media(max-width:600px){ .recursos-grid{grid-template-columns:1fr;} .care-grid{grid-template-columns:1fr 1fr;} }
 </style>
@@ -81,7 +81,7 @@
 <div style="padding:calc(88px + 6vh) 4rem 4vh;background:var(--ink2);border-bottom:1px solid var(--dust);">
   <div class="section-label">Conocimiento textil gratuito</div>
   <h1 class="sec-h2">Centro de<br><em>Recursos ACOSER</em></h1>
-  <p style="font-size:.88rem;color:var(--fog);line-height:1.9;max-width:540px;margin-top:1.5rem;font-weight:300;">Guías, calculadoras y herramientas para que tomes mejores decisiones en tu próximo proyecto textil. Todo gratuito.</p>
+  <p style="font-size:.95rem;color:var(--fog);line-height:1.7;max-width:540px;margin-top:1.5rem;font-weight:300;">Guías, calculadoras y herramientas para tu próximo proyecto textil. Todo gratuito.</p>
 </div>
 
 <div style="padding:6vh 4rem;max-width:1200px;margin:0 auto;">
@@ -93,42 +93,42 @@
       <div class="recurso-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="2" width="18" height="18" rx="1"/><path d="M6 6h2v2H6zm4 0h2v2h-2zm4 0h2v2h-2zM6 10h2v2H6zm4 0h2v2h-2zm4 0h6v6h-6zM6 14h2v2H6zm4 0h2v2h-2z"/></svg></div>
       <div class="recurso-tag">Calculadora interactiva</div>
       <div class="recurso-title">Calculadora de Estampados DTF</div>
-      <p class="recurso-desc">Ingresa ancho, alto y cantidad para obtener costo estimado al instante. Tabla de precios por volumen incluida.</p>
+      <p class="recurso-desc">Ingresa ancho, alto y cantidad para ver el costo al instante.</p>
       <span class="recurso-link">Abrir calculadora</span>
     </a>
     <a href="../calculadora-tallas/" class="recurso-card">
       <div class="recurso-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 2a9 9 0 100 18A9 9 0 0011 2z"/><path d="M11 6v5l3 3"/></svg></div>
       <div class="recurso-tag">Guía interactiva</div>
       <div class="recurso-title">Calculadora de Tallas</div>
-      <p class="recurso-desc">Encuentra tu talla exacta. Ingresa medidas corporales y te indicamos el talle correcto según tipo de prenda.</p>
+      <p class="recurso-desc">Ingresa tus medidas y te indicamos la talla correcta.</p>
       <span class="recurso-link">Calcular mi talla</span>
     </a>
     <a href="../mockup/" class="recurso-card">
       <div class="recurso-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="3" width="18" height="16" rx="1"/><path d="M2 7h18M6 3v4M10 3v4M14 3v4"/></svg></div>
       <div class="recurso-tag">Herramienta visual</div>
       <div class="recurso-title">Mockup Generator</div>
-      <p class="recurso-desc">Sube tu logo y visualízalo sobre camisetas, polos, hoodies en diferentes colores. Vista previa instantánea.</p>
+      <p class="recurso-desc">Sube tu logo y visualízalo sobre camisetas, polos y hoodies.</p>
       <span class="recurso-link">Crear mockup</span>
     </a>
     <a href="../telas/" class="recurso-card">
       <div class="recurso-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 4l14 0M4 8l14 0M4 12l14 0M4 16l14 0M4 4l0 14M10 4l0 14M16 4l0 14"/></svg></div>
       <div class="recurso-tag">Comparador</div>
       <div class="recurso-title">Comparador de Telas</div>
-      <p class="recurso-desc">Compara 6 tipos de material textil: suavidad, durabilidad, transpirabilidad y compatibilidad con técnicas de impresión.</p>
+      <p class="recurso-desc">Compara suavidad, durabilidad y compatibilidad de seis materiales textiles.</p>
       <span class="recurso-link">Comparar telas</span>
     </a>
     <a href="../casos/" class="recurso-card">
       <div class="recurso-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2 6l9-4 9 4v10l-9 4-9-4z"/><path d="M11 2v18M2 6l9 4 9-4"/></svg></div>
       <div class="recurso-tag">Portafolio</div>
       <div class="recurso-title">Casos de Éxito</div>
-      <p class="recurso-desc">Conoce los proyectos realizados para empresas, marcas e instituciones. Filtrado por tipo de servicio.</p>
+      <p class="recurso-desc">Dotaciones entregadas, contratos adjudicados y nuestra línea propia Noah's Clothing.</p>
       <span class="recurso-link">Ver casos</span>
     </a>
     <a href="../empresas/" class="recurso-card">
       <div class="recurso-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 20V8l8-5 8 5v12H3z"/><path d="M8 20v-8h6v8"/></svg></div>
       <div class="recurso-tag">Portal exclusivo</div>
       <div class="recurso-title">Soluciones Empresariales</div>
-      <p class="recurso-desc">Portal dedicado a empresas, instituciones y marcas que necesitan producción masiva con calidad garantizada.</p>
+      <p class="recurso-desc">Portal para empresas e instituciones que necesitan producción por volumen.</p>
       <span class="recurso-link">Ir al portal</span>
     </a>
   </div>
@@ -138,46 +138,46 @@
     <div class="r" style="margin-bottom:3vh;"><div class="section-label">Artículo educativo</div><h2 class="sec-h2" style="font-size:clamp(1.8rem,3vw,2.4rem);">Guía completa<br>del <em>estampado DTF.</em></h2></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;" class="r d2">
       <div>
-        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--cream);margin-bottom:1rem;font-weight:500;">¿Qué es DTF?</h3>
-        <p style="font-size:.85rem;color:var(--fog);line-height:1.9;font-weight:300;margin-bottom:1.5rem;">Direct to Film (DTF) es una técnica de impresión textil que imprime el diseño sobre una lámina especial (film), luego transfiere el diseño a la prenda mediante calor y presión.</p>
-        <p style="font-size:.85rem;color:var(--fog);line-height:1.9;font-weight:300;">A diferencia de la serigrafía, no requiere fotolitos por color y puede aplicarse sobre casi cualquier tipo de tela.</p>
-        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--cream);margin-bottom:1rem;margin-top:2rem;font-weight:500;">¿Cuándo usar DTF?</h3>
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);margin-bottom:1rem;font-weight:500;">¿Qué es DTF?</h3>
+        <p style="font-size:.95rem;color:var(--fog);line-height:1.7;font-weight:300;margin-bottom:1.5rem;">Direct to Film (DTF) imprime el diseño en una lámina y lo transfiere a la prenda con calor y presión.</p>
+        <p style="font-size:.95rem;color:var(--fog);line-height:1.7;font-weight:300;">A diferencia de la serigrafía, no requiere fotolitos por color y puede aplicarse sobre casi cualquier tela.</p>
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);margin-bottom:1rem;margin-top:2rem;font-weight:500;">¿Cuándo usar DTF?</h3>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:.7rem;">
-          <li style="display:flex;gap:.8rem;align-items:flex-start;font-size:.82rem;color:var(--fog);font-weight:300;"><span style="color:var(--gold);flex-shrink:0;">✦</span>Desde 1 unidad sin costo de setup</li>
-          <li style="display:flex;gap:.8rem;align-items:flex-start;font-size:.82rem;color:var(--fog);font-weight:300;"><span style="color:var(--gold);flex-shrink:0;">✦</span>Diseños con muchos colores o degradados</li>
-          <li style="display:flex;gap:.8rem;align-items:flex-start;font-size:.82rem;color:var(--fog);font-weight:300;"><span style="color:var(--gold);flex-shrink:0;">✦</span>Fotografías o ilustraciones complejas</li>
-          <li style="display:flex;gap:.8rem;align-items:flex-start;font-size:.82rem;color:var(--fog);font-weight:300;"><span style="color:var(--gold);flex-shrink:0;">✦</span>Sobre algodón, poliéster o mezclas</li>
+          <li style="display:flex;gap:.8rem;align-items:flex-start;font-size:.95rem;color:var(--fog);font-weight:300;"><span style="color:var(--gold);flex-shrink:0;">✦</span>Desde 1 unidad sin costo de setup</li>
+          <li style="display:flex;gap:.8rem;align-items:flex-start;font-size:.95rem;color:var(--fog);font-weight:300;"><span style="color:var(--gold);flex-shrink:0;">✦</span>Diseños con muchos colores o degradados</li>
+          <li style="display:flex;gap:.8rem;align-items:flex-start;font-size:.95rem;color:var(--fog);font-weight:300;"><span style="color:var(--gold);flex-shrink:0;">✦</span>Fotografías o ilustraciones complejas</li>
+          <li style="display:flex;gap:.8rem;align-items:flex-start;font-size:.95rem;color:var(--fog);font-weight:300;"><span style="color:var(--gold);flex-shrink:0;">✦</span>Sobre algodón, poliéster o mezclas</li>
         </ul>
       </div>
       <div>
-        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--cream);margin-bottom:1rem;font-weight:500;">Recomendaciones de cuidado</h3>
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);margin-bottom:1rem;font-weight:500;">Recomendaciones de cuidado</h3>
         <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid var(--dust);">
           <div style="padding:1rem 0;border-bottom:1px solid var(--dust);display:flex;gap:1.5rem;">
             <span style="font-size:.85rem;">🌡️</span>
             <div>
-              <span style="font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);display:block;font-weight:500;margin-bottom:.3rem;">Temperatura de lavado</span>
-              <p style="font-size:.78rem;color:var(--ash);font-weight:300;">Máximo 30°C. A mayor temperatura, mayor riesgo de desprendimiento.</p>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);display:block;font-weight:500;margin-bottom:.3rem;">Temperatura de lavado</span>
+              <p style="font-size:.95rem;color:var(--fog);line-height:1.7;font-weight:300;">Máximo 30°C. A mayor temperatura, mayor riesgo de desprendimiento.</p>
             </div>
           </div>
           <div style="padding:1rem 0;border-bottom:1px solid var(--dust);display:flex;gap:1.5rem;">
             <span style="font-size:.85rem;">🔄</span>
             <div>
-              <span style="font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);display:block;font-weight:500;margin-bottom:.3rem;">Al revés</span>
-              <p style="font-size:.78rem;color:var(--ash);font-weight:300;">Lavar siempre del revés para proteger el estampado del roce.</p>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);display:block;font-weight:500;margin-bottom:.3rem;">Al revés</span>
+              <p style="font-size:.95rem;color:var(--fog);line-height:1.7;font-weight:300;">Lavar siempre del revés para proteger el estampado del roce.</p>
             </div>
           </div>
           <div style="padding:1rem 0;border-bottom:1px solid var(--dust);display:flex;gap:1.5rem;">
             <span style="font-size:.85rem;">🚫</span>
             <div>
-              <span style="font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);display:block;font-weight:500;margin-bottom:.3rem;">No planchar directo</span>
-              <p style="font-size:.78rem;color:var(--ash);font-weight:300;">Nunca planchar sobre el diseño. Usar trapo protector o planchar del revés.</p>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);display:block;font-weight:500;margin-bottom:.3rem;">No planchar directo</span>
+              <p style="font-size:.95rem;color:var(--fog);line-height:1.7;font-weight:300;">Nunca planchar sobre el diseño. Usar trapo protector o planchar del revés.</p>
             </div>
           </div>
           <div style="padding:1rem 0;display:flex;gap:1.5rem;">
             <span style="font-size:.85rem;">🌬️</span>
             <div>
-              <span style="font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);display:block;font-weight:500;margin-bottom:.3rem;">Secado al aire</span>
-              <p style="font-size:.78rem;color:var(--ash);font-weight:300;">Preferir secado natural. La secadora puede dañar el estampado a largo plazo.</p>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);display:block;font-weight:500;margin-bottom:.3rem;">Secado al aire</span>
+              <p style="font-size:.95rem;color:var(--fog);line-height:1.7;font-weight:300;">Preferir secado natural. La secadora puede dañar el estampado a largo plazo.</p>
             </div>
           </div>
         </div>

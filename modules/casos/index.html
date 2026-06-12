@@ -18,13 +18,14 @@
 .caso-img { aspect-ratio: 4/3; background: var(--ink3); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
 .caso-img-bg { position: absolute; inset: 0; transition: transform .8s cubic-bezier(.4,0,.2,1); }
 .caso-card:hover .caso-img-bg { transform: scale(1.05); }
-.caso-img-num { font-family: 'Playfair Display', serif; font-size: 4rem; color: rgba(184,151,90,.08); font-style: italic; line-height: 1; }
+.caso-img-num { font-family: 'Playfair Display', serif; font-size: 4rem; color: rgba(242,237,230,.85); text-shadow: 0 2px 18px rgba(0,0,0,.65); font-style: italic; line-height: 1; transition: color .45s ease; }
+.caso-card:hover .caso-img-num { color: var(--gold); }
 .caso-body { padding: 2rem; }
-.caso-tag { font-family: 'Barlow Condensed', sans-serif; font-size: .48rem; letter-spacing: .4em; text-transform: uppercase; color: var(--gold); font-weight: 300; display: block; margin-bottom: .7rem; }
-.caso-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--cream); font-weight: 400; margin-bottom: .8rem; line-height: 1.3; }
-.caso-desc { font-size: .78rem; color: var(--ash); line-height: 1.7; font-weight: 300; margin-bottom: 1.2rem; }
+.caso-tag { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); font-weight: 300; display: block; margin-bottom: .7rem; }
+.caso-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--cream); font-weight: 400; margin-bottom: .8rem; line-height: 1.3; }
+.caso-desc { font-size: .95rem; color: var(--fog); line-height: 1.7; font-weight: 300; margin-bottom: 1.2rem; }
 .caso-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
-.caso-badge { font-family: 'Barlow Condensed', sans-serif; font-size: .48rem; letter-spacing: .2em; text-transform: uppercase; border: 1px solid var(--dust); color: var(--ash); padding: .3rem .8rem; }
+.caso-badge { font-family: 'Barlow Condensed', sans-serif; font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; border: 1px solid var(--dust); color: var(--ash); padding: .3rem .8rem; }
 @media(max-width:900px){ .casos-grid{grid-template-columns:1fr 1fr;} }
 @media(max-width:600px){ .casos-grid{grid-template-columns:1fr;} }
 </style>
@@ -70,7 +71,7 @@
 <div style="padding:calc(88px + 6vh) 4rem 4vh;background:var(--ink2);border-bottom:1px solid var(--dust);">
   <div class="section-label">Lo que hemos construido</div>
   <h1 class="sec-h2">Nuestra<br><em>Trayectoria.</em></h1>
-  <p style="font-size:.88rem;color:var(--fog);line-height:1.9;max-width:540px;margin-top:1.5rem;font-weight:300;">Somos un taller en crecimiento y preferimos mostrar hechos antes que promesas. Estos son los hitos reales que marcan nuestro camino: dotaciones entregadas, contratos adjudicados y una línea propia en producción.</p>
+  <p style="font-size:.95rem;color:var(--fog);line-height:1.7;max-width:540px;margin-top:1.5rem;font-weight:300;">Preferimos mostrar hechos antes que promesas: dotaciones entregadas, contratos adjudicados y una línea propia en producción.</p>
 </div>
 
 <div style="padding:6vh 4rem;max-width:1200px;margin:0 auto;">
@@ -79,29 +80,29 @@
   <div class="casos-grid r d2" id="casosGrid">
     <div class="caso-card">
       <!-- FOTO: entrega Corozal -->
-      <div class="caso-img"><div class="caso-img-bg" style="background:linear-gradient(150deg,#161411,#201d16 60%,#141210)"></div><div class="caso-img-num">01</div></div>
+      <div class="caso-img"><div class="caso-img-bg" style="background:url('../../imagenes/taller/entrega-lista.jpg') center/cover"></div><div class="caso-img-num">01</div></div>
       <div class="caso-body">
         <span class="caso-tag">Uniformes escolares · Entregado</span>
         <div class="caso-title">Institución educativa — Corozal, Sucre</div>
-        <p class="caso-desc">Dotación completa de uniformes entregada en 2026 a una institución educativa de Corozal. Confección y entrega cumplidas según lo acordado con la institución.</p>
+        <p class="caso-desc">Dotación completa de uniformes entregada en 2026 según lo acordado.</p>
         <div class="caso-meta"><span class="caso-badge">Dotación completa</span><span class="caso-badge">Entregado · 2026</span><span class="caso-badge">Corozal, Sucre</span></div>
       </div>
     </div>
     <div class="caso-card">
-      <div class="caso-img"><div class="caso-img-bg" style="background:linear-gradient(210deg,#1a1712,#141210 55%,#1e1b14)"></div><div class="caso-img-num">02</div></div>
+      <div class="caso-img"><div class="caso-img-bg" style="background:url('../../imagenes/taller/bordado-promo.jpg') center/cover"></div><div class="caso-img-num">02</div></div>
       <div class="caso-body">
         <span class="caso-tag">Uniformes escolares · En producción</span>
         <div class="caso-title">Colegio Happy Time — Barranquilla</div>
-        <p class="caso-desc">Contrato adjudicado para la confección de uniformes de estudiantes del colegio Happy Time. Actualmente en producción en nuestro taller.</p>
+        <p class="caso-desc">Contrato adjudicado para uniformes de estudiantes, hoy en producción.</p>
         <div class="caso-meta"><span class="caso-badge">Contrato adjudicado</span><span class="caso-badge">En producción</span><span class="caso-badge">Barranquilla</span></div>
       </div>
     </div>
     <div class="caso-card">
-      <div class="caso-img"><div class="caso-img-bg" style="background:linear-gradient(120deg,#181512,#1c1914 50%,#201d16)"></div><div class="caso-img-num">03</div></div>
+      <div class="caso-img"><div class="caso-img-bg" style="background:url('../../imagenes/taller/empacado-tallas.jpg') center/cover"></div><div class="caso-img-num">03</div></div>
       <div class="caso-body">
         <span class="caso-tag">Línea propia · Ropa infantil</span>
         <div class="caso-title">Noah's Clothing — Marca de la casa</div>
-        <p class="caso-desc">Nuestra línea propia de ropa infantil, diseñada y confeccionada en el taller. Una producción continua que pone a prueba nuestros procesos de confección y acabados en cada lote.</p>
+        <p class="caso-desc">Nuestra línea propia de ropa infantil, diseñada y confeccionada en el taller.</p>
         <div class="caso-meta"><span class="caso-badge">Línea propia</span><span class="caso-badge">Producción continua</span><span class="caso-badge">Corozal, Sucre</span></div>
       </div>
     </div>
@@ -111,7 +112,7 @@
   <div style="text-align:center;padding:6vh 0;border-top:1px solid var(--dust);margin-top:6vh;" class="r">
     <div class="section-label" style="justify-content:center;">¿Quiere verlo con sus propias manos?</div>
     <h2 class="sec-h2" style="text-align:center;margin-bottom:1.5rem;">Solicite una <em>muestra física</em><br>en su institución.</h2>
-    <p style="font-size:.85rem;color:var(--fog);line-height:1.9;max-width:520px;margin:0 auto 2.5rem;font-weight:300;">Llevamos una muestra real de confección y bordado a su colegio o empresa, para que evalúe la calidad antes de decidir.</p>
+    <p style="font-size:.95rem;color:var(--fog);line-height:1.7;max-width:520px;margin:0 auto 2.5rem;font-weight:300;">Llevamos una muestra real de confección y bordado a su colegio o empresa.</p>
     <div style="display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;">
       <a href="../colegios/" class="btn-module-primary"><span>Soy un colegio</span></a>
       <a href="../empresas/" class="btn-module-secondary">Soy una empresa</a>

@@ -69,7 +69,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 
 <!-- ─── ESTILOS ───────────────────────────────── -->
-<link rel="stylesheet" href="css/base.css?v=20260612b">
+<link rel="stylesheet" href="css/base.css?v=20260612c">
 
 <!-- Estilos propios del home (rediseño minimalista) -->
 <style>
@@ -219,6 +219,35 @@ a.service-row { text-decoration: none; color: inherit; }
   .tray-grid { padding: 0 1.5rem; gap: 1rem; }
   .tray-card { padding: 2.2rem 1.8rem; }
 }
+
+/* — Señales visuales: iconos y mapa — */
+.ln-ico { flex-shrink: 0; }
+.svc-line { align-items: center; }
+.svc-line .ln-ico { color: var(--gold); opacity: .8; }
+.quick-card-tag { display: inline-flex; align-items: center; gap: .5rem; }
+.quick-card-tag .ln-ico { width: 14px; height: 14px; }
+.tray-tag { display: inline-flex; align-items: center; gap: .45rem; }
+.tray-tag .ln-ico { width: 13px; height: 13px; color: var(--gold); }
+.hero-tag .ln-ico { width: 13px; height: 13px; color: var(--gold); margin-right: .4rem; vertical-align: -2px; display: inline-block; }
+.c-channel { justify-content: flex-start; gap: 1.2rem; }
+.c-channel-arr { margin-left: auto; }
+.c-ico { width: 40px; height: 40px; border: 1px solid rgba(184,151,90,.25); display: flex; align-items: center; justify-content: center; color: var(--gold); flex-shrink: 0; transition: border-color .35s ease; }
+.c-channel:hover .c-ico { border-color: rgba(184,151,90,.55); }
+/* Mapa de cobertura */
+.map-card { margin-top: 2.6rem; display: flex; gap: 1.8rem; align-items: center; border: 1px solid var(--dust); padding: 1.7rem 1.8rem; background: var(--ink2); }
+.map-co { width: 116px; height: auto; flex-shrink: 0; }
+.map-co .co-out { fill: rgba(184,151,90,.05); stroke: var(--gold); stroke-width: 1.1; stroke-linejoin: round; opacity: .85; }
+.map-co .co-dot { fill: var(--gold); }
+.map-co .co-dot2 { fill: none; stroke: var(--gold); stroke-width: 1.2; }
+.map-co .co-pulse { fill: none; stroke: var(--gold); stroke-width: 1; transform-origin: 61px 43px; animation: coPulse 2.8s ease-out infinite; }
+.map-co .co-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: .08em; fill: var(--fog); text-transform: uppercase; }
+.map-co .co-lbl.gold { fill: var(--gold2); font-weight: 500; }
+@keyframes coPulse { 0% { transform: scale(.3); opacity: .9; } 70% { transform: scale(1.6); opacity: 0; } 100% { opacity: 0; } }
+.map-caption { display: flex; flex-direction: column; gap: .5rem; }
+.map-line { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--cream); line-height: 1.3; }
+.map-line em { font-style: italic; color: var(--gold2); }
+.map-line2 { font-family: 'Barlow Condensed', sans-serif; font-size: .74rem; letter-spacing: .22em; text-transform: uppercase; color: var(--fog); }
+@media (max-width: 768px) { .map-card { gap: 1.2rem; padding: 1.3rem; } .map-co { width: 92px; } }
 </style>
 </head>
 <body>
@@ -284,7 +313,7 @@ a.service-row { text-decoration: none; color: inherit; }
 <!-- HERO -->
 <section id="hero">
   <div class="hero-left">
-    <div class="hero-tag">Corozal &mdash; Sucre, Colombia &nbsp;&middot;&nbsp; Producción Textil Premium</div>
+    <div class="hero-tag"><svg class="ln-ico" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18c4-4.4 6-7.2 6-9.9a6 6 0 1 0-12 0C4 10.8 6 13.6 10 18z"/><circle cx="10" cy="8" r="2.1"/></svg>Corozal &mdash; Sucre, Colombia &nbsp;&middot;&nbsp; Producción Textil Premium</div>
     <h1 class="hero-h1">
       <span class="hero-h1-line"><span class="hero-h1-line-inner">Confeccionamos</span></span>
       <span class="hero-h1-line"><span class="hero-h1-line-inner">tus ideas</span></span>
@@ -341,7 +370,7 @@ a.service-row { text-decoration: none; color: inherit; }
     <a href="modules/colegios/" class="quick-card">
       <div class="quick-card-bg" style="background-image:url('imagenes/taller/lote-uniformes.jpg')"></div>
       <div class="quick-card-body">
-        <span class="quick-card-tag">Para colegios y jardines</span>
+        <span class="quick-card-tag"><svg class="ln-ico" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5 2.5 7l7.5 3.5L17.5 7 10 3.5z"/><path d="M5.5 9v3.6c0 1.2 2 2.3 4.5 2.3s4.5-1.1 4.5-2.3V9"/><path d="M17.5 7v4"/></svg>Para colegios y jardines</span>
         <div class="quick-card-title">Uniformes escolares.</div>
         <span class="quick-card-arr">Ver propuesta &rarr;</span>
       </div>
@@ -349,7 +378,7 @@ a.service-row { text-decoration: none; color: inherit; }
     <a href="modules/empresas/" class="quick-card">
       <div class="quick-card-bg" style="background-image:url('imagenes/taller/maquina-industrial.jpg')"></div>
       <div class="quick-card-body">
-        <span class="quick-card-tag">Para empresas</span>
+        <span class="quick-card-tag"><svg class="ln-ico" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="14" height="9" rx="1.2"/><path d="M8 7V5.6A1.6 1.6 0 0 1 9.6 4h.8A1.6 1.6 0 0 1 12 5.6V7"/><path d="M3 11h14"/></svg>Para empresas</span>
         <div class="quick-card-title">Dotación y uniformes corporativos.</div>
         <span class="quick-card-arr">Ver soluciones &rarr;</span>
       </div>
@@ -357,7 +386,7 @@ a.service-row { text-decoration: none; color: inherit; }
     <a href="modules/casos/" class="quick-card">
       <div class="quick-card-bg" style="background-image:url('imagenes/taller/entrega-lista.jpg')"></div>
       <div class="quick-card-body">
-        <span class="quick-card-tag">Hechos, no promesas</span>
+        <span class="quick-card-tag"><svg class="ln-ico" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="7.8" r="4.4"/><path d="m7.6 11.4-1.5 5.4 3.9-1.9 3.9 1.9-1.5-5.4"/></svg>Hechos, no promesas</span>
         <div class="quick-card-title">Nuestra trayectoria.</div>
         <span class="quick-card-arr">Conocerla &rarr;</span>
       </div>
@@ -384,16 +413,16 @@ a.service-row { text-decoration: none; color: inherit; }
     </div>
     </div>
   <div class="services-compact r d2">
-    <a href="modules/colegios/" class="svc-line"><span class="svc-line-num">01</span><span class="svc-line-name">Uniformes escolares</span><span class="svc-line-arr">&rarr;</span></a>
-    <a href="modules/empresas/" class="svc-line"><span class="svc-line-num">02</span><span class="svc-line-name">Uniformes empresariales</span><span class="svc-line-arr">&rarr;</span></a>
-    <a href="#contact" class="svc-line"><span class="svc-line-num">03</span><span class="svc-line-name">Camisetas personalizadas</span><span class="svc-line-arr">&rarr;</span></a>
-    <a href="#contact" class="svc-line"><span class="svc-line-num">04</span><span class="svc-line-name">Bordados computarizados</span><span class="svc-line-arr">&rarr;</span></a>
-    <a href="modules/calculadora-dtf/" class="svc-line"><span class="svc-line-num">05</span><span class="svc-line-name">Estampados DTF</span><span class="svc-line-arr">&rarr;</span></a>
-    <a href="#contact" class="svc-line"><span class="svc-line-num">06</span><span class="svc-line-name">Confección para marcas</span><span class="svc-line-arr">&rarr;</span></a>
-    <a href="modules/empresas/" class="svc-line"><span class="svc-line-num">07</span><span class="svc-line-name">Dotaciones</span><span class="svc-line-arr">&rarr;</span></a>
-    <a href="#contact" class="svc-line"><span class="svc-line-num">08</span><span class="svc-line-name">Disfraces y caracterización</span><span class="svc-line-arr">&rarr;</span></a>
-    <a href="#contact" class="svc-line"><span class="svc-line-num">09</span><span class="svc-line-name">Sublimación</span><span class="svc-line-arr">&rarr;</span></a>
-    <a href="#contact" class="svc-line"><span class="svc-line-num">10</span><span class="svc-line-name">Producción por lotes</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="modules/colegios/" class="svc-line"><svg class="ln-ico" width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5 2.5 7l7.5 3.5L17.5 7 10 3.5z"/><path d="M5.5 9v3.6c0 1.2 2 2.3 4.5 2.3s4.5-1.1 4.5-2.3V9"/><path d="M17.5 7v4"/></svg><span class="svc-line-num">01</span><span class="svc-line-name">Uniformes escolares</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="modules/empresas/" class="svc-line"><svg class="ln-ico" width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="14" height="9" rx="1.2"/><path d="M8 7V5.6A1.6 1.6 0 0 1 9.6 4h.8A1.6 1.6 0 0 1 12 5.6V7"/><path d="M3 11h14"/></svg><span class="svc-line-num">02</span><span class="svc-line-name">Uniformes empresariales</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="#contact" class="svc-line"><svg class="ln-ico" width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.2 3.8 4 5.8l1.5 2.8 1.3-.6V16h6.4V8l1.3.6L16 5.8l-3.2-2c-.4 1-1.4 1.7-2.8 1.7s-2.4-.7-2.8-1.7z"/></svg><span class="svc-line-num">03</span><span class="svc-line-name">Camisetas personalizadas</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="#contact" class="svc-line"><svg class="ln-ico" width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="11" r="5.6"/><circle cx="9" cy="11" r="3.9"/><path d="m12.8 3.2 4 4"/></svg><span class="svc-line-num">04</span><span class="svc-line-name">Bordados computarizados</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="modules/calculadora-dtf/" class="svc-line"><svg class="ln-ico" width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="13" height="5.6" rx="1"/><path d="M6.8 13.2c0 1-1.3 1.5-1.3 2.5a1.3 1.3 0 0 0 2.6 0c0-1-1.3-1.5-1.3-2.5z"/><path d="M13.2 13.2c0 1-1.3 1.5-1.3 2.5a1.3 1.3 0 0 0 2.6 0c0-1-1.3-1.5-1.3-2.5z"/></svg><span class="svc-line-num">05</span><span class="svc-line-name">Estampados DTF</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="#contact" class="svc-line"><svg class="ln-ico" width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.3V4.6A1.6 1.6 0 0 1 4.6 3h5.7l6.6 6.6a1.6 1.6 0 0 1 0 2.3l-4.9 4.9a1.6 1.6 0 0 1-2.3 0L3 10.3z"/><circle cx="7" cy="7" r="1.2"/></svg><span class="svc-line-num">06</span><span class="svc-line-name">Confección para marcas</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="modules/empresas/" class="svc-line"><svg class="ln-ico" width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5c.5 1.1 1.6 1.8 3 1.8s2.5-.7 3-1.8l2.5 1.8-1 3.2-1-.4V16h-7V8.1l-1 .4-1-3.2L7 3.5z"/><path d="M10 5.3V16"/></svg><span class="svc-line-num">07</span><span class="svc-line-name">Dotaciones</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="#contact" class="svc-line"><svg class="ln-ico" width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.2c2.2-1.4 4.8-1.4 7 0 2.2-1.4 4.8-1.4 7 0v2.9c0 3.1-2.6 5.2-7 6.9-4.4-1.7-7-3.8-7-6.9V7.2z"/><path d="M6 9.6h2.5M11.5 9.6H14"/></svg><span class="svc-line-num">08</span><span class="svc-line-name">Disfraces y caracterización</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="#contact" class="svc-line"><svg class="ln-ico" width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3c3 3.7 4.9 6.2 4.9 8.5a4.9 4.9 0 0 1-9.8 0C5.1 9.2 7 6.7 10 3z"/></svg><span class="svc-line-num">09</span><span class="svc-line-name">Sublimación</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="#contact" class="svc-line"><svg class="ln-ico" width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="10.8" width="5.8" height="5.8"/><rect x="10.7" y="10.8" width="5.8" height="5.8"/><rect x="7.1" y="3.4" width="5.8" height="5.8"/></svg><span class="svc-line-num">10</span><span class="svc-line-name">Producción por lotes</span><span class="svc-line-arr">&rarr;</span></a>
   </div>
 </section>
 
@@ -430,21 +459,21 @@ a.service-row { text-decoration: none; color: inherit; }
     <div class="tray-card">
       <div class="tray-photo"><img src="imagenes/taller/detalle-franja.jpg" alt="Pantalón de uniforme escolar con franja lateral" loading="lazy"></div>
       <span class="tray-num">i</span>
-      <span class="tray-tag">Corozal, Sucre</span>
+      <span class="tray-tag"><svg class="ln-ico" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18c4-4.4 6-7.2 6-9.9a6 6 0 1 0-12 0C4 10.8 6 13.6 10 18z"/><circle cx="10" cy="8" r="2.1"/></svg>Corozal, Sucre</span>
       <h3 class="tray-title">Uniformes entregados a una <em>institución educativa.</em></h3>
       <p class="tray-text">Entrega completa de uniformes a una institución educativa de Corozal: tallaje, confección y entrega cumplida en 2026.</p>
     </div>
     <div class="tray-card">
       <div class="tray-photo"><img src="imagenes/taller/bordado-promo.jpg" alt="Bordado personalizado para promoción escolar" loading="lazy"></div>
       <span class="tray-num">ii</span>
-      <span class="tray-tag">Barranquilla, Atlántico</span>
+      <span class="tray-tag"><svg class="ln-ico" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18c4-4.4 6-7.2 6-9.9a6 6 0 1 0-12 0C4 10.8 6 13.6 10 18z"/><circle cx="10" cy="8" r="2.1"/></svg>Barranquilla, Atlántico</span>
       <h3 class="tray-title">Contrato con el colegio <em>Happy Time.</em></h3>
       <p class="tray-text">Contrato adjudicado para la confección de los uniformes de los estudiantes del colegio Happy Time de Barranquilla.</p>
     </div>
     <div class="tray-card">
       <div class="tray-photo"><img src="imagenes/taller/empacado-tallas.jpg" alt="Ropa infantil empacada por talla" loading="lazy"></div>
       <span class="tray-num">iii</span>
-      <span class="tray-tag">Línea propia</span>
+      <span class="tray-tag"><svg class="ln-ico" width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.3V4.6A1.6 1.6 0 0 1 4.6 3h5.7l6.6 6.6a1.6 1.6 0 0 1 0 2.3l-4.9 4.9a1.6 1.6 0 0 1-2.3 0L3 10.3z"/><circle cx="7" cy="7" r="1.2"/></svg>Línea propia</span>
       <h3 class="tray-title">Noah's Clothing, ropa <em>infantil.</em></h3>
       <p class="tray-text">Nuestra marca propia de ropa infantil, diseñada y producida en el taller, mantiene viva la línea de creación de ACOSER.</p>
     </div>
@@ -465,20 +494,35 @@ a.service-row { text-decoration: none; color: inherit; }
         <p class="contact-intro">Cuéntanos tu idea y te respondemos con una cotización clara, sin compromiso.</p>
         <div class="contact-channels">
           <a href="https://wa.me/573005206285" class="c-channel" target="_blank">
-            <div class="c-channel-left"><span class="c-channel-lbl">WhatsApp</span><span class="c-channel-val">+57 300 520 6285</span></div>
+            <span class="c-ico"><svg class="ln-ico" width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h2.8l1.4 3.8-1.9 1.4a11.5 11.5 0 0 0 4.5 4.5l1.4-1.9L17 12.2V15a2 2 0 0 1-2.1 2A13.2 13.2 0 0 1 3 5.1 2 2 0 0 1 5 3z"/></svg></span><div class="c-channel-left"><span class="c-channel-lbl">WhatsApp</span><span class="c-channel-val">+57 300 520 6285</span></div>
             <span class="c-channel-arr">&rarr;</span>
           </a>
           <a href="mailto:acosertallertextilinfo@gmail.com" class="c-channel">
-            <div class="c-channel-left"><span class="c-channel-lbl">Email</span><span class="c-channel-val">acosertallertextilinfo@gmail.com</span></div>
+            <span class="c-ico"><svg class="ln-ico" width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="14" height="10.5" rx="1.3"/><path d="m3.6 6.2 6.4 4.9 6.4-4.9"/></svg></span><div class="c-channel-left"><span class="c-channel-lbl">Email</span><span class="c-channel-val">acosertallertextilinfo@gmail.com</span></div>
             <span class="c-channel-arr">&rarr;</span>
           </a>
           <a href="https://instagram.com/acoser_tallertextil" class="c-channel" target="_blank">
-            <div class="c-channel-left"><span class="c-channel-lbl">Instagram</span><span class="c-channel-val">@acoser_tallertextil</span></div>
+            <span class="c-ico"><svg class="ln-ico" width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.8" y="3.8" width="12.4" height="12.4" rx="3.4"/><circle cx="10" cy="10" r="3"/><circle cx="14" cy="6" r=".9" fill="currentColor" stroke="none"/></svg></span><div class="c-channel-left"><span class="c-channel-lbl">Instagram</span><span class="c-channel-val">@acoser_tallertextil</span></div>
             <span class="c-channel-arr">&rarr;</span>
           </a>
           <div class="c-channel">
-            <div class="c-channel-left"><span class="c-channel-lbl">Ubicación</span><span class="c-channel-val">Corozal &mdash; Sucre, Colombia</span></div>
+            <span class="c-ico"><svg class="ln-ico" width="19" height="19" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18c4-4.4 6-7.2 6-9.9a6 6 0 1 0-12 0C4 10.8 6 13.6 10 18z"/><circle cx="10" cy="8" r="2.1"/></svg></span><div class="c-channel-left"><span class="c-channel-lbl">Ubicación</span><span class="c-channel-val">Corozal &mdash; Sucre, Colombia</span></div>
             <span class="c-channel-arr">&rarr;</span>
+          </div>
+        </div>
+        <div class="map-card">
+          <svg class="map-co" viewBox="-6 -4 212 232" aria-label="Mapa de Colombia con el taller en Corozal, Sucre">
+            <path class="co-out" d="M130 2 L126 11 L114 27 L110 42 L122 55 L146 72 L157 71 L187 83 L192 120 L195 148 L157 155 L148 166 L154 190 L148 218 L128 206 L96 181 L60 165 L43 161 L25 159 L2 146 L3 131 L13 112 L26 86 L26 51 L34 52 L44 38 L57 29 L68 21 L79 17 L95 22 L113 14 L123 6 Z"/>
+            <circle class="co-pulse" cx="61" cy="43" r="10"/>
+            <circle class="co-dot" cx="61" cy="43" r="4"/>
+            <circle class="co-dot2" cx="68" cy="21" r="2.6"/>
+            <circle class="co-dot2" cx="80" cy="103" r="2.2"/>
+            <text class="co-lbl gold" x="72" y="48">Corozal</text>
+            <text class="co-lbl" x="76" y="18">Barranquilla</text>
+          </svg>
+          <div class="map-caption">
+            <span class="map-line">Taller en <em>Corozal, Sucre.</em></span>
+            <span class="map-line2">Entregas en toda Colombia</span>
           </div>
         </div>
       </div>
@@ -583,10 +627,10 @@ a.service-row { text-decoration: none; color: inherit; }
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="js/whatsapp.js?v=20260612b"></script>
-<script src="js/leads.js?v=20260612b"></script>
-<script src="js/core.js?v=20260612b"></script>
-<script src="js/emailjs-handler.js?v=20260612b"></script>
+<script src="js/whatsapp.js?v=20260612c"></script>
+<script src="js/leads.js?v=20260612c"></script>
+<script src="js/core.js?v=20260612c"></script>
+<script src="js/emailjs-handler.js?v=20260612c"></script>
 <script>
 /* index.html no requiere JS adicional — todo está en js/core.js y js/emailjs-handler.js */
 </script>

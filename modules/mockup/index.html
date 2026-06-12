@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/base.css?v=20260612l">
+<link rel="stylesheet" href="../../css/base.css?v=20260612m">
 <link rel="icon" type="image/png" href="../../imagenes/favicon.png">
 <style>
 /* ═══════════════════════════════════════════════════════
@@ -1147,8 +1147,8 @@ canvas#mc.can-rotate { cursor: crosshair; }
 
 <!-- ═══ SCRIPTS ═══════════════════════════════════════════ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="../../js/whatsapp.js?v=20260612l"></script>
-<script src="../../js/leads.js?v=20260612l"></script>
+<script src="../../js/whatsapp.js?v=20260612m"></script>
+<script src="../../js/leads.js?v=20260612m"></script>
 
 <script>
 /* ════════════════════════════════════════════════════
@@ -1305,6 +1305,35 @@ function getLuminance(hex) {
 let GARMENT_CACHE = {};
 let GARMENT_LOADING = {};
 
+/* ── GEOMETRÍA DE ARRUGAS — fuente única ──
+   Estas curvas alimentan (a) el sombreado visual de la prenda,
+   (b) el overlay multiply que oscurece el logo, (c) el pase de luces
+   "screen" sobre el logo y (d) el MAPA DE ALTURAS del warp 2.5D.
+   Al compartir geometría, la deformación del diseño y las sombras de
+   la tela quedan alineadas por construcción. */
+function wrinkleOffset(view) { return view === 'back' ? [4, 6] : [0, 0]; }
+function getWrinkles(g) {
+  const hood = g === 'hoodie';
+  const W = [
+    ['M158,296 C198,286 240,300 282,292', .13, 8],
+    ['M170,366 C214,378 262,366 330,374', .12, 9],
+    ['M156,448 C208,438 286,454 346,442', .13, 9],
+    ['M204,212 C232,220 270,216 296,208', .10, 6],
+    ['M150,260 C158,310 152,358 158,406', .11, 7],
+    ['M350,262 C342,312 350,360 344,408', .11, 7],
+    /* Drape extra: tela suelta con caída natural, sin rigidez */
+    ['M168,330 C212,322 256,336 304,326', .09, 7],
+    ['M214,258 C248,266 288,260 320,254', .08, 6],
+    ['M164,418 C172,398 166,378 172,356', .09, 6],
+    ['M336,428 C330,406 338,384 332,360', .09, 6],
+  ];
+  /* Arruga baja: en hoodie sube para no caer sobre la banda rib */
+  W.push(hood
+    ? ['M188,470 C232,462 286,472 330,464', .09, 7]
+    : ['M186,498 C232,490 288,502 334,492', .10, 8]);
+  return W;
+}
+
 /* Sombreado orgánico, independiente del color de la prenda.
    boost amplifica las luces blancas cuando la tela es oscura;
    con boost=0 queda solo la parte oscura (overlay multiply del logo). */
@@ -1345,20 +1374,16 @@ function shadingFrag(g, view, boost) {
     s += `<path d="M72,100 C96,88 120,80 140,78" fill="none" stroke="#fff" stroke-width="9" opacity="${(.10 * boost).toFixed(2)}" filter="url(#b6)"/>`;
     s += `<path d="M428,100 C404,88 380,80 360,78" fill="none" stroke="#fff" stroke-width="9" opacity="${(.06 * boost).toFixed(2)}" filter="url(#b6)"/>`;
   }
-  /* Arrugas orgánicas: valle oscuro + cresta clara desplazada */
-  const W = [
-    ['M158,296 C198,286 240,300 282,292', .13, 8],
-    ['M170,366 C214,378 262,366 330,374', .12, 9],
-    ['M156,448 C208,438 286,454 346,442', .13, 9],
-    ['M204,212 C232,220 270,216 296,208', .10, 6],
-    ['M150,260 C158,310 152,358 158,406', .11, 7],
-    ['M350,262 C342,312 350,360 344,408', .11, 7],
-  ];
+  /* Arrugas orgánicas: valle oscuro + cresta clara desplazada
+     (geometría compartida con el height map del warp 2.5D) */
   const wb = Math.min(boost, 1.25); /* crestas blancas más sutiles que las luces globales */
-  W.forEach(([wd, o, w]) => {
+  const [wtx, wty] = wrinkleOffset(view);
+  s += `<g transform="translate(${wtx},${wty})">`;
+  getWrinkles(g).forEach(([wd, o, w]) => {
     s += `<path d="${wd}" transform="translate(0,-4)" fill="none" stroke="#fff" stroke-width="${w - 2}" opacity="${(o * .6 * wb).toFixed(2)}" filter="url(#b4)"/>`;
     s += `<path d="${wd}" fill="none" stroke="#000" stroke-width="${w}" opacity="${o}" filter="url(#b4)"/>`;
   });
+  s += `</g>`;
   return s;
 }
 
@@ -1500,8 +1525,11 @@ function buildGarmentSvg(g, view, color) {
   const texOp = dk ? .08 : .055;
   const halo  = dk ? .065 : .04;
   const d = GARMENT_D[g][view];
+  /* Seed determinista por prenda/vista: cada silueta ondula distinto */
+  const seed = ({ tshirt: 3, polo: 11, hoodie: 23, uniform: 31 })[g] + (view === 'back' ? 7 : 0);
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 580" width="500" height="580">
 <defs>
+<filter id="cloth" x="-8%" y="-8%" width="116%" height="116%"><feTurbulence type="fractalNoise" baseFrequency="0.011 0.017" numOctaves="2" seed="${seed}" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="6.5" xChannelSelector="R" yChannelSelector="G"/></filter>
 <linearGradient id="dlight" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="${hi}"/><stop offset=".45" stop-color="#ffffff" stop-opacity="0"/><stop offset=".72" stop-color="#000000" stop-opacity="${(sh * .45).toFixed(3)}"/><stop offset="1" stop-color="#000000" stop-opacity="${sh}"/></linearGradient>
 <radialGradient id="chest"><stop offset="0" stop-color="#fff" stop-opacity=".26"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
 <radialGradient id="halo"><stop offset="0" stop-color="#fff" stop-opacity="${halo}"/><stop offset=".6" stop-color="#fff" stop-opacity="${halo*.35}"/><stop offset=".88" stop-color="#fff" stop-opacity="0"/></radialGradient>
@@ -1516,6 +1544,7 @@ function buildGarmentSvg(g, view, color) {
 </defs>
 <ellipse cx="250" cy="265" rx="195" ry="230" fill="url(#halo)"/>
 <ellipse cx="250" cy="556" rx="158" ry="11" fill="#000" opacity=".42" filter="url(#b12)"/>
+<g filter="url(#cloth)">
 <path d="${d}" fill="${color}"/>
 <g clip-path="url(#sil)">
 ${detailsFrag(g, view, P)}
@@ -1524,6 +1553,7 @@ ${shadingFrag(g, view, boost)}
 ${dk ? `<path d="${d}" fill="none" stroke="#fff" stroke-opacity=".06" stroke-width="7"/>` : ''}
 </g>
 <path d="${d}" fill="none" stroke="${rim}" stroke-width="1.6"/>
+</g>
 </svg>`;
 }
 
@@ -2355,7 +2385,7 @@ function generatePDF() {
   doc.text('ACOSER Taller Textil', 15, H-10);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(6.5);
-  doc.text('Corozal, Sucre, Colombia  ·  +57 300 520 6285  ·  acosertallertextilinfo@gmail.com', 15, H-5);
+  doc.text('Corozal, Sucre, Colombia  ·  +57 300 520 6285  ·  acosertallertextil@gmail.com', 15, H-5);
   doc.text('Generated by ACOSER Studio', W-15, H-7, { align: 'right' });
 
   doc.save(`ficha-tecnica-acoser-${S.garment}-${S.sizeLabel}.pdf`);

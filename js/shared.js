@@ -107,7 +107,7 @@ const ACOSER_UI = (function () {
       <span class="footer-col-head">Contacto</span>
       <ul class="footer-links">
         <li><a href="tel:+573005206285">+57 300 520 6285</a></li>
-        <li><a href="mailto:acosertallertextilinfo@gmail.com">acosertallertextilinfo@gmail.com</a></li>
+        <li><a href="mailto:acosertallertextil@gmail.com">acosertallertextil@gmail.com</a></li>
         <li><a href="https://instagram.com/acoser_tallertextil" target="_blank">@acoser_tallertextil</a></li>
         <li><a href="#">Corozal &mdash; Sucre, Colombia</a></li>
       </ul>

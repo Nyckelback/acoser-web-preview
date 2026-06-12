@@ -71,9 +71,73 @@
 <!-- ─── ESTILOS ───────────────────────────────── -->
 <link rel="stylesheet" href="css/base.css">
 
-<!-- ESTILOS INLINE DE EMERGENCIA (ninguno — todo está en base.css) -->
+<!-- Estilos propios del home (rediseño minimalista) -->
 <style>
-/* Estilos adicionales específicos de esta página */
+/* — Tipografía más grande y legible — */
+.hero-sub { font-size: 1.02rem; line-height: 1.85; }
+.contact-intro { font-size: 1.02rem; line-height: 1.8; }
+
+/* Contadores del hero legibles sobre la foto */
+.hero-counter-strip { background: linear-gradient(0deg, rgba(12,11,9,.82), rgba(12,11,9,.5) 75%, transparent); padding: 2.2rem 2rem 1.6rem; }
+
+/* — Accesos rápidos — */
+#quick { padding: 11vh 4rem 10vh; }
+.quick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; margin-top: 5vh; }
+.quick-card { position: relative; display: block; min-height: 400px; border: 1px solid var(--dust); overflow: hidden; text-decoration: none; }
+.quick-card-bg { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform .8s cubic-bezier(.2,.6,.2,1), filter .5s ease; filter: saturate(.85); }
+.quick-card:hover .quick-card-bg { transform: scale(1.05); filter: saturate(1); }
+.quick-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(12,11,9,.05) 30%, rgba(12,11,9,.93) 100%); }
+.quick-card-body { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.2rem; z-index: 1; }
+.quick-card-tag { font-family: 'Barlow Condensed', sans-serif; font-size: .64rem; letter-spacing: .35em; text-transform: uppercase; color: var(--gold2); display: block; margin-bottom: .7rem; font-weight: 400; }
+.quick-card-title { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 400; color: #f2ede6; line-height: 1.2; margin-bottom: .9rem; }
+.quick-card-arr { font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: #d4d0ca; transition: color .35s ease; }
+.quick-card:hover .quick-card-arr { color: var(--gold2); }
+.tools-strip { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; margin-top: 2.6rem; }
+.tools-strip-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: .62rem; letter-spacing: .35em; text-transform: uppercase; color: var(--ash); margin-right: .6rem; }
+.tool-chip { font-family: 'Barlow Condensed', sans-serif; font-size: .76rem; letter-spacing: .2em; text-transform: uppercase; color: var(--fog); border: 1px solid var(--dust); padding: .9rem 1.5rem; text-decoration: none; transition: color .35s ease, border-color .35s ease; }
+.tool-chip:hover { color: var(--gold2); border-color: rgba(184,151,90,.45); }
+
+/* — Servicios compactos (solo nombre, letra grande) — */
+#services { padding: 11vh 4rem; }
+.services-compact { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--dust); margin-top: 5vh; }
+.svc-line { display: flex; align-items: baseline; gap: 1.4rem; padding: 1.7rem 2rem; border-bottom: 1px solid var(--dust); text-decoration: none; transition: background .35s ease; }
+.svc-line:nth-child(odd) { border-right: 1px solid var(--dust); }
+.svc-line:hover { background: var(--ink2); }
+.svc-line-num { font-family: 'Playfair Display', serif; font-style: italic; font-size: .85rem; color: var(--gold); min-width: 2rem; }
+.svc-line-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; letter-spacing: .07em; text-transform: uppercase; color: var(--linen); font-weight: 400; flex: 1; }
+.svc-line-arr { color: var(--ash); font-size: .95rem; transition: transform .35s ease, color .35s ease; }
+.svc-line:hover .svc-line-arr { transform: translateX(6px); color: var(--gold); }
+
+/* — Galería del taller (fotos reales) — */
+#taller { padding: 12vh 4rem; background: var(--ink2); }
+.taller-sub { font-size: 1.02rem; color: var(--fog); line-height: 1.8; max-width: 520px; margin-top: 1.6rem; font-weight: 300; }
+.taller-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 250px; gap: 1rem; grid-auto-flow: dense; margin-top: 6vh; }
+.g-item { position: relative; overflow: hidden; border: 1px solid var(--dust); background: var(--ink3); }
+.g-item.tall { grid-row: span 2; }
+.g-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s cubic-bezier(.2,.6,.2,1), filter .5s ease; filter: saturate(.9); }
+.g-item:hover img { transform: scale(1.04); filter: saturate(1); }
+.g-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 2rem 1.2rem .95rem; background: linear-gradient(180deg, transparent, rgba(12,11,9,.88)); font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .28em; text-transform: uppercase; color: #e8e3da; }
+
+/* — Trayectoria con foto — */
+.tray-photo { margin: -3rem -2.5rem 2rem; height: 210px; overflow: hidden; border-bottom: 1px solid var(--dust); }
+.tray-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.9); transition: transform .8s ease; }
+.tray-card:hover .tray-photo img { transform: scale(1.05); }
+
+@media (max-width: 1024px) {
+  #quick, #services, #taller { padding-left: 2rem; padding-right: 2rem; }
+  .quick-grid { grid-template-columns: 1fr; }
+  .quick-card { min-height: 300px; }
+  .taller-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 220px; }
+}
+@media (max-width: 768px) {
+  #quick, #services, #taller { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .services-compact { grid-template-columns: 1fr; }
+  .svc-line:nth-child(odd) { border-right: none; }
+  .svc-line { padding: 1.4rem 1rem; }
+  .svc-line-name { font-size: 1.15rem; }
+  .taller-grid { gap: .7rem; grid-auto-rows: 200px; }
+  .tray-photo { margin: -2.2rem -1.8rem 1.6rem; height: 180px; }
+}
 
 /* Enlace secundario del hero hacia Uniformes para colegios */
 .hero-colegios-link {
@@ -133,7 +197,7 @@ a.service-row { text-decoration: none; color: inherit; }
   color: var(--cream); line-height: 1.35; margin-bottom: 1.1rem;
 }
 .tray-title em { font-style: italic; color: var(--gold2); }
-.tray-text { font-size: .82rem; color: var(--ash); line-height: 1.75; font-weight: 400; }
+.tray-text { font-size: .95rem; color: var(--ash); line-height: 1.8; font-weight: 400; }
 @media (max-width: 1024px) {
   .tray-grid { grid-template-columns: 1fr; }
 }
@@ -166,14 +230,13 @@ a.service-row { text-decoration: none; color: inherit; }
 <div class="mob-nav" id="mobNav">
   <button class="mob-close" onclick="closeMob()">Cerrar</button>
   <ul class="mob-nav-links">
-    <li><a href="#about" onclick="closeMob()">Nosotros</a></li>
-    <li><a href="#services" onclick="closeMob()">Servicios</a></li>
     <li><a href="modules/colegios/" onclick="closeMob()">Colegios</a></li>
-    <li><a href="#portfolio" onclick="closeMob()">Portafolio</a></li>
-    <li><a href="modules/calculadora-dtf/" onclick="closeMob()">Calculadora DTF</a></li>
-    <li><a href="modules/mockup/" onclick="closeMob()">Mockup</a></li>
     <li><a href="modules/empresas/" onclick="closeMob()">Empresas</a></li>
-    <li><a href="modules/recursos/" onclick="closeMob()">Recursos</a></li>
+    <li><a href="#services" onclick="closeMob()">Servicios</a></li>
+    <li><a href="#taller" onclick="closeMob()">Nuestro taller</a></li>
+    <li><a href="modules/casos/" onclick="closeMob()">Trayectoria</a></li>
+    <li><a href="modules/mockup/" onclick="closeMob()">Mockup Studio</a></li>
+    <li><a href="modules/calculadora-dtf/" onclick="closeMob()">Calculadora DTF</a></li>
     <li><a href="#contact" onclick="closeMob()">Cotizar</a></li>
   </ul>
 </div>
@@ -185,13 +248,11 @@ a.service-row { text-decoration: none; color: inherit; }
       <img src="imagenes/logo.png" alt="ACOSER" class="nav-logo-img">
     </a>
     <ul class="nav-links">
-      <li><a href="#about">Nosotros</a></li>
-      <li><a href="#services">Servicios</a></li>
       <li><a href="modules/colegios/">Colegios</a></li>
-      <li><a href="modules/calculadora-dtf/">Calculadora DTF</a></li>
-      <li><a href="modules/mockup/">Mockup</a></li>
       <li><a href="modules/empresas/">Empresas</a></li>
-      <li><a href="modules/recursos/">Recursos</a></li>
+      <li><a href="#services">Servicios</a></li>
+      <li><a href="#taller">Taller</a></li>
+      <li><a href="modules/casos/">Trayectoria</a></li>
       <li><a href="#contact" class="nav-cta-btn"><span>Cotizar</span></a></li>
     </ul>
     <div class="nav-right">
@@ -216,15 +277,15 @@ a.service-row { text-decoration: none; color: inherit; }
       <span class="hero-h1-line"><span class="hero-h1-line-inner">tus ideas</span></span>
       <span class="hero-h1-line"><span class="hero-h1-line-inner"><em>a medida.</em></span></span>
     </h1>
-    <p class="hero-sub">Uniformes escolares y empresariales, camisetas y confección personalizada para colegios, marcas y empresas que buscan calidad, detalle y exclusividad en cada prenda.</p>
+    <p class="hero-sub">Uniformes escolares y empresariales, camisetas y confección personalizada desde nuestro taller en Corozal, Sucre.</p>
     <div class="hero-actions">
       <a href="#contact" class="btn-primary">
         <span>Solicitar cotización</span>
         <svg width="13" height="9" viewBox="0 0 13 9" fill="none"><path d="M1 4.5h11M8 1l3.5 3.5L8 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a href="#portfolio" class="btn-ghost">
+      <a href="#taller" class="btn-ghost">
         <span class="btn-ghost-line"></span>
-        Ver trabajos
+        Ver el taller
       </a>
     </div>
     <div class="hero-colegios-link">
@@ -235,11 +296,6 @@ a.service-row { text-decoration: none; color: inherit; }
     <div class="hero-img-box">
       <div class="hero-img-fill"></div>
       <div class="hero-img-lines"></div>
-      <div class="hero-img-placeholder">
-        <div class="ph-line"></div>
-        <span class="ph-label">Imagen de portada</span>
-        <div class="ph-line"></div>
-      </div>
     </div>
     <div class="hero-overlay"></div>
     <div class="hero-counter-strip">
@@ -262,93 +318,45 @@ a.service-row { text-decoration: none; color: inherit; }
   </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee-section">
-  <div class="marquee-track">
-    <div class="marquee-item"><span class="marquee-text">Uniformes corporativos</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Camisetas personalizadas</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Bordados computarizados</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Estampados DTF</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Confección para marcas</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Sublimación</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Producción por lotes</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Private label</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Uniformes corporativos</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Camisetas personalizadas</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Bordados computarizados</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Estampados DTF</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Confección para marcas</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Sublimación</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Producción por lotes</span><div class="marquee-dot"></div></div>
-    <div class="marquee-item"><span class="marquee-text">Private label</span><div class="marquee-dot"></div></div>
+<!-- ACCESOS RÁPIDOS -->
+<section id="quick">
+  <div class="r">
+    <div class="section-label">Accesos rápidos</div>
+    <h2 class="sec-h2">¿Qué necesitas<br><em>hoy?</em></h2>
   </div>
-</div>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="about-grid">
-    <div class="about-left">
-      <div class="r">
-        <div class="section-label">Quiénes somos</div>
-        <h2 class="sec-h2">Confección con alma<br>artesanal, <em>escala</em><br><em>industrial.</em></h2>
+  <div class="quick-grid r d2">
+    <a href="modules/colegios/" class="quick-card">
+      <div class="quick-card-bg" style="background-image:url('imagenes/taller/lote-uniformes.jpg')"></div>
+      <div class="quick-card-body">
+        <span class="quick-card-tag">Para colegios y jardines</span>
+        <div class="quick-card-title">Uniformes escolares.</div>
+        <span class="quick-card-arr">Ver propuesta &rarr;</span>
       </div>
-      <div class="about-body r d2">
-        <p>ACOSER es un taller textil especializado en confección personalizada, prendas infantiles, uniformes y producción para marcas. Trabajamos cada diseño con atención al detalle, acabados limpios y materiales de calidad.</p>
-        <p>Desde Corozal &mdash; Sucre trabajamos para clientes en toda Colombia, creando prendas que combinan diseño, comodidad y excelente confección.</p>
+    </a>
+    <a href="modules/empresas/" class="quick-card">
+      <div class="quick-card-bg" style="background-image:url('imagenes/taller/maquina-industrial.jpg')"></div>
+      <div class="quick-card-body">
+        <span class="quick-card-tag">Para empresas</span>
+        <div class="quick-card-title">Dotación y uniformes corporativos.</div>
+        <span class="quick-card-arr">Ver soluciones &rarr;</span>
       </div>
-      <div class="about-stats r d3">
-        <div class="about-stat">
-          <span class="stat-val counter" data-target="500" data-prefix="+" data-suffix="">0</span>
-          <span class="stat-desc">Prendas producidas</span>
-        </div>
-        <div class="about-stat">
-          <span class="stat-val">100%</span>
-          <span class="stat-desc">Personalizado</span>
-        </div>
-        <div class="about-stat">
-          <span class="stat-val stat-word">Atención</span>
-          <span class="stat-desc">Detallada</span>
-        </div>
-        <div class="about-stat">
-          <span class="stat-val stat-word">Calidad</span>
-          <span class="stat-desc">Textil Premium</span>
-        </div>
+    </a>
+    <a href="modules/casos/" class="quick-card">
+      <div class="quick-card-bg" style="background-image:url('imagenes/taller/entrega-lista.jpg')"></div>
+      <div class="quick-card-body">
+        <span class="quick-card-tag">Hechos, no promesas</span>
+        <div class="quick-card-title">Nuestra trayectoria.</div>
+        <span class="quick-card-arr">Conocerla &rarr;</span>
       </div>
-    </div>
-    <div class="about-right">
-      <div class="about-media-grid r-right">
-        <div class="about-media-item span-row">
-          <div class="media-bg"></div>
-          <div class="media-bg-grid"></div>
-          <div class="media-ph">
-            <div class="media-ph-rule"></div>
-            <span class="media-ph-num">i</span>
-            <span class="media-ph-tag">Taller principal</span>
-            <div class="media-ph-rule"></div>
-          </div>
-        </div>
-        <div class="about-media-item">
-          <div class="media-bg"></div>
-          <div class="media-bg-grid"></div>
-          <div class="media-ph">
-            <div class="media-ph-rule"></div>
-            <span class="media-ph-num">ii</span>
-            <span class="media-ph-tag">Mesa de corte</span>
-            <div class="media-ph-rule"></div>
-          </div>
-        </div>
-        <div class="about-media-item">
-          <div class="media-bg"></div>
-          <div class="media-bg-grid"></div>
-          <div class="media-ph">
-            <div class="media-ph-rule"></div>
-            <span class="media-ph-num">iii</span>
-            <span class="media-ph-tag">Detalle bordado</span>
-            <div class="media-ph-rule"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </a>
+  </div>
+  <div class="tools-strip r d3">
+    <span class="tools-strip-lbl">Herramientas</span>
+    <a href="modules/mockup/" class="tool-chip">Mockup Studio</a>
+    <a href="modules/calculadora-dtf/" class="tool-chip">Calculadora DTF</a>
+    <a href="modules/calculadora-tallas/" class="tool-chip">Guía de tallas</a>
+    <a href="modules/telas/" class="tool-chip">Comparador de telas</a>
+    <a href="modules/recursos/" class="tool-chip">Recursos</a>
   </div>
 </section>
 
@@ -361,200 +369,39 @@ a.service-row { text-decoration: none; color: inherit; }
       <div class="section-label">Servicios</div>
       <h2 class="sec-h2">Lo que hacemos<br><em>muy bien.</em></h2>
     </div>
-    <p class="services-header-text r d2">Diez líneas de producción textil especializadas. Cada una con procesos, maquinaria y operarios dedicados para garantizar resultados de calidad constante.</p>
-  </div>
-  <div class="services-list">
-    <a href="modules/colegios/" class="service-row r"><span class="service-num">01</span><div class="service-name-wrap"><span class="service-name">Uniformes escolares</span><p class="service-detail">Uniformes para colegios y jardines: tallaje por curso, muestra física antes de producir y entrega antes del inicio de clases.</p></div><span class="service-arr">Ver &rarr;</span></a>
-    <div class="service-row r d1"><span class="service-num">02</span><div class="service-name-wrap"><span class="service-name">Uniformes empresariales</span><p class="service-detail">Uniformes corporativos que reflejan la identidad de tu empresa. Materiales premium, cortes precisos, entrega puntual.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d2"><span class="service-num">03</span><div class="service-name-wrap"><span class="service-name">Camisetas personalizadas</span><p class="service-detail">Camisetas de alta calidad con tu diseño. Tintas que duran, cortes que se sienten bien, desde 10 unidades.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d3"><span class="service-num">04</span><div class="service-name-wrap"><span class="service-name">Bordados</span><p class="service-detail">Bordado computarizado de alta resolución para logos, insignias y detalles que elevan cualquier prenda.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d1"><span class="service-num">05</span><div class="service-name-wrap"><span class="service-name">Estampados DTF</span><p class="service-detail">Direct to Film para colores vivos, alta definición y durabilidad excepcional sobre cualquier tipo de tela.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d2"><span class="service-num">06</span><div class="service-name-wrap"><span class="service-name">Confección para marcas</span><p class="service-detail">Private label y manufactura confiable para marcas que necesitan producción discreta de estándar internacional.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d1"><span class="service-num">07</span><div class="service-name-wrap"><span class="service-name">Dotaciones</span><p class="service-detail">Dotaciones industriales y empresariales que cumplen normas de seguridad sin sacrificar presentación ni confort.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d2"><span class="service-num">08</span><div class="service-name-wrap"><span class="service-name">Disfraces y caracterización</span><p class="service-detail">Para eventos, producciones audiovisuales, teatro y activaciones de marca con necesidades creativas especiales.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d1"><span class="service-num">09</span><div class="service-name-wrap"><span class="service-name">Sublimación</span><p class="service-detail">Sublimación total o parcial para prendas all-over, colores que no se desvanecen y acabado profesional.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d3"><span class="service-num">10</span><div class="service-name-wrap"><span class="service-name">Producción por lotes</span><p class="service-detail">Desde 10 hasta grandes corridas de producción. Calidad constante en cada unidad, sin importar el volumen.</p></div><span class="service-arr">Ver &rarr;</span></div>
-  </div>
-</section>
-
-<div class="gold-rule"></div>
-
-<!-- PROCESS -->
-<section id="process">
-  <div class="process-top r">
-    <div class="section-label">Proceso</div>
-    <h2 class="sec-h2">De la idea a la prenda.<br><em>Seis pasos.</em></h2>
-  </div>
-  <div class="process-timeline r d2">
-    <div class="process-track"><div class="process-track-fill" id="processBar"></div></div>
-    <div class="process-steps-grid">
-      <div class="process-step"><div class="process-step-dot"><span class="process-step-n">i</span></div><div class="process-step-title">Idea y cotización</div><p class="process-step-text">Cuéntanos tu proyecto. Preparamos una cotización sin compromiso.</p></div>
-      <div class="process-step"><div class="process-step-dot"><span class="process-step-n">ii</span></div><div class="process-step-title">Diseño y planificación</div><p class="process-step-text">Digitalizamos el diseño y planificamos producción con tiempos definidos.</p></div>
-      <div class="process-step"><div class="process-step-dot"><span class="process-step-n">iii</span></div><div class="process-step-title">Corte y confección</div><p class="process-step-text">Patrones precisos y materiales seleccionados, prenda por prenda.</p></div>
-      <div class="process-step"><div class="process-step-dot"><span class="process-step-n">iv</span></div><div class="process-step-title">Estampado o bordado</div><p class="process-step-text">Técnicas de impresión o bordado con los más altos estándares.</p></div>
-      <div class="process-step"><div class="process-step-dot"><span class="process-step-n">v</span></div><div class="process-step-title">Control de calidad</div><p class="process-step-text">Revisión exhaustiva de cada unidad. Cero tolerancia a defectos.</p></div>
-      <div class="process-step"><div class="process-step-dot"><span class="process-step-n">vi</span></div><div class="process-step-title">Entrega final</div><p class="process-step-text">Empacamos con cuidado y entregamos en el plazo acordado.</p></div>
     </div>
+  <div class="services-compact r d2">
+    <a href="modules/colegios/" class="svc-line"><span class="svc-line-num">01</span><span class="svc-line-name">Uniformes escolares</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="modules/empresas/" class="svc-line"><span class="svc-line-num">02</span><span class="svc-line-name">Uniformes empresariales</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="#contact" class="svc-line"><span class="svc-line-num">03</span><span class="svc-line-name">Camisetas personalizadas</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="#contact" class="svc-line"><span class="svc-line-num">04</span><span class="svc-line-name">Bordados computarizados</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="modules/calculadora-dtf/" class="svc-line"><span class="svc-line-num">05</span><span class="svc-line-name">Estampados DTF</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="#contact" class="svc-line"><span class="svc-line-num">06</span><span class="svc-line-name">Confección para marcas</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="modules/empresas/" class="svc-line"><span class="svc-line-num">07</span><span class="svc-line-name">Dotaciones</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="#contact" class="svc-line"><span class="svc-line-num">08</span><span class="svc-line-name">Disfraces y caracterización</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="#contact" class="svc-line"><span class="svc-line-num">09</span><span class="svc-line-name">Sublimación</span><span class="svc-line-arr">&rarr;</span></a>
+    <a href="#contact" class="svc-line"><span class="svc-line-num">10</span><span class="svc-line-name">Producción por lotes</span><span class="svc-line-arr">&rarr;</span></a>
   </div>
 </section>
 
 <div class="gold-rule"></div>
 
-<!-- PORTFOLIO -->
-<section id="portfolio">
-  <div class="portfolio-header r">
-    <div>
-      <div class="section-label">Portafolio</div>
-      <h2 class="sec-h2">Cada prenda,<br>una <em>historia.</em></h2>
-    </div>
-    <div class="portfolio-filters">
-      <button class="pf-btn on" onclick="pFilter('all',this)">Todos</button>
-      <button class="pf-btn" onclick="pFilter('uniformes',this)">Uniformes</button>
-      <button class="pf-btn" onclick="pFilter('camisetas',this)">Camisetas</button>
-      <button class="pf-btn" onclick="pFilter('bordados',this)">Bordados</button>
-      <button class="pf-btn" onclick="pFilter('estampados',this)">Estampados</button>
-    </div>
-  </div>
-  <div class="portfolio-masonry r d2" id="portGrid">
-    <div class="p-item pi-1" data-c="uniformes">
-      <div class="p-bg"></div>
-      <div class="p-content"><span class="p-num">01</span><span class="p-cat-label">Uniformes</span></div>
-      <div class="p-overlay"><div><span class="p-info-cat">Uniformes</span><div class="p-info-title">Colección Corporativa</div></div></div>
-    </div>
-    <div class="p-item pi-2" data-c="camisetas">
-      <div class="p-bg"></div>
-      <div class="p-content"><span class="p-num">02</span><span class="p-cat-label">Camisetas</span></div>
-      <div class="p-overlay"><div><span class="p-info-cat">Camisetas</span><div class="p-info-title">Run Series</div></div></div>
-    </div>
-    <div class="p-item pi-3" data-c="estampados">
-      <div class="p-bg"></div>
-      <div class="p-content"><span class="p-num">03</span><span class="p-cat-label">Estampados</span></div>
-      <div class="p-overlay"><div><span class="p-info-cat">Estampados</span><div class="p-info-title">DTF Full Color</div></div></div>
-    </div>
-    <div class="p-item pi-4" data-c="bordados">
-      <div class="p-bg"></div>
-      <div class="p-content"><span class="p-num">04</span><span class="p-cat-label">Bordados</span></div>
-      <div class="p-overlay"><div><span class="p-info-cat">Bordados</span><div class="p-info-title">Logo Computarizado</div></div></div>
-    </div>
-    <div class="p-item pi-5" data-c="uniformes">
-      <div class="p-bg"></div>
-      <div class="p-content"><span class="p-num">05</span><span class="p-cat-label">Uniformes</span></div>
-      <div class="p-overlay"><div><span class="p-info-cat">Uniformes</span><div class="p-info-title">Dotación Industrial</div></div></div>
-    </div>
-    <div class="p-item pi-6" data-c="camisetas">
-      <div class="p-bg"></div>
-      <div class="p-content"><span class="p-num">06</span><span class="p-cat-label">Camisetas</span></div>
-      <div class="p-overlay"><div><span class="p-info-cat">Camisetas</span><div class="p-info-title">Edición Limitada</div></div></div>
-    </div>
-    <div class="p-item pi-7" data-c="estampados">
-      <div class="p-bg"></div>
-      <div class="p-content"><span class="p-num">07</span><span class="p-cat-label">Estampados</span></div>
-      <div class="p-overlay"><div><span class="p-info-cat">Estampados</span><div class="p-info-title">Private Label</div></div></div>
-    </div>
-    <div class="p-item pi-8" data-c="bordados">
-      <div class="p-bg"></div>
-      <div class="p-content"><span class="p-num">08</span><span class="p-cat-label">Bordados</span></div>
-      <div class="p-overlay"><div><span class="p-info-cat">Bordados</span><div class="p-info-title">Polo Premium</div></div></div>
-    </div>
-  </div>
-</section>
-
-<div class="gold-rule"></div>
-
-<!-- WORKSHOP -->
-<section id="workshop">
-  <div class="section-head r">
+<!-- NUESTRO TALLER -->
+<section id="taller">
+  <div class="r">
     <div class="section-label">Nuestro taller</div>
-    <h2 class="sec-h2">Donde la tela se<br>convierte en <em>arte.</em></h2>
+    <h2 class="sec-h2">Alma artesanal,<br><em>escala industrial.</em></h2>
+    <p class="taller-sub">Corte, costura, fileteado y acabados bajo un mismo techo en Corozal, Sucre. Así trabajamos.</p>
   </div>
-  <div class="workshop-grid">
-    <div class="workshop-left r-left">
-      <div class="workshop-left-bg"></div>
-      <div class="workshop-left-lines"></div>
-      <div class="workshop-play"><div class="workshop-play-icon"></div></div>
-      <div class="workshop-left-ph">
-        <div class="workshop-left-caption">
-          <span class="workshop-left-caption-title">Taller ACOSER &mdash; Vista interior</span>
-          <span class="workshop-left-caption-sub">Corozal &mdash; Sucre, Colombia</span>
-        </div>
-      </div>
-    </div>
-    <div class="workshop-right">
-      <div class="workshop-right-top r-right">
-        <p class="workshop-right-body">Nuestro taller es el corazón de ACOSER. Máquinas de última generación, operarios especializados y un control de calidad riguroso en cada estación de trabajo.</p>
-        <p class="workshop-right-body" style="margin-top:1.5rem;">Desde la mesa de corte hasta la plancha de acabados, cada prenda pasa por manos expertas que garantizan precisión y excelencia en el resultado final.</p>
-      </div>
-      <div class="workshop-right-bottom">
-        <div class="w-stat r d1">
-          <div class="w-stat-num counter" data-target="500" data-prefix="+" data-suffix="">0</div>
-          <div class="w-stat-lbl">Prendas producidas</div>
-        </div>
-        <div class="w-stat r d2">
-          <div class="w-stat-num">100%</div>
-          <div class="w-stat-lbl">Personalizado</div>
-        </div>
-        <div class="w-stat r d3">
-          <div class="w-stat-num w-word">Nacional</div>
-          <div class="w-stat-lbl">Envíos a toda Colombia</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="workshop-small-grid r d2">
-    <div class="ws-item"><div class="ws-item-bg"></div><span class="ws-item-label">Mesa de corte</span></div>
-    <div class="ws-item"><div class="ws-item-bg"></div><span class="ws-item-label">Bordado</span></div>
-    <div class="ws-item"><div class="ws-item-bg"></div><span class="ws-item-label">Estampado DTF</span></div>
-    <div class="ws-item"><div class="ws-item-bg"></div><span class="ws-item-label">Control de calidad</span></div>
-  </div>
-</section>
-
-<div class="gold-rule"></div>
-
-<!-- BRANDS -->
-<section id="brands">
-  <div class="brands-bg-text">ACOSER</div>
-  <div class="brands-inner">
-    <div class="r">
-      <div class="section-label">Para marcas y empresas</div>
-      <h2 class="sec-h2">Fabricamos para<br>marcas <em>y empresas.</em></h2>
-    </div>
-    <div class="brands-split">
-      <div>
-        <p class="brands-left-text r d1">Somos el aliado de producción que marcas y empresas necesitan. Flexibilidad, confidencialidad y calidad constante en cada pedido, sin importar el volumen.</p>
-        <div class="brands-features r d2">
-          <div class="brand-feat"><span class="brand-feat-n">i</span><div class="brand-feat-body"><div class="brand-feat-title">Producción flexible</div><p class="brand-feat-text">Desde 10 hasta miles de unidades. Sin costos ocultos, sin mínimos prohibitivos.</p></div></div>
-          <div class="brand-feat"><span class="brand-feat-n">ii</span><div class="brand-feat-body"><div class="brand-feat-title">Private label</div><p class="brand-feat-text">Producción con tus etiquetas y empaque. Confidencialidad total para tu marca.</p></div></div>
-          <div class="brand-feat"><span class="brand-feat-n">iii</span><div class="brand-feat-body"><div class="brand-feat-title">Manufactura personalizada</div><p class="brand-feat-text">Patronaje exclusivo, muestras físicas y escalados de talla para referencias únicas.</p></div></div>
-          <div class="brand-feat"><span class="brand-feat-n">iv</span><div class="brand-feat-body"><div class="brand-feat-title">Apoyo al emprendedor</div><p class="brand-feat-text">Asesoría desde el diseño hasta la primera producción para lanzamientos exitosos.</p></div></div>
-          <div class="brand-feat"><span class="brand-feat-n">v</span><div class="brand-feat-body"><div class="brand-feat-title">Calidad garantizada</div><p class="brand-feat-text">Control en cada etapa. Garantizamos que cada prenda cumpla los estándares o la rehacemos.</p></div></div>
-        </div>
-      </div>
-      <div class="brands-right r-right d2">
-        <div class="brands-photo-grid">
-          <div class="brands-photo-item">
-            <div class="brands-photo-bg" style="background-image:url('imagenes/about1.jpg')"></div>
-            <div class="brands-photo-overlay">
-              <span class="brands-photo-cat">Confección</span>
-              <span class="brands-photo-title">Producción para marcas</span>
-            </div>
-          </div>
-          <div class="brands-photo-item">
-            <div class="brands-photo-bg" style="background-image:url('imagenes/about2.jpg')"></div>
-            <div class="brands-photo-overlay">
-              <span class="brands-photo-cat">Detalle</span>
-              <span class="brands-photo-title">Acabados premium</span>
-            </div>
-          </div>
-          <div class="brands-photo-item">
-            <div class="brands-photo-bg" style="background-image:url('imagenes/about3.jpg')"></div>
-            <div class="brands-photo-overlay">
-              <span class="brands-photo-cat">Proceso</span>
-              <span class="brands-photo-title">Control de calidad</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="taller-grid r d2">
+    <div class="g-item"><img src="imagenes/taller/trazo-molde.jpg" alt="Trazo del molde con regla de sastre" loading="lazy"><span class="g-cap">Trazo del molde</span></div>
+    <div class="g-item"><img src="imagenes/taller/corte-tela.jpg" alt="Corte de tela con cortadora eléctrica" loading="lazy"><span class="g-cap">Corte</span></div>
+    <div class="g-item"><img src="imagenes/taller/costura-maquina.jpg" alt="Manos cosiendo en máquina plana" loading="lazy"><span class="g-cap">Costura</span></div>
+    <div class="g-item"><img src="imagenes/taller/collarin-uniforme.jpg" alt="Costura de uniforme escolar en collarín" loading="lazy"><span class="g-cap">Collarín</span></div>
+    <div class="g-item"><img src="imagenes/taller/conos-hilo.jpg" alt="Conos de hilo del taller" loading="lazy"><span class="g-cap">Hilos</span></div>
+    <div class="g-item"><img src="imagenes/taller/fileteado-overlock.jpg" alt="Fileteado de prenda en máquina overlock" loading="lazy"><span class="g-cap">Fileteado</span></div>
+    <div class="g-item"><img src="imagenes/taller/pantalones-terminados.jpg" alt="Pantalones escolares terminados" loading="lazy"><span class="g-cap">Prendas listas</span></div>
+    <div class="g-item"><img src="imagenes/taller/detalle-acabados.jpg" alt="Detalle de bolsillos y acabados del uniforme" loading="lazy"><span class="g-cap">Acabados</span></div>
   </div>
 </section>
 
@@ -568,18 +415,21 @@ a.service-row { text-decoration: none; color: inherit; }
   </div>
   <div class="tray-grid r d2">
     <div class="tray-card">
+      <div class="tray-photo"><img src="imagenes/taller/empacado-tallas.jpg" alt="Pedidos de uniformes empacados por talla" loading="lazy"></div>
       <span class="tray-num">i</span>
       <span class="tray-tag">Corozal, Sucre</span>
       <h3 class="tray-title">Uniformes entregados a una <em>institución educativa.</em></h3>
       <p class="tray-text">Entrega completa de uniformes a una institución educativa de Corozal: tallaje, confección y entrega cumplida en 2026.</p>
     </div>
     <div class="tray-card">
+      <div class="tray-photo"><img src="imagenes/taller/bordado-promo.jpg" alt="Bordado personalizado para promoción escolar" loading="lazy"></div>
       <span class="tray-num">ii</span>
       <span class="tray-tag">Barranquilla, Atlántico</span>
       <h3 class="tray-title">Contrato con el colegio <em>Happy Time.</em></h3>
       <p class="tray-text">Contrato adjudicado para la confección de los uniformes de los estudiantes del colegio Happy Time de Barranquilla.</p>
     </div>
     <div class="tray-card">
+      <div class="tray-photo"><img src="imagenes/taller/telas-infantiles.jpg" alt="Telas estampadas para ropa infantil" loading="lazy"></div>
       <span class="tray-num">iii</span>
       <span class="tray-tag">Línea propia</span>
       <h3 class="tray-title">Noah's Clothing, ropa <em>infantil.</em></h3>
@@ -599,7 +449,7 @@ a.service-row { text-decoration: none; color: inherit; }
   <div class="contact-split">
     <div class="contact-left r-left">
       <div>
-        <p class="contact-intro">Cuéntanos tu idea y te respondemos con una cotización detallada. Sin compromisos, sin letras pequeñas.</p>
+        <p class="contact-intro">Cuéntanos tu idea y te respondemos con una cotización clara, sin compromiso.</p>
         <div class="contact-channels">
           <a href="https://wa.me/573005206285" class="c-channel" target="_blank">
             <div class="c-channel-left"><span class="c-channel-lbl">WhatsApp</span><span class="c-channel-val">+57 300 520 6285</span></div>
@@ -681,12 +531,11 @@ a.service-row { text-decoration: none; color: inherit; }
     <div>
       <span class="footer-col-head">Plataforma</span>
       <ul class="footer-links">
-        <li><a href="#about">Quiénes somos</a></li>
-        <li><a href="#services">Servicios</a></li>
         <li><a href="modules/colegios/">Colegios</a></li>
-        <li><a href="#portfolio">Portafolio</a></li>
-        <li><a href="modules/casos/">Casos de Éxito</a></li>
         <li><a href="modules/empresas/">Empresas</a></li>
+        <li><a href="#services">Servicios</a></li>
+        <li><a href="#taller">Nuestro taller</a></li>
+        <li><a href="modules/casos/">Trayectoria</a></li>
       </ul>
     </div>
     <div>

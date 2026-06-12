@@ -114,11 +114,12 @@ function closeMob() {
         e.target.dataset.done = '1';
         const target = parseInt(e.target.dataset.target);
         const prefix = e.target.dataset.prefix || '';
+        const suffix = e.target.dataset.suffix || '';
         let current = 0;
         const step = target / 60;
         const iv = setInterval(() => {
           current = Math.min(current + step, target);
-          e.target.textContent = prefix + Math.floor(current) + '+';
+          e.target.textContent = prefix + Math.floor(current) + suffix;
           if (current >= target) clearInterval(iv);
         }, 30);
       }

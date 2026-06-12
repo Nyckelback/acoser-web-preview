@@ -127,7 +127,7 @@
 .btn-module-secondary:hover { border-color: var(--gold); color: var(--gold); }
 
 .btn-wa-module {
-  display: inline-flex; align-items: center; gap: .7rem;
+  display: inline-flex; align-items: center; justify-content: center; text-align: center; gap: .7rem;
   font-family: 'Barlow Condensed', sans-serif;
   font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
   color: #fff; background: #1fae55;
@@ -211,4 +211,12 @@
 @media (max-width: 480px) {
   .module-hero { padding: calc(52px + 3vh) 1.2rem 3vh; }
   .module-body { padding: 3vh 1.2rem; }
+}
+
+/* ─── UTILIDADES RESPONSIVE (anti-apretujones) ───────── */
+.split-2col { display: grid; grid-template-columns: 1fr 1fr; }
+.split-3col { display: grid; grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) {
+  .split-2col { grid-template-columns: 1fr; gap: 2.5rem !important; }
+  .split-3col { grid-template-columns: 1fr; gap: 1px !important; }
 }

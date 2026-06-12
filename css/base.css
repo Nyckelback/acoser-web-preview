@@ -807,7 +807,7 @@ nav.solid .nav-logo-img { height: 66px; }
 .btn-send:disabled { opacity: 0.68; cursor: not-allowed; }
 .btn-send span { position: relative; }
 .btn-wa-link {
-  display: inline-flex; align-items: center; gap: .7rem;
+  display: inline-flex; align-items: center; justify-content: center; text-align: center; gap: .7rem;
   font-family: 'Barlow Condensed', sans-serif; font-size: .78rem; letter-spacing: .18em;
   text-transform: uppercase; color: #fff; text-decoration: none;
   background: #1fae55; border: 1px solid #1fae55;
@@ -821,6 +821,7 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
 .footer-top { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 5rem; padding-bottom: 6vh; border-bottom: 1px solid var(--dust); }
 .footer-brand-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; letter-spacing: .32em; color: var(--cream); font-weight: 400; text-transform: uppercase; display: block; margin-bottom: .3rem; }
 .footer-brand-sub { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .55em; color: var(--gold); text-transform: uppercase; font-weight: 300; display: block; margin-bottom: 1.5rem; }
+.footer-logo { height: 36px; width: auto; display: block; margin-bottom: .7rem; opacity: .95; }
 .footer-brand-desc { font-size: .92rem; color: var(--fog); line-height: 1.85; font-weight: 400; max-width: 300px; }
 .footer-links a { word-break: break-word; }
 .footer-col-head { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .3em; text-transform: uppercase; color: var(--bone); font-weight: 400; display: block; margin-bottom: 2rem; }
@@ -831,7 +832,7 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
 .footer-copy { font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .25em; color: var(--ash); text-transform: uppercase; font-weight: 300; }
 .footer-copy span { color: var(--gold); }
 .footer-social { display: flex; gap: 1.5rem; }
-.f-social-link { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ash); text-decoration: none; transition: color .35s; font-weight: 300; }
+.f-social-link { display: inline-flex; align-items: center; gap: .45rem; font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ash); text-decoration: none; transition: color .35s; font-weight: 300; }
 .f-social-link:hover { color: var(--gold); }
 
 /* ─── FLOATING WA ────────────────────────────────────── */

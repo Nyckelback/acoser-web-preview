@@ -101,7 +101,7 @@ body {
 }
 #loader.out { opacity: 0; visibility: hidden; }
 .loader-machine {
-  height: 76px; width: auto; display: block; margin: 0 auto;
+  height: 64px; width: auto; display: block; margin: 0 auto;
   opacity: 0; animation: fadeSlideUp .7s .15s ease forwards;
   filter: drop-shadow(0 4px 18px rgba(184,151,90,.25));
 }

@@ -5,27 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- ─── SEO PRIMARIO ─────────────────────────────── -->
-<title>ACOSER — Taller Textil Premium | Camisetas, Uniformes y DTF en Colombia</title>
-<meta name="description" content="Taller textil premium en Corozal, Sucre. Fabricamos camisetas personalizadas, uniformes corporativos, estampados DTF, bordados y sublimación para marcas y empresas en toda Colombia. Desde 10 unidades.">
-<meta name="keywords" content="camisetas personalizadas colombia, uniformes corporativos, estampados DTF, bordados computarizados, taller textil corozal, confección personalizada, sublimación textil, dotaciones empresariales, producción textil sucre">
+<title>ACOSER — Uniformes Escolares y Empresariales | Taller Textil en Sincelejo, Corozal y Barranquilla</title>
+<meta name="description" content="Taller textil en Corozal, Sucre. Uniformes escolares para colegios y jardines, uniformes empresariales, camisetas personalizadas, estampados DTF, bordados y sublimación. Atendemos Sincelejo, Corozal, Barranquilla y toda Colombia.">
+<meta name="keywords" content="camisetas personalizadas colombia, uniformes corporativos, uniformes escolares, uniformes para colegios, dotaciones empresariales sincelejo, uniformes barranquilla, estampados DTF, bordados computarizados, taller textil corozal, confección personalizada, sublimación textil, dotaciones empresariales, producción textil sucre">
 <meta name="author" content="ACOSER Taller Textil">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.acoser.com.co/">
+<link rel="canonical" href="https://acoser-web.vercel.app/">
 
 <!-- ─── OPEN GRAPH (Facebook / WhatsApp) ─────── -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.acoser.com.co/">
-<meta property="og:title" content="ACOSER — Taller Textil Premium en Colombia">
-<meta property="og:description" content="Confección personalizada para marcas y empresas. Camisetas, uniformes, DTF, bordados y sublimación desde Corozal, Sucre — envíos a toda Colombia.">
-<meta property="og:image" content="https://www.acoser.com.co/imagenes/og-image.jpg">
+<meta property="og:url" content="https://acoser-web.vercel.app/">
+<meta property="og:title" content="ACOSER — Uniformes Escolares y Empresariales | Taller Textil en Colombia">
+<meta property="og:description" content="Uniformes escolares y empresariales, camisetas, DTF, bordados y sublimación desde Corozal, Sucre. Atendemos Sincelejo, Corozal, Barranquilla y toda Colombia.">
+<meta property="og:image" content="https://acoser-web.vercel.app/imagenes/og-image.jpg">
 <meta property="og:locale" content="es_CO">
 <meta property="og:site_name" content="ACOSER Taller Textil">
 
 <!-- ─── TWITTER CARD ─────────────────────────── -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ACOSER — Taller Textil Premium en Colombia">
-<meta name="twitter:description" content="Confección personalizada · Uniformes · DTF · Bordados · Sublimación">
-<meta name="twitter:image" content="https://www.acoser.com.co/imagenes/og-image.jpg">
+<meta name="twitter:title" content="ACOSER — Uniformes Escolares y Empresariales | Taller Textil en Colombia">
+<meta name="twitter:description" content="Uniformes escolares · Uniformes empresariales · DTF · Bordados · Sublimación">
+<meta name="twitter:image" content="https://acoser-web.vercel.app/imagenes/og-image.jpg">
 
 <!-- ─── SCHEMA.ORG — LocalBusiness ──────────── -->
 <script type="application/ld+json">
@@ -33,8 +33,8 @@
   "@context": "https://schema.org",
   "@type": "ClothingStore",
   "name": "ACOSER Taller Textil",
-  "description": "Taller textil especializado en confección personalizada, uniformes corporativos, estampados DTF, bordados y sublimación para marcas y empresas en Colombia.",
-  "url": "https://www.acoser.com.co",
+  "description": "Taller textil especializado en uniformes escolares, uniformes corporativos, confección personalizada, estampados DTF, bordados y sublimación para colegios, marcas y empresas en Colombia.",
+  "url": "https://acoser-web.vercel.app",
   "telephone": "+573005206285",
   "email": "acosertallertextilinfo@gmail.com",
   "address": {
@@ -56,7 +56,7 @@
   "priceRange": "$$",
   "currenciesAccepted": "COP",
   "paymentAccepted": "Cash, Bank Transfer",
-  "areaServed": "Colombia"
+  "areaServed": ["Sucre", "Atlántico", "Córdoba", "Colombia"]
 }
 </script>
 
@@ -73,7 +73,75 @@
 
 <!-- ESTILOS INLINE DE EMERGENCIA (ninguno — todo está en base.css) -->
 <style>
-/* Estilos adicionales específicos de esta página (si los hubiera) */
+/* Estilos adicionales específicos de esta página */
+
+/* Enlace secundario del hero hacia Uniformes para colegios */
+.hero-colegios-link {
+  margin-top: 1.8rem;
+  opacity: 0;
+  animation: fadeSlideUp .8s 1.6s ease forwards;
+}
+.hero-colegios-link a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .62rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--dust);
+  padding-bottom: .35rem;
+  transition: color .35s ease, border-color .35s ease;
+}
+.hero-colegios-link a:hover { color: var(--gold2); border-color: var(--gold); }
+
+/* Service-row enlazado (Uniformes escolares → modules/colegios/) */
+a.service-row { text-decoration: none; color: inherit; }
+
+/* Trayectoria — hitos reales */
+#trayectoria { background: var(--ink2); padding: 14vh 0; }
+.tray-head { padding: 0 4rem; margin-bottom: 7vh; }
+.tray-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; padding: 0 4rem; }
+.tray-card {
+  border: 1px solid var(--dust);
+  background: var(--ink);
+  padding: 3rem 2.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .35s ease;
+}
+.tray-card:hover { border-color: rgba(184,151,90,.28); }
+.tray-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 0; height: 1px; background: var(--gold);
+  transition: width .5s ease;
+}
+.tray-card:hover::after { width: 100%; }
+.tray-num {
+  font-family: 'Playfair Display', serif;
+  font-size: .85rem; font-style: italic;
+  color: var(--gold); display: block; margin-bottom: 1.6rem;
+}
+.tray-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .52rem; letter-spacing: .4em;
+  text-transform: uppercase; color: var(--ash);
+  display: block; margin-bottom: .9rem; font-weight: 300;
+}
+.tray-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem; font-weight: 400;
+  color: var(--cream); line-height: 1.35; margin-bottom: 1.1rem;
+}
+.tray-title em { font-style: italic; color: var(--gold2); }
+.tray-text { font-size: .82rem; color: var(--ash); line-height: 1.75; font-weight: 400; }
+@media (max-width: 1024px) {
+  .tray-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .tray-head { padding: 0 1.5rem; margin-bottom: 4vh; }
+  .tray-grid { padding: 0 1.5rem; gap: 1rem; }
+  .tray-card { padding: 2.2rem 1.8rem; }
+}
 </style>
 </head>
 <body>
@@ -100,6 +168,7 @@
   <ul class="mob-nav-links">
     <li><a href="#about" onclick="closeMob()">Nosotros</a></li>
     <li><a href="#services" onclick="closeMob()">Servicios</a></li>
+    <li><a href="modules/colegios/" onclick="closeMob()">Colegios</a></li>
     <li><a href="#portfolio" onclick="closeMob()">Portafolio</a></li>
     <li><a href="modules/calculadora-dtf/" onclick="closeMob()">Calculadora DTF</a></li>
     <li><a href="modules/mockup/" onclick="closeMob()">Mockup</a></li>
@@ -118,6 +187,7 @@
     <ul class="nav-links">
       <li><a href="#about">Nosotros</a></li>
       <li><a href="#services">Servicios</a></li>
+      <li><a href="modules/colegios/">Colegios</a></li>
       <li><a href="modules/calculadora-dtf/">Calculadora DTF</a></li>
       <li><a href="modules/mockup/">Mockup</a></li>
       <li><a href="modules/empresas/">Empresas</a></li>
@@ -146,7 +216,7 @@
       <span class="hero-h1-line"><span class="hero-h1-line-inner">tus ideas</span></span>
       <span class="hero-h1-line"><span class="hero-h1-line-inner"><em>a medida.</em></span></span>
     </h1>
-    <p class="hero-sub">Confección personalizada para marcas, empresas y clientes que buscan calidad, detalle y exclusividad en cada prenda.</p>
+    <p class="hero-sub">Uniformes escolares y empresariales, camisetas y confección personalizada para colegios, marcas y empresas que buscan calidad, detalle y exclusividad en cada prenda.</p>
     <div class="hero-actions">
       <a href="#contact" class="btn-primary">
         <span>Solicitar cotización</span>
@@ -156,6 +226,9 @@
         <span class="btn-ghost-line"></span>
         Ver trabajos
       </a>
+    </div>
+    <div class="hero-colegios-link">
+      <a href="modules/colegios/">&iquest;Eres rector o administrador escolar? &rarr; Uniformes para colegios</a>
     </div>
   </div>
   <div class="hero-right">
@@ -288,18 +361,19 @@
       <div class="section-label">Servicios</div>
       <h2 class="sec-h2">Lo que hacemos<br><em>muy bien.</em></h2>
     </div>
-    <p class="services-header-text r d2">Nueve líneas de producción textil especializadas. Cada una con procesos, maquinaria y operarios dedicados para garantizar resultados de calidad constante.</p>
+    <p class="services-header-text r d2">Diez líneas de producción textil especializadas. Cada una con procesos, maquinaria y operarios dedicados para garantizar resultados de calidad constante.</p>
   </div>
   <div class="services-list">
-    <div class="service-row r"><span class="service-num">01</span><div class="service-name-wrap"><span class="service-name">Uniformes empresariales</span><p class="service-detail">Uniformes corporativos que reflejan la identidad de tu empresa. Materiales premium, cortes precisos, entrega puntual.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d1"><span class="service-num">02</span><div class="service-name-wrap"><span class="service-name">Camisetas personalizadas</span><p class="service-detail">Camisetas de alta calidad con tu diseño. Tintas que duran, cortes que se sienten bien, desde 10 unidades.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d2"><span class="service-num">03</span><div class="service-name-wrap"><span class="service-name">Bordados</span><p class="service-detail">Bordado computarizado de alta resolución para logos, insignias y detalles que elevan cualquier prenda.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d3"><span class="service-num">04</span><div class="service-name-wrap"><span class="service-name">Estampados DTF</span><p class="service-detail">Direct to Film para colores vivos, alta definición y durabilidad excepcional sobre cualquier tipo de tela.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d1"><span class="service-num">05</span><div class="service-name-wrap"><span class="service-name">Confección para marcas</span><p class="service-detail">Private label y manufactura confiable para marcas que necesitan producción discreta de estándar internacional.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d2"><span class="service-num">06</span><div class="service-name-wrap"><span class="service-name">Dotaciones</span><p class="service-detail">Dotaciones industriales y empresariales que cumplen normas de seguridad sin sacrificar presentación ni confort.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d1"><span class="service-num">07</span><div class="service-name-wrap"><span class="service-name">Disfraces y caracterización</span><p class="service-detail">Para eventos, producciones audiovisuales, teatro y activaciones de marca con necesidades creativas especiales.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d2"><span class="service-num">08</span><div class="service-name-wrap"><span class="service-name">Sublimación</span><p class="service-detail">Sublimación total o parcial para prendas all-over, colores que no se desvanecen y acabado profesional.</p></div><span class="service-arr">Ver &rarr;</span></div>
-    <div class="service-row r d3"><span class="service-num">09</span><div class="service-name-wrap"><span class="service-name">Producción por lotes</span><p class="service-detail">Desde 10 hasta grandes corridas de producción. Calidad constante en cada unidad, sin importar el volumen.</p></div><span class="service-arr">Ver &rarr;</span></div>
+    <a href="modules/colegios/" class="service-row r"><span class="service-num">01</span><div class="service-name-wrap"><span class="service-name">Uniformes escolares</span><p class="service-detail">Uniformes para colegios y jardines: tallaje por curso, muestra física antes de producir y entrega antes del inicio de clases.</p></div><span class="service-arr">Ver &rarr;</span></a>
+    <div class="service-row r d1"><span class="service-num">02</span><div class="service-name-wrap"><span class="service-name">Uniformes empresariales</span><p class="service-detail">Uniformes corporativos que reflejan la identidad de tu empresa. Materiales premium, cortes precisos, entrega puntual.</p></div><span class="service-arr">Ver &rarr;</span></div>
+    <div class="service-row r d2"><span class="service-num">03</span><div class="service-name-wrap"><span class="service-name">Camisetas personalizadas</span><p class="service-detail">Camisetas de alta calidad con tu diseño. Tintas que duran, cortes que se sienten bien, desde 10 unidades.</p></div><span class="service-arr">Ver &rarr;</span></div>
+    <div class="service-row r d3"><span class="service-num">04</span><div class="service-name-wrap"><span class="service-name">Bordados</span><p class="service-detail">Bordado computarizado de alta resolución para logos, insignias y detalles que elevan cualquier prenda.</p></div><span class="service-arr">Ver &rarr;</span></div>
+    <div class="service-row r d1"><span class="service-num">05</span><div class="service-name-wrap"><span class="service-name">Estampados DTF</span><p class="service-detail">Direct to Film para colores vivos, alta definición y durabilidad excepcional sobre cualquier tipo de tela.</p></div><span class="service-arr">Ver &rarr;</span></div>
+    <div class="service-row r d2"><span class="service-num">06</span><div class="service-name-wrap"><span class="service-name">Confección para marcas</span><p class="service-detail">Private label y manufactura confiable para marcas que necesitan producción discreta de estándar internacional.</p></div><span class="service-arr">Ver &rarr;</span></div>
+    <div class="service-row r d1"><span class="service-num">07</span><div class="service-name-wrap"><span class="service-name">Dotaciones</span><p class="service-detail">Dotaciones industriales y empresariales que cumplen normas de seguridad sin sacrificar presentación ni confort.</p></div><span class="service-arr">Ver &rarr;</span></div>
+    <div class="service-row r d2"><span class="service-num">08</span><div class="service-name-wrap"><span class="service-name">Disfraces y caracterización</span><p class="service-detail">Para eventos, producciones audiovisuales, teatro y activaciones de marca con necesidades creativas especiales.</p></div><span class="service-arr">Ver &rarr;</span></div>
+    <div class="service-row r d1"><span class="service-num">09</span><div class="service-name-wrap"><span class="service-name">Sublimación</span><p class="service-detail">Sublimación total o parcial para prendas all-over, colores que no se desvanecen y acabado profesional.</p></div><span class="service-arr">Ver &rarr;</span></div>
+    <div class="service-row r d3"><span class="service-num">10</span><div class="service-name-wrap"><span class="service-name">Producción por lotes</span><p class="service-detail">Desde 10 hasta grandes corridas de producción. Calidad constante en cada unidad, sin importar el volumen.</p></div><span class="service-arr">Ver &rarr;</span></div>
   </div>
 </section>
 
@@ -486,36 +560,31 @@
 
 <div class="gold-rule"></div>
 
-<!-- TESTIMONIALS -->
-<section id="testimonials">
-  <div class="test-head r">
-    <div class="section-label">Testimonios</div>
-    <h2 class="sec-h2">Lo que dicen<br>nuestros <em>clientes.</em></h2>
+<!-- TRAYECTORIA -->
+<section id="trayectoria">
+  <div class="tray-head r">
+    <div class="section-label">Trayectoria</div>
+    <h2 class="sec-h2">Hitos que nos<br><em>respaldan.</em></h2>
   </div>
-  <div class="test-track-wrap r d2">
-    <div class="test-track" id="testTrack">
-      <div class="test-card">
-        <p class="test-text">ACOSER superó todas mis expectativas. Pedí 200 uniformes para mi empresa y la calidad fue impecable. Los bordados del logo quedaron perfectos y entregaron antes del plazo.</p>
-        <div class="test-footer"><div><span class="test-person-name">Carlos Herrera</span><span class="test-person-role">Gerente &mdash; Constructora del Caribe</span></div><span class="test-stars">★★★★★</span></div>
-      </div>
-      <div class="test-card">
-        <p class="test-text">Lancé mi marca con ACOSER y fue la mejor decisión. Me ayudaron desde el diseño de la talla hasta el empaque. El private label quedó exactamente como lo imaginé.</p>
-        <div class="test-footer"><div><span class="test-person-name">Valentina Ramos</span><span class="test-person-role">Fundadora &mdash; Marca de moda urbana</span></div><span class="test-stars">★★★★★</span></div>
-      </div>
-      <div class="test-card">
-        <p class="test-text">Los estampados DTF tienen una calidad que no había visto en otro taller local. Los colores se mantienen lavada tras lavada. Recomendado sin dudarlo.</p>
-        <div class="test-footer"><div><span class="test-person-name">Miguel Torres</span><span class="test-person-role">Director Creativo &mdash; Agencia de eventos</span></div><span class="test-stars">★★★★★</span></div>
-      </div>
-      <div class="test-card">
-        <p class="test-text">Necesitaba disfraces para 80 personas en un evento en Bogotá. Los confeccionaron, los despacharon y llegaron perfectos. Un servicio de primera línea.</p>
-        <div class="test-footer"><div><span class="test-person-name">Andrea Molina</span><span class="test-person-role">Event Planner &mdash; Corporativo</span></div><span class="test-stars">★★★★★</span></div>
-      </div>
+  <div class="tray-grid r d2">
+    <div class="tray-card">
+      <span class="tray-num">i</span>
+      <span class="tray-tag">Corozal, Sucre</span>
+      <h3 class="tray-title">Uniformes entregados a una <em>institución educativa.</em></h3>
+      <p class="tray-text">Entrega completa de uniformes a una institución educativa de Corozal: tallaje, confección y entrega cumplida en 2026.</p>
     </div>
-  </div>
-  <div class="test-controls r d3">
-    <button class="tc-btn" onclick="moveTest(-1)">&#8592;</button>
-    <div class="tc-progress"><div class="tc-bar" id="tcBar"></div></div>
-    <button class="tc-btn" onclick="moveTest(1)">&#8594;</button>
+    <div class="tray-card">
+      <span class="tray-num">ii</span>
+      <span class="tray-tag">Barranquilla, Atlántico</span>
+      <h3 class="tray-title">Contrato con el colegio <em>Happy Time.</em></h3>
+      <p class="tray-text">Contrato adjudicado para la confección de los uniformes de los estudiantes del colegio Happy Time de Barranquilla.</p>
+    </div>
+    <div class="tray-card">
+      <span class="tray-num">iii</span>
+      <span class="tray-tag">Línea propia</span>
+      <h3 class="tray-title">Noah's Clothing, ropa <em>infantil.</em></h3>
+      <p class="tray-text">Nuestra marca propia de ropa infantil, diseñada y producida en el taller, mantiene viva la línea de creación de ACOSER.</p>
+    </div>
   </div>
 </section>
 
@@ -614,6 +683,7 @@
       <ul class="footer-links">
         <li><a href="#about">Quiénes somos</a></li>
         <li><a href="#services">Servicios</a></li>
+        <li><a href="modules/colegios/">Colegios</a></li>
         <li><a href="#portfolio">Portafolio</a></li>
         <li><a href="modules/casos/">Casos de Éxito</a></li>
         <li><a href="modules/empresas/">Empresas</a></li>
@@ -640,7 +710,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span class="footer-copy">&copy; 2025 <span>ACOSER Taller Textil</span> &mdash; Hecho en Colombia</span>
+    <span class="footer-copy">&copy; 2026 <span>ACOSER Taller Textil</span> &mdash; Hecho en Colombia</span>
     <div class="footer-social">
       <a href="https://instagram.com/acoser_tallertextil" target="_blank" rel="noopener" class="f-social-link">Instagram</a>
       <a href="https://wa.me/573005206285" target="_blank" rel="noopener" class="f-social-link">WhatsApp</a>

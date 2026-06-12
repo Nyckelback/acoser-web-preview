@@ -40,6 +40,15 @@
 .form-input.select-f { -webkit-appearance: none; appearance: none; cursor: pointer; }
 .form-input.select-f option { background: var(--ink2); }
 .numbers-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--dust); margin: 6vh 0; }
+.dot-fechas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--dust); margin: 4vh 0; }
+.dot-fecha { background: var(--ink2); padding: 2rem; }
+.dot-fecha-dia { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold2); font-style: italic; display: block; line-height: 1.1; }
+.dot-fecha-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: .54rem; letter-spacing: .28em; color: var(--ash); text-transform: uppercase; font-weight: 300; display: block; margin-top: .6rem; }
+.evid-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--dust); margin-top: 4vh; }
+.evid-item { background: var(--ink); padding: 2.2rem 2rem; }
+.evid-tag { font-family: 'Barlow Condensed', sans-serif; font-size: .54rem; letter-spacing: .3em; color: var(--gold); text-transform: uppercase; font-weight: 500; display: block; margin-bottom: .8rem; }
+.evid-txt { font-size: .8rem; color: var(--ash); line-height: 1.75; font-weight: 300; }
+@media(max-width:768px){ .dot-fechas{grid-template-columns:1fr;} .evid-grid{grid-template-columns:1fr;} }
 .num-item { background: var(--ink); padding: 2.5rem 2rem; }
 .num-val { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--gold2); font-weight: 400; display: block; line-height: 1; }
 .num-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: .54rem; letter-spacing: .3em; color: var(--ash); text-transform: uppercase; font-weight: 300; display: block; margin-top: .5rem; }
@@ -66,6 +75,7 @@
     <li><a href="../calculadora-dtf/" onclick="closeMob()">Calculadora DTF</a></li>
     <li><a href="../mockup/" onclick="closeMob()">Mockup</a></li>
     <li><a href="../empresas/" onclick="closeMob()">Empresas</a></li>
+    <li><a href="../colegios/" onclick="closeMob()">Colegios</a></li>
     <li><a href="../recursos/" onclick="closeMob()">Recursos</a></li>
     <li><a href="../../index.html#contact" onclick="closeMob()">Cotizar</a></li>
   </ul>
@@ -79,6 +89,7 @@
       <li><a href="../calculadora-dtf/">Calculadora DTF</a></li>
       <li><a href="../mockup/">Mockup</a></li>
       <li><a href="../empresas/" style="color:var(--gold)">Empresas</a></li>
+      <li><a href="../colegios/">Colegios</a></li>
       <li><a href="../recursos/">Recursos</a></li>
       <li><a href="../../index.html#contact" class="nav-cta-btn"><span>Cotizar</span></a></li>
     </ul>
@@ -112,15 +123,15 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(184,151,90,.1);">
         <div style="background:rgba(12,11,9,.7);padding:2rem;border-bottom:1px solid rgba(184,151,90,.1);">
           <span style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);display:block;line-height:1;">+500</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.3em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Uniformes entregados</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.3em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Prendas producidas</span>
         </div>
         <div style="background:rgba(12,11,9,.7);padding:2rem;border-bottom:1px solid rgba(184,151,90,.1);">
-          <span style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);display:block;line-height:1;">10+</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.3em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Empresas aliadas</span>
+          <span style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);display:block;line-height:1;">Desde 10</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.3em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Unidades por pedido</span>
         </div>
         <div style="background:rgba(12,11,9,.7);padding:2rem;">
-          <span style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);display:block;line-height:1;">100%</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.3em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Puntualidad en entregas</span>
+          <span style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);display:block;line-height:1;">Directo</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.52rem;letter-spacing:.3em;color:var(--ash);text-transform:uppercase;display:block;margin-top:.4rem;">Atención del taller</span>
         </div>
         <div style="background:rgba(12,11,9,.7);padding:2rem;">
           <span style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);display:block;line-height:1;">Col.</span>
@@ -177,7 +188,7 @@
     <div class="r">
       <div class="section-label">¿Por qué ACOSER?</div>
       <h2 class="sec-h2">Fabricamos como<br>si fuera <em>nuestra</em><br><em>propia marca.</em></h2>
-      <p style="font-size:.88rem;color:var(--fog);line-height:2;max-width:440px;margin-top:2rem;font-weight:300;">Trabajamos con pocas empresas a la vez para garantizar atención dedicada y calidad constante. No somos una fábrica masiva — somos su aliado estratégico de producción.</p>
+      <p style="font-size:.88rem;color:var(--fog);line-height:2;max-width:440px;margin-top:2rem;font-weight:300;">Trabajamos con pocas empresas a la vez para ofrecer atención dedicada y calidad constante. No somos una fábrica masiva: somos su aliado de producción, con trato directo del taller.</p>
     </div>
     <div class="r d2">
       <div class="benefit-row">
@@ -200,10 +211,57 @@
   </div>
 </div>
 
+<!-- DOTACIÓN LEGAL -->
+<div id="dotacion" style="background:var(--ink);padding:10vh 4rem;border-top:1px solid var(--dust);border-bottom:1px solid var(--dust);">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="r">
+      <div class="section-label">Dotación obligatoria en Colombia</div>
+      <h2 class="sec-h2">Se acerca la fecha de entrega.<br><em>Resuelva su dotación a tiempo.</em></h2>
+      <p style="font-size:.88rem;color:var(--fog);line-height:2;max-width:640px;margin-top:2rem;font-weight:300;">El artículo 230 del Código Sustantivo del Trabajo establece la entrega de calzado y vestido de labor a los trabajadores que devengan hasta dos salarios mínimos, en tres fechas al año. Planificar la producción con anticipación le permite cumplir cada entrega sin contratiempos: cuéntenos cuántos trabajadores tiene y nosotros nos encargamos de la confección.</p>
+    </div>
+    <div class="dot-fechas r d2">
+      <div class="dot-fecha"><span class="dot-fecha-dia">30 de abril</span><span class="dot-fecha-lbl">Primera entrega del año</span></div>
+      <div class="dot-fecha"><span class="dot-fecha-dia">31 de agosto</span><span class="dot-fecha-lbl">Segunda entrega del año</span></div>
+      <div class="dot-fecha"><span class="dot-fecha-dia">20 de diciembre</span><span class="dot-fecha-lbl">Tercera entrega del año</span></div>
+    </div>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;" class="r d3">
+      <button class="btn-module-primary" onclick="document.getElementById('emp-form').scrollIntoView({behavior:'smooth'})">
+        <span>Cotizar mi dotación</span>
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l5 4-5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <a href="https://wa.me/573005206285?text=Hola%2C+necesito+cotizar+la+dotaci%C3%B3n+de+ley+para+mis+trabajadores." class="btn-wa-module" target="_blank">Cotizar por WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<!-- TRAYECTORIA REAL -->
+<div style="background:var(--ink2);padding:10vh 4rem;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="r">
+      <div class="section-label">Trayectoria</div>
+      <h2 class="sec-h2">Lo que ya hemos<br><em>entregado.</em></h2>
+    </div>
+    <div class="evid-grid r d2">
+      <div class="evid-item">
+        <span class="evid-tag">Corozal, Sucre</span>
+        <p class="evid-txt">Entrega completa de uniformes a una institución educativa de Corozal, confeccionados de principio a fin en nuestro taller.</p>
+      </div>
+      <div class="evid-item">
+        <span class="evid-tag">Barranquilla</span>
+        <p class="evid-txt">Contrato adjudicado con el colegio Happy Time de Barranquilla para los uniformes de sus estudiantes.</p>
+      </div>
+      <div class="evid-item">
+        <span class="evid-tag">Marca propia</span>
+        <p class="evid-txt">Noah's Clothing, nuestra línea propia de ropa infantil, se produce en el mismo taller con los mismos estándares que aplicamos a cada pedido empresarial.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- NÚMEROS -->
 <div style="background:var(--ink);padding:0 4rem;">
   <div class="numbers-strip r">
-    <div class="num-item"><span class="num-val counter" data-target="500" data-prefix="+">0</span><span class="num-lbl">Uniformes entregados</span></div>
+    <div class="num-item"><span class="num-val counter" data-target="500" data-prefix="+">0</span><span class="num-lbl">Prendas producidas</span></div>
     <div class="num-item"><span class="num-val">10</span><span class="num-lbl">Unidades mínimas</span></div>
     <div class="num-item"><span class="num-val">100%</span><span class="num-lbl">Personalización</span></div>
     <div class="num-item"><span class="num-val">Col.</span><span class="num-lbl">Cobertura nacional</span></div>
@@ -264,11 +322,11 @@
   <div class="footer-top">
     <div><span class="footer-brand-name">ACOSER</span><span class="footer-brand-sub">Taller Textil</span><p class="footer-brand-desc">Producción textil premium para marcas y empresas en toda Colombia.</p></div>
     <div><span class="footer-col-head">Plataforma</span><ul class="footer-links"><li><a href="../../index.html">Inicio</a></li><li><a href="../../index.html#services">Servicios</a></li><li><a href="../../index.html#contact">Cotizar</a></li></ul></div>
-    <div><span class="footer-col-head">Herramientas</span><ul class="footer-links"><li><a href="../calculadora-dtf/">Calculadora DTF</a></li><li><a href="../mockup/">Mockup Generator</a></li><li><a href="../recursos/">Recursos</a></li></ul></div>
+    <div><span class="footer-col-head">Herramientas</span><ul class="footer-links"><li><a href="../calculadora-dtf/">Calculadora DTF</a></li><li><a href="../mockup/">Mockup Generator</a></li><li><a href="../colegios/">Colegios</a></li><li><a href="../recursos/">Recursos</a></li></ul></div>
     <div><span class="footer-col-head">Contacto</span><ul class="footer-links"><li><a href="tel:+573005206285">+57 300 520 6285</a></li><li><a href="mailto:acosertallertextilinfo@gmail.com">acosertallertextilinfo@gmail.com</a></li></ul></div>
   </div>
   <div class="footer-bottom">
-    <span class="footer-copy">&copy; 2025 <span>ACOSER Taller Textil</span> &mdash; Hecho en Colombia</span>
+    <span class="footer-copy">&copy; 2026 <span>ACOSER Taller Textil</span> &mdash; Hecho en Colombia</span>
     <div class="footer-social"><a href="https://instagram.com/acoser_tallertextil" target="_blank" class="f-social-link">Instagram</a><a href="https://wa.me/573005206285" target="_blank" class="f-social-link">WhatsApp</a></div>
   </div>
 </footer>
@@ -306,7 +364,7 @@ function enviarEmpresa(e) {
     fuente: 'portal-empresas',
   };
 
-  ACOSER_LEADS.capturar(datos);
+  ACOSER_LEADS.capturar(datos, { email: false });
 
   emailjs.send('service_snoqhio', 'template_c9j4is8', {
     nombre, empresa, whatsapp, email,
@@ -318,8 +376,9 @@ function enviarEmpresa(e) {
     document.getElementById('formSuccessEmp').style.display = 'block';
     setTimeout(() => { window.open(ACOSER_WA.empresas(datos), '_blank'); }, 1200);
   }).catch(() => {
-    errEl.textContent = 'Error al enviar. Por favor escríbenos directamente por WhatsApp.';
+    errEl.textContent = 'No se pudo enviar el correo. Te abrimos WhatsApp para que tu solicitud no se pierda.';
     btn.disabled = false; btnTxt.textContent = 'Enviar solicitud empresarial';
+    setTimeout(() => { window.open(ACOSER_WA.empresas(datos), '_blank'); }, 800);
   });
 }
 </script>

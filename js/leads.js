@@ -74,6 +74,8 @@ const ACOSER_LEADS = (function () {
       const el = document.getElementById(id);
       return el ? el.value.trim() : '';
     };
+    /* email:false — enviarCotizacion (emailjs-handler.js) ya envía el correo;
+       aquí solo se guarda el lead local para no duplicar la notificación */
     return capturar({
       nombre:   get('f-nombre'),
       empresa:  get('f-empresa'),
@@ -83,7 +85,7 @@ const ACOSER_LEADS = (function () {
       cantidad: get('f-cantidad'),
       detalles: get('f-detalles'),
       fuente:   'formulario-contacto',
-    });
+    }, { email: false });
   }
 
   /* ── Exportar leads a CSV (para uso interno) ── */

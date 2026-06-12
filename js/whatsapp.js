@@ -32,7 +32,7 @@ const ACOSER_WA = (function () {
       d.servicio ? `⚙️ Servicio: ${d.servicio}`       : null,
       d.detalles ? `📝 Detalles: ${d.detalles}`       : null,
       SEP,
-      '🌐 Enviado desde: acoser.com.co',
+      '🌐 Enviado desde: acoser-web.vercel.app',
     ].filter(Boolean).join('\n');
 
     return buildUrl(lineas);
@@ -55,7 +55,7 @@ const ACOSER_WA = (function () {
       d.costoEst   ? `💰 Costo estimado: ${d.costoEst}`        : null,
       SEP,
       'Me interesa cotizar esta impresión DTF.',
-      '🌐 acoser.com.co',
+      '🌐 acoser-web.vercel.app',
     ].filter(Boolean).join('\n');
 
     return buildUrl(lineas);
@@ -78,7 +78,7 @@ const ACOSER_WA = (function () {
       d.observacion ? `📝 Nota: ${d.observacion}`         : null,
       SEP,
       'Adjunto mi diseño para revisión.',
-      '🌐 acoser.com.co/personalizador',
+      '🌐 acoser-web.vercel.app/modules/mockup/',
     ].filter(Boolean).join('\n');
 
     return buildUrl(lineas);
@@ -103,7 +103,7 @@ const ACOSER_WA = (function () {
       d.descripcion   ? `📝 Descripción: ${d.descripcion}`     : null,
       SEP,
       'Solicito propuesta comercial.',
-      '🌐 acoser.com.co/empresas',
+      '🌐 acoser-web.vercel.app/modules/empresas/',
     ].filter(Boolean).join('\n');
 
     return buildUrl(lineas);
@@ -120,7 +120,7 @@ const ACOSER_WA = (function () {
       p.referencia ? `🏷️ Ref: ${p.referencia}`  : null,
       SEP,
       'Estoy interesado en cotizar este producto.',
-      '🌐 acoser.com.co/catalogo',
+      '🌐 acoser-web.vercel.app',
     ].filter(Boolean).join('\n');
 
     return buildUrl(lineas);

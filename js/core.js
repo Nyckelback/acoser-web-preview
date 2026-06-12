@@ -66,11 +66,13 @@ if (themeBtn) {
       '</g>' +
       '<circle class="sc-pivot" cx="16" cy="16" r="1.7"/>' +
     '</svg>';
+  sc.style.opacity = '0'; /* invisible hasta el primer movimiento del mouse */
   document.body.appendChild(sc);
 
-  /* La punta de las tijeras (3,3 del viewBox de 32 a 30px) cae en el mouse */
+  /* La punta de las tijeras cae exactamente en el puntero */
   const TIP = 3 * (34 / 32);
   document.addEventListener('mousemove', e => {
+    sc.style.opacity = '1';
     sc.style.transform = 'translate(' + (e.clientX - TIP) + 'px,' + (e.clientY - TIP) + 'px)';
   }, { passive: true });
 

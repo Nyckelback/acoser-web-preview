@@ -69,7 +69,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 
 <!-- ─── ESTILOS ───────────────────────────────── -->
-<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/base.css?v=20260612b">
 
 <!-- Estilos propios del home (rediseño minimalista) -->
 <style>
@@ -77,9 +77,18 @@
 .hero-sub { font-size: 1.02rem; line-height: 1.85; }
 .contact-intro { font-size: 1.02rem; line-height: 1.8; }
 
-/* Contadores del hero legibles sobre la foto (respaldo según tema) */
-.hero-counter-strip { background: linear-gradient(0deg, rgba(12,11,9,.82), rgba(12,11,9,.5) 75%, transparent); padding: 2.2rem 2rem 1.6rem; }
-[data-theme="light"] .hero-counter-strip { background: linear-gradient(0deg, rgba(243,237,227,.95), rgba(243,237,227,.72) 70%, transparent); }
+/* Contadores del hero: tarjeta de vidrio esmerilado, funciona en ambos temas */
+.hero-counter-strip {
+  background: rgba(12,11,9,.58);
+  backdrop-filter: blur(14px) saturate(1.05);
+  -webkit-backdrop-filter: blur(14px) saturate(1.05);
+  padding: 2rem 2rem 1.4rem;
+}
+[data-theme="light"] .hero-counter-strip {
+  background: rgba(243,237,227,.62);
+  border-left-color: rgba(154,122,62,.25);
+  border-top-color: rgba(154,122,62,.25);
+}
 
 /* — Accesos rápidos — */
 #quick { padding: 11vh 4rem 10vh; }
@@ -574,10 +583,10 @@ a.service-row { text-decoration: none; color: inherit; }
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="js/whatsapp.js"></script>
-<script src="js/leads.js"></script>
-<script src="js/core.js"></script>
-<script src="js/emailjs-handler.js"></script>
+<script src="js/whatsapp.js?v=20260612b"></script>
+<script src="js/leads.js?v=20260612b"></script>
+<script src="js/core.js?v=20260612b"></script>
+<script src="js/emailjs-handler.js?v=20260612b"></script>
 <script>
 /* index.html no requiere JS adicional — todo está en js/core.js y js/emailjs-handler.js */
 </script>

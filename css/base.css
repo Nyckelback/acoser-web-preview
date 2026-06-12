@@ -169,6 +169,30 @@ nav.solid .nav-logo-img { height: 66px; }
 [data-theme="light"] .nav-logo-img:hover {
   filter: brightness(0.93) contrast(1.08) drop-shadow(0 2px 14px rgba(154,122,62,0.2));
 }
+/* logo.png lleva el texto en crema (legible en modo oscuro); en modo claro
+   se muestra la versión original con el azul de marca */
+[data-theme="light"] .nav-logo-img { content: url('../imagenes/logo-light.png'); }
+
+/* ─── CURSOR TIJERAS DE SASTRE ───────────────────────── */
+.cur-dot, .cur-ring { display: none !important; }
+#curScissors {
+  position: fixed; top: 0; left: 0;
+  width: 34px; height: 34px;
+  pointer-events: none; z-index: 9999;
+  will-change: transform;
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,.45));
+  transition: opacity .25s ease;
+}
+#curScissors svg { width: 100%; height: 100%; overflow: visible; }
+#curScissors .sc-half { transform-origin: 16px 16px; transition: transform .14s cubic-bezier(.3,.7,.3,1); }
+#curScissors .sc-a { transform: rotate(8deg); }
+#curScissors .sc-b { transform: rotate(-8deg); }
+#curScissors.open .sc-a { transform: rotate(15deg); }
+#curScissors.open .sc-b { transform: rotate(-15deg); }
+#curScissors.snip .sc-a, #curScissors.snip .sc-b { transform: rotate(0deg); transition-duration: .09s; }
+#curScissors .sc-blade { fill: var(--gold2); }
+#curScissors .sc-handle { fill: none; stroke: var(--gold); stroke-width: 2.1; }
+#curScissors .sc-pivot { fill: var(--gold); }
 .nav-links {
   list-style: none;
   display: flex; gap: 2.6rem; align-items: center;

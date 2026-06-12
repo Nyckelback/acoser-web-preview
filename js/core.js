@@ -40,35 +40,60 @@ if (themeBtn) {
   });
 }
 
-/* ─── CURSOR ─────────────────────────────────────────── */
+/* ─── CURSOR TIJERAS DE SASTRE ───────────────────────── */
+/* Tijeras doradas orientadas como el puntero (punta arriba-izquierda).
+   Abren un poco sobre elementos clicables y "cortan" en cada clic. */
 (function initCursor() {
-  const dot  = document.getElementById('curDot');
-  const ring = document.getElementById('curRing');
-  if (!dot || !ring) return;
   const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
   if (isTouch) return;
+  /* Las páginas tipo studio (mockup, tallas) usan cursor nativo: no inyectar */
+  if (getComputedStyle(document.body).cursor !== 'none') return;
 
-  let mx = 0, my = 0, rx = 0, ry = 0, rafId = null;
+  const sc = document.createElement('div');
+  sc.id = 'curScissors';
+  sc.setAttribute('aria-hidden', 'true');
+  sc.innerHTML =
+    '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">' +
+      '<g class="sc-half sc-a">' +
+        '<path class="sc-blade" d="M3 3 L7.6 4.2 Q14.2 8.4 16.4 15.2 L15.2 16.4 Q10.4 12.2 5.2 6.6 Z"/>' +
+        '<ellipse class="sc-handle" cx="22.6" cy="24.8" rx="4" ry="2.7" transform="rotate(38 22.6 24.8)"/>' +
+        '<path class="sc-blade" d="M15.6 16 L16.4 15.2 L20.4 20.6 L18.9 21.6 Z"/>' +
+      '</g>' +
+      '<g class="sc-half sc-b">' +
+        '<path class="sc-blade" d="M3 3 L4.2 7.6 Q8.4 14.2 15.2 16.4 L16.4 15.2 Q12.2 10.4 6.6 5.2 Z"/>' +
+        '<ellipse class="sc-handle" cx="24.8" cy="22.6" rx="2.7" ry="4" transform="rotate(38 24.8 22.6)"/>' +
+        '<path class="sc-blade" d="M16 15.6 L15.2 16.4 L20.6 20.4 L21.6 18.9 Z"/>' +
+      '</g>' +
+      '<circle class="sc-pivot" cx="16" cy="16" r="1.7"/>' +
+    '</svg>';
+  document.body.appendChild(sc);
+
+  /* La punta de las tijeras (3,3 del viewBox de 32 a 30px) cae en el mouse */
+  const TIP = 3 * (34 / 32);
   document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
-    if (!rafId) rafId = requestAnimationFrame(animRing);
-  });
-  function animRing() {
-    rafId = null;
-    const dx = mx - rx, dy = my - ry;
-    if (Math.abs(dx) > 0.3 || Math.abs(dy) > 0.3) {
-      rx += dx * .14; ry += dy * .14;
-      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-      rafId = requestAnimationFrame(animRing);
-    }
-  }
+    sc.style.transform = 'translate(' + (e.clientX - TIP) + 'px,' + (e.clientY - TIP) + 'px)';
+  }, { passive: true });
 
-  const hoverEls = 'a,button,.p-item,.ws-item,.about-media-item,.brand-feat,.service-row,.test-card,.brands-photo-item';
-  document.querySelectorAll(hoverEls).forEach(el => {
-    el.addEventListener('mouseenter', () => ring.classList.add('expand'));
-    el.addEventListener('mouseleave', () => ring.classList.remove('expand'));
+  /* Snip al hacer clic */
+  let snipT = null;
+  document.addEventListener('mousedown', () => {
+    sc.classList.add('snip');
   });
+  document.addEventListener('mouseup', () => {
+    clearTimeout(snipT);
+    snipT = setTimeout(() => sc.classList.remove('snip'), 90);
+  });
+
+  /* Abrir sobre clicables */
+  const hoverEls = 'a,button,.p-item,.ws-item,.about-media-item,.brand-feat,.service-row,.test-card,.brands-photo-item,.svc-line,.quick-card,.g-item,.tool-chip,summary,input,select,textarea,label';
+  document.querySelectorAll(hoverEls).forEach(el => {
+    el.addEventListener('mouseenter', () => sc.classList.add('open'));
+    el.addEventListener('mouseleave', () => sc.classList.remove('open'));
+  });
+
+  /* Ocultar al salir de la ventana */
+  document.addEventListener('mouseleave', () => { sc.style.opacity = '0'; });
+  document.addEventListener('mouseenter', () => { sc.style.opacity = '1'; });
 })();
 
 /* ─── NAVBAR ─────────────────────────────────────────── */

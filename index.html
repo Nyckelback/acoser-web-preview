@@ -69,7 +69,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 
 <!-- ─── ESTILOS ───────────────────────────────── -->
-<link rel="stylesheet" href="css/base.css?v=20260612i">
+<link rel="stylesheet" href="css/base.css?v=20260612j">
 
 <!-- Estilos propios del home (rediseño minimalista) -->
 <style>
@@ -98,7 +98,7 @@
 .quick-card:hover .quick-card-bg { transform: scale(1.05); filter: saturate(1); }
 .quick-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(12,11,9,.05) 30%, rgba(12,11,9,.93) 100%); }
 .quick-card-body { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.2rem; z-index: 1; }
-.quick-card-tag { font-family: 'Barlow Condensed', sans-serif; font-size: .72rem; letter-spacing: .28em; text-transform: uppercase; color: var(--gold2); display: block; margin-bottom: .7rem; font-weight: 400; }
+.quick-card-tag { font-family: 'Barlow Condensed', sans-serif; font-size: .74rem; letter-spacing: .26em; text-transform: uppercase; color: #d9b87e; text-shadow: 0 1px 8px rgba(0,0,0,.55); display: block; margin-bottom: .7rem; font-weight: 500; }
 .quick-card-title { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 500; color: #f2ede6; line-height: 1.2; margin-bottom: .9rem; position: relative; padding-bottom: .55rem; }
 .quick-card-title::after { content: ''; position: absolute; left: 0; bottom: 0; width: 44px; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform .45s ease; }
 .quick-card:hover .quick-card-title::after { transform: scaleX(1); }
@@ -143,6 +143,10 @@
   .taller-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 220px; }
 }
 @media (max-width: 768px) {
+  /* Sobre el velo oscuro del hero móvil siempre va el logo crema,
+     aunque el tema sea claro; al scrollear (nav solid, fondo crema)
+     vuelve el logo azul del tema claro */
+  [data-theme="light"] nav:not(.solid) .nav-logo-img { content: url('imagenes/logo.png'); }
   /* Hero móvil: la foto del taller como fondo con velo oscuro fijo */
   #hero {
     background: linear-gradient(180deg, rgba(12,11,9,.82) 0%, rgba(12,11,9,.66) 55%, rgba(12,11,9,.88) 100%),
@@ -641,10 +645,10 @@ a.service-row { text-decoration: none; color: inherit; }
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="js/whatsapp.js?v=20260612i"></script>
-<script src="js/leads.js?v=20260612i"></script>
-<script src="js/core.js?v=20260612i"></script>
-<script src="js/emailjs-handler.js?v=20260612i"></script>
+<script src="js/whatsapp.js?v=20260612j"></script>
+<script src="js/leads.js?v=20260612j"></script>
+<script src="js/core.js?v=20260612j"></script>
+<script src="js/emailjs-handler.js?v=20260612j"></script>
 <script>
 /* index.html no requiere JS adicional — todo está en js/core.js y js/emailjs-handler.js */
 </script>

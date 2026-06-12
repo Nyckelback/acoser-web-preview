@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/base.css?v=20260612h">
-<link rel="stylesheet" href="../../css/modules.css?v=20260612h">
+<link rel="stylesheet" href="../../css/base.css?v=20260612i">
+<link rel="stylesheet" href="../../css/modules.css?v=20260612i">
 <style>
 .emp-hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 70vh; }
 .emp-hero-left { padding: calc(88px + 8vh) 4rem 8vh; background: var(--ink2); border-right: 1px solid var(--dust); display: flex; flex-direction: column; justify-content: flex-end; }
@@ -80,6 +80,9 @@
 .map-line2 { font-family: 'Barlow Condensed', sans-serif; font-size: .74rem; letter-spacing: .22em; text-transform: uppercase; color: var(--fog); }
 @media(max-width:1024px){ .emp-hero{grid-template-columns:1fr;} .emp-hero-right{min-height:46vh;padding:6vh 2rem;} .services-grid{grid-template-columns:1fr 1fr;} .numbers-strip{grid-template-columns:1fr 1fr;} }
 @media(max-width:768px){ .services-grid{grid-template-columns:1fr;} .emp-form{grid-template-columns:1fr;} .form-field.span2{grid-column:span 1;} .numbers-strip{grid-template-columns:1fr 1fr;} .emp-hero-left{padding:calc(62px + 5vh) 1.5rem 5vh;} .emp-hero-right{min-height:40vh;padding:5vh 1.5rem;} .map-card{gap:1.2rem;padding:1.3rem;} .map-co{width:92px;} }
+
+.split-2col { display:grid; grid-template-columns:1fr 1fr; }
+@media(max-width:900px){ .split-2col { grid-template-columns:1fr; gap:2.5rem !important; } }
 </style>
 </head>
 <body>
@@ -144,11 +147,11 @@
   </div>
   <div class="emp-hero-right">
     <div class="emp-hero-bg"></div>
-    <div class="emp-hero-photo"><img src="../../imagenes/taller/camiseta-dtf-modelo.jpg" alt="Camiseta con estampado DTF puesta en modelo, confeccionada en ACOSER" loading="lazy"></div>
+    <div class="emp-hero-photo"><img src="../../imagenes/taller/dtf-cool-people.jpg" alt="Camiseta con estampado DTF puesta en modelo, confeccionada en ACOSER" loading="lazy"></div>
     <div class="emp-hero-veil"></div>
     <div class="emp-hero-lines"></div>
     <div style="position:relative;z-index:1;" class="r-right">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(184,151,90,.18);">
+      <div class="split-2col" style="gap:1px;background:rgba(184,151,90,.18);">
         <div style="background:rgba(12,11,9,.72);padding:2rem;border-bottom:1px solid rgba(184,151,90,.18);">
           <span style="font-family:'Playfair Display',serif;font-size:2rem;color:#d4b278;display:block;line-height:1;">+500</span>
           <span style="font-family:'Barlow Condensed',sans-serif;font-size:.74rem;letter-spacing:.22em;color:#b8b5b0;text-transform:uppercase;display:block;margin-top:.4rem;">Prendas producidas</span>
@@ -215,7 +218,7 @@
 
 <!-- BENEFICIOS -->
 <div style="background:var(--ink2);padding:10vh 4rem;">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:start;max-width:1200px;margin:0 auto;">
+  <div class="split-2col" style="gap:8vw;align-items:start;max-width:1200px;margin:0 auto;">
     <div class="r">
       <div class="section-label">¿Por qué ACOSER?</div>
       <h2 class="sec-h2">Fabricamos como<br>si fuera <em>nuestra</em><br><em>propia marca.</em></h2>
@@ -382,9 +385,9 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="../../js/whatsapp.js?v=20260612h"></script>
-<script src="../../js/leads.js?v=20260612h"></script>
-<script src="../../js/core.js?v=20260612h"></script>
+<script src="../../js/whatsapp.js?v=20260612i"></script>
+<script src="../../js/leads.js?v=20260612i"></script>
+<script src="../../js/core.js?v=20260612i"></script>
 <script>
 emailjs.init({ publicKey: 'w2pKrH3klkmxpD0Iq' });
 

@@ -313,6 +313,10 @@ nav.solid .nav-logo-img { height: 66px; }
   background: linear-gradient(90deg, var(--ink) 0%, var(--hero-overlay-mid) 50%, transparent 100%);
   z-index: 1;
 }
+/* En modo claro el velo crema lavaba la foto: degradado más corto y suave */
+[data-theme="light"] .hero-overlay {
+  background: linear-gradient(90deg, var(--ink) 0%, rgba(243,237,227,.30) 35%, transparent 65%);
+}
 .hero-tag {
   font-family: 'Barlow Condensed', sans-serif; font-size: .68rem; letter-spacing: .38em;
   color: var(--gold); text-transform: uppercase; font-weight: 300;

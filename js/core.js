@@ -40,62 +40,6 @@ if (themeBtn) {
   });
 }
 
-/* ─── CURSOR TIJERAS DE SASTRE ───────────────────────── */
-/* Tijeras doradas orientadas como el puntero (punta arriba-izquierda).
-   Abren un poco sobre elementos clicables y "cortan" en cada clic. */
-(function initCursor() {
-  const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
-  if (isTouch) return;
-  /* Las páginas tipo studio (mockup, tallas) usan cursor nativo: no inyectar */
-  if (getComputedStyle(document.body).cursor !== 'none') return;
-
-  const sc = document.createElement('div');
-  sc.id = 'curScissors';
-  sc.setAttribute('aria-hidden', 'true');
-  sc.innerHTML =
-    '<svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg">' +
-      '<g class="sc-half sc-a">' +
-        '<path class="sc-line" d="M3.5 3.5 L20.4 20.4"/>' +
-        '<ellipse class="sc-handle" cx="24" cy="25.6" rx="3.7" ry="2.6" transform="rotate(42 24 25.6)"/>' +
-      '</g>' +
-      '<g class="sc-half sc-b">' +
-        '<path class="sc-line" d="M3.5 3.5 L20.4 20.4" transform="matrix(0 1 1 0 0 0)"/>' +
-        '<ellipse class="sc-handle" cx="25.6" cy="24" rx="2.6" ry="3.7" transform="rotate(42 25.6 24)"/>' +
-      '</g>' +
-      '<circle class="sc-pivot" cx="17" cy="17" r="1.9"/>' +
-    '</svg>';
-  sc.style.opacity = '0'; /* invisible hasta el primer movimiento del mouse */
-  document.body.appendChild(sc);
-
-  /* La punta de las tijeras cae exactamente en el puntero */
-  const TIP = 3.5;
-  document.addEventListener('mousemove', e => {
-    sc.style.opacity = '1';
-    sc.style.transform = 'translate(' + (e.clientX - TIP) + 'px,' + (e.clientY - TIP) + 'px)';
-  }, { passive: true });
-
-  /* Snip al hacer clic */
-  let snipT = null;
-  document.addEventListener('mousedown', () => {
-    sc.classList.add('snip');
-  });
-  document.addEventListener('mouseup', () => {
-    clearTimeout(snipT);
-    snipT = setTimeout(() => sc.classList.remove('snip'), 90);
-  });
-
-  /* Abrir sobre clicables */
-  const hoverEls = 'a,button,.p-item,.ws-item,.about-media-item,.brand-feat,.service-row,.test-card,.brands-photo-item,.svc-line,.quick-card,.g-item,.tool-chip,summary,input,select,textarea,label';
-  document.querySelectorAll(hoverEls).forEach(el => {
-    el.addEventListener('mouseenter', () => sc.classList.add('open'));
-    el.addEventListener('mouseleave', () => sc.classList.remove('open'));
-  });
-
-  /* Ocultar al salir de la ventana */
-  document.addEventListener('mouseleave', () => { sc.style.opacity = '0'; });
-  document.addEventListener('mouseenter', () => { sc.style.opacity = '1'; });
-})();
-
 /* ─── NAVBAR ─────────────────────────────────────────── */
 (function initNavbar() {
   const nav = document.getElementById('nav');

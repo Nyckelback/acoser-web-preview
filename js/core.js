@@ -53,24 +53,22 @@ if (themeBtn) {
   sc.id = 'curScissors';
   sc.setAttribute('aria-hidden', 'true');
   sc.innerHTML =
-    '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">' +
+    '<svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg">' +
       '<g class="sc-half sc-a">' +
-        '<path class="sc-blade" d="M3 3 L7.6 4.2 Q14.2 8.4 16.4 15.2 L15.2 16.4 Q10.4 12.2 5.2 6.6 Z"/>' +
-        '<ellipse class="sc-handle" cx="22.6" cy="24.8" rx="4" ry="2.7" transform="rotate(38 22.6 24.8)"/>' +
-        '<path class="sc-blade" d="M15.6 16 L16.4 15.2 L20.4 20.6 L18.9 21.6 Z"/>' +
+        '<path class="sc-line" d="M3.5 3.5 L20.4 20.4"/>' +
+        '<ellipse class="sc-handle" cx="24" cy="25.6" rx="3.7" ry="2.6" transform="rotate(42 24 25.6)"/>' +
       '</g>' +
       '<g class="sc-half sc-b">' +
-        '<path class="sc-blade" d="M3 3 L4.2 7.6 Q8.4 14.2 15.2 16.4 L16.4 15.2 Q12.2 10.4 6.6 5.2 Z"/>' +
-        '<ellipse class="sc-handle" cx="24.8" cy="22.6" rx="2.7" ry="4" transform="rotate(38 24.8 22.6)"/>' +
-        '<path class="sc-blade" d="M16 15.6 L15.2 16.4 L20.6 20.4 L21.6 18.9 Z"/>' +
+        '<path class="sc-line" d="M3.5 3.5 L20.4 20.4" transform="matrix(0 1 1 0 0 0)"/>' +
+        '<ellipse class="sc-handle" cx="25.6" cy="24" rx="2.6" ry="3.7" transform="rotate(42 25.6 24)"/>' +
       '</g>' +
-      '<circle class="sc-pivot" cx="16" cy="16" r="1.7"/>' +
+      '<circle class="sc-pivot" cx="17" cy="17" r="1.9"/>' +
     '</svg>';
   sc.style.opacity = '0'; /* invisible hasta el primer movimiento del mouse */
   document.body.appendChild(sc);
 
   /* La punta de las tijeras cae exactamente en el puntero */
-  const TIP = 3 * (34 / 32);
+  const TIP = 3.5;
   document.addEventListener('mousemove', e => {
     sc.style.opacity = '1';
     sc.style.transform = 'translate(' + (e.clientX - TIP) + 'px,' + (e.clientY - TIP) + 'px)';

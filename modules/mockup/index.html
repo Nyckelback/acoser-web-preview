@@ -554,7 +554,6 @@ canvas#mc.can-rotate { cursor: crosshair; }
   color: var(--s-fog); display: block;
 }
 .tech-btn.active .tech-btn-name { color: var(--s-gold); }
-.tech-btn-price { font-size: .7rem; color: var(--s-fog); display: block; margin-top: .2rem; }
 
 /* Quote result */
 .quote-result {
@@ -570,7 +569,6 @@ canvas#mc.can-rotate { cursor: crosshair; }
   font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--s-fog);
 }
 .quote-val { font-family: 'Inter', sans-serif; font-size: .86rem; font-weight: 600; color: var(--s-cream); }
-.quote-val.gold { color: var(--s-gold2); font-size: 1rem; }
 .quote-val.green { color: #5aba85; }
 
 /* Enterprise breakdown */
@@ -1061,19 +1059,15 @@ canvas#mc.can-rotate { cursor: crosshair; }
             <div class="technique-selector">
               <button class="tech-btn active" id="tech-dtf" onclick="setTechnique('dtf',this)">
                 <span class="tech-btn-name">Estampado DTF</span>
-                <span class="tech-btn-price">Desde $8.000/m</span>
               </button>
               <button class="tech-btn" id="tech-bordado" onclick="setTechnique('bordado',this)">
                 <span class="tech-btn-name">Bordado</span>
-                <span class="tech-btn-price">Desde $8.000/u</span>
               </button>
               <button class="tech-btn" id="tech-sublimacion" onclick="setTechnique('sublimacion',this)">
                 <span class="tech-btn-name">Sublimación</span>
-                <span class="tech-btn-price">Desde $6.000/m</span>
               </button>
               <button class="tech-btn" id="tech-serigrafía" onclick="setTechnique('serigrafía',this)">
                 <span class="tech-btn-name">Serigrafía</span>
-                <span class="tech-btn-price">Desde $3.500/u</span>
               </button>
             </div>
           </div>
@@ -1084,26 +1078,10 @@ canvas#mc.can-rotate { cursor: crosshair; }
               <span class="quote-key">Prendas</span>
               <span class="quote-val" id="q-qty">50 uds</span>
             </div>
-            <div class="quote-row">
-              <span class="quote-key">Consumo DTF estimado</span>
-              <span class="quote-val" id="q-metros">— m</span>
-            </div>
-            <div class="quote-row">
+            <div class="quote-row" style="border-bottom:none;">
               <span class="quote-key">Tiempo de producción</span>
               <span class="quote-val green" id="q-tiempo">5–7 días hábiles</span>
             </div>
-            <div class="quote-row">
-              <span class="quote-key">Costo estimado total</span>
-              <span class="quote-val gold" id="q-total">—</span>
-            </div>
-            <div class="quote-row" style="border-bottom:none;">
-              <span class="quote-key">Costo por prenda</span>
-              <span class="quote-val" id="q-unit">—</span>
-            </div>
-          </div>
-
-          <div style="font-size:.7rem;color:var(--s-fog);line-height:1.6;">
-            * Estimado orientativo. El costo final depende del diseño, acabados y tela seleccionada.
           </div>
         </div>
 
@@ -1175,6 +1153,9 @@ const S = {
   color:      '#111111',
   colorName:  'Noir',
   /* Independent design per view */
+  /* img:null = prenda LIMPIA por defecto, sin diseño. NO sembrar rasters aquí
+     ni en init(): un raster de baja resolución se vería pixelado sobre la
+     prenda. El usuario sube su propio diseño nítido vía uploadDesign(). */
   designs: {
     front: { img: null, x: 250, y: 230, scale: 1.0, rot: 0, opacity: 1, flipH: false, w: 0, h: 0 },
     back:  { img: null, x: 250, y: 230, scale: 1.0, rot: 0, opacity: 1, flipH: false, w: 0, h: 0 },
@@ -1229,20 +1210,6 @@ const SIZES = {
     { label:'XL',  ancho:63, largo:81, pw:38, ph:42, rec:36 },
     { label:'2XL', ancho:66, largo:84, pw:40, ph:44, rec:38 },
   ],
-};
-
-/* ── PRICE CONFIG ── */
-const PRICES = {
-  dtf: [
-    { min:1,   max:9,   pm:18000 },
-    { min:10,  max:49,  pm:15000 },
-    { min:50,  max:99,  pm:12500 },
-    { min:100, max:299, pm:10000 },
-    { min:300, max:Infinity, pm:8000 },
-  ],
-  bordado:    [{ min:1, max:Infinity, pm:8000 }],   // per unit
-  sublimacion:[{ min:1, max:9,  pm:16000 }, { min:10, max:49, pm:13000 }, { min:50, max:Infinity, pm:10000 }],
-  serigrafía: [{ min:1, max:9,  pm:5000  }, { min:10, max:49, pm:4000  }, { min:50, max:Infinity, pm:3500  }],
 };
 
 /* ── GARMENT SHAPES ──
@@ -1997,9 +1964,6 @@ function toggleEnterprise() {
 }
 
 /* ── QUOTER ── */
-function fmt(n) {
-  return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(n);
-}
 function changeQty(delta) {
   const inp = document.getElementById('qtyInput');
   const newQty = Math.max(1, (parseInt(inp.value) || 1) + delta);
@@ -2016,32 +1980,12 @@ function setTechnique(tech, btn) {
 function calcQuote() {
   const qty = parseInt(document.getElementById('qtyInput').value) || 1;
   S.qty = qty;
-  const sz = getCurrentSize();
-  const areaM = (sz.pw * sz.ph) / 10000; /* m² */
-  const mLinear = (sz.pw * sz.ph) * qty / (60 * 100); /* metros lineales DTF (rollo 60cm) */
-
-  let totalCost = 0;
-  const prices = PRICES[S.technique] || PRICES.dtf;
-  const rango = prices.find(p => qty >= p.min && qty <= p.max) || prices[prices.length-1];
-
-  if (S.technique === 'dtf' || S.technique === 'sublimacion') {
-    totalCost = mLinear * rango.pm;
-  } else if (S.technique === 'bordado') {
-    totalCost = qty * rango.pm;
-  } else {
-    totalCost = qty * rango.pm;
-  }
 
   /* Production time */
   let dias = qty < 10 ? '3–4' : qty < 50 ? '4–6' : qty < 200 ? '7–10' : '10–15';
 
   document.getElementById('q-qty').textContent = qty + (qty === 1 ? ' unidad' : ' unidades');
-  document.getElementById('q-metros').textContent = (S.technique === 'dtf' || S.technique === 'sublimacion')
-    ? mLinear.toFixed(2) + ' m lineales'
-    : '—';
   document.getElementById('q-tiempo').textContent = dias + ' días hábiles';
-  document.getElementById('q-total').textContent = fmt(Math.round(totalCost));
-  document.getElementById('q-unit').textContent = fmt(Math.round(totalCost / qty)) + ' / prenda';
 }
 
 /* ── DOWNLOAD ── */
@@ -2082,9 +2026,41 @@ function downloadJPG() {
 }
 
 /* ── PDF ── */
-function generatePDF() {
+/* Garantiza que el SVG de la prenda para la vista actual (garment+view+color)
+   esté rasterizado en GARMENT_CACHE antes de capturar. El SVG se carga vía
+   Image.onload (asíncrono); sin esta espera, la primera captura de una vista
+   no cacheada saldría como relleno plano de color en vez de la silueta. */
+function ensureGarmentCached() {
+  const gKey = S.garment + '_' + S.view + '_' + S.color;
+  if (GARMENT_CACHE[gKey]) return Promise.resolve();
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => { GARMENT_CACHE[gKey] = img; resolve(); };
+    img.onerror = () => resolve(); /* fallback: render() usará relleno plano */
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(buildGarmentSvg(S.garment, S.view, S.color));
+  });
+}
+
+/* Renderiza una vista concreta (tras asegurar su silueta en cache) y devuelve
+   su captura JPEG. No restaura la vista: el llamador maneja prevView. */
+async function captureView(view) {
+  S.view = view;
+  await ensureGarmentCached();
+  render();
+  return captureDataURL('image/jpeg', 0.9);
+}
+
+async function generatePDF() {
   if (!window.jspdf) { showToast('Cargando generador de PDF...'); return; }
-  ensureFullRender();
+
+  /* Capturar AMBAS vistas (frente y espalda) antes de construir el doc.
+     Restaurar la vista original al terminar para no dejar la UI en la espalda. */
+  const prevView = S.view;
+  const imgFront = await captureView('front');
+  const imgBack  = await captureView('back');
+  S.view = prevView;
+  render();
+
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 
@@ -2132,87 +2108,62 @@ function generatePDF() {
   doc.setLineWidth(0.4);
   doc.line(15, 41, W-15, 41);
 
-  /* Mockup image (3D si está activo, si no el render 2.5D) */
-  const imgData = captureDataURL('image/jpeg', 0.9);
-  doc.addImage(imgData, 'JPEG', 15, 46, 82, 95);
+  /* ── Mockup: AMBAS vistas (frente y espalda) lado a lado ── */
+  const imgW = 85, imgH = 99, imgY = 54;
+  const fx = 15, bx = W - 15 - imgW; /* frente izquierda, espalda derecha */
 
-  /* Gold border around image */
+  /* Rótulos */
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(...gold);
+  doc.text('FRENTE',  fx + imgW/2, 50, { align: 'center' });
+  doc.text('ESPALDA', bx + imgW/2, 50, { align: 'center' });
+
+  /* Imágenes + borde dorado */
+  doc.addImage(imgFront, 'JPEG', fx, imgY, imgW, imgH);
+  doc.addImage(imgBack,  'JPEG', bx, imgY, imgW, imgH);
   doc.setDrawColor(...gold);
   doc.setLineWidth(0.3);
-  doc.rect(15, 46, 82, 95);
+  doc.rect(fx, imgY, imgW, imgH);
+  doc.rect(bx, imgY, imgW, imgH);
 
-  /* Spec table */
-  const sx = 105, sy = 46;
-  const specs = [
-    ['Tipo de prenda', GARMENTS[S.garment]?.name || 'Camiseta'],
-    ['Vista',         S.view === 'front' ? 'Frontal' : 'Trasera'],
-    ['Color',         S.colorName],
-    ['Categoría',     ({hombre:'Hombre',mujer:'Mujer',ninos:'Niños',oversize:'Oversize'})[S.sizeCategory]],
-    ['Talla',         S.sizeLabel],
-  ];
+  /* ── Ficha técnica (tabla de specs) — debajo de las dos vistas ── */
   const sz = getCurrentSize();
-  const moreSpecs = [
+  const allSpecs = [
+    ['Tipo de prenda',  GARMENTS[S.garment]?.name || 'Camiseta'],
+    ['Color',           S.colorName],
+    ['Categoría',       ({hombre:'Hombre',mujer:'Mujer',ninos:'Niños',oversize:'Oversize'})[S.sizeCategory]],
+    ['Talla',           S.sizeLabel],
     ['Ancho prenda',    sz.ancho + ' cm'],
     ['Largo prenda',    sz.largo + ' cm'],
     ['Área impresión',  sz.pw + '×' + sz.ph + ' cm'],
     ['Técnica',         ({dtf:'Estampado DTF',bordado:'Bordado computarizado',sublimacion:'Sublimación',serigrafía:'Serigrafía'})[S.technique]],
     ['Cantidad',        S.qty + ' unidades'],
   ];
-  const allSpecs = [...specs, ...moreSpecs];
+
+  const sx = 15, sw = W - 30, sy = imgY + imgH + 12;
+  doc.setTextColor(...gold);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.text('FICHA TÉCNICA DE LA PRENDA', sx, sy - 4);
 
   doc.setFont('helvetica', 'normal');
   allSpecs.forEach((row, i) => {
-    const y = sy + i * 8.5;
+    const y = sy + 5 + i * 8.5;
     doc.setFillColor(i % 2 === 0 ? 22 : 28, i % 2 === 0 ? 21 : 27, i % 2 === 0 ? 19 : 24);
-    doc.rect(sx, y - 5, W-15-sx, 8.5, 'F');
+    doc.rect(sx, y - 5, sw, 8.5, 'F');
     doc.setTextColor(...ash);
-    doc.setFontSize(7);
-    doc.text(row[0], sx + 3, y);
-    doc.setTextColor(...cream);
-    doc.setFontSize(8);
-    doc.text(row[1], W-17, y, { align: 'right' });
-  });
-
-  /* Quote box */
-  const qy = 150;
-  doc.setFillColor(25, 23, 20);
-  doc.rect(15, qy, W-30, 38, 'F');
-  doc.setDrawColor(...gold);
-  doc.setLineWidth(0.3);
-  doc.rect(15, qy, W-30, 38);
-  doc.setTextColor(...gold);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8);
-  doc.text('ESTIMADO DE COTIZACIÓN', 21, qy+7);
-
-  const qty = S.qty;
-  const mLinear = (sz.pw * sz.ph) * qty / (60 * 100);
-  const prices = PRICES[S.technique] || PRICES.dtf;
-  const rango = prices.find(p => qty >= p.min && qty <= p.max) || prices[prices.length-1];
-  let totalCost = S.technique === 'bordado' ? qty * rango.pm : mLinear * rango.pm;
-  const dias = qty < 10 ? '3–4' : qty < 50 ? '4–6' : qty < 200 ? '7–10' : '10–15';
-
-  doc.setFont('helvetica', 'normal');
-  const qSpecs = [
-    ['Costo total estimado', fmt(Math.round(totalCost))],
-    ['Costo por prenda',     fmt(Math.round(totalCost / qty))],
-    ['Tiempo de producción', dias + ' días hábiles'],
-  ];
-  qSpecs.forEach(([k, v], i) => {
-    doc.setTextColor(...ash);
-    doc.setFontSize(7);
-    doc.text(k, 21, qy + 15 + i * 8);
+    doc.setFontSize(7.5);
+    doc.text(row[0], sx + 4, y);
     doc.setTextColor(...cream);
     doc.setFontSize(8.5);
-    doc.setFont('helvetica', 'bold');
-    doc.text(v, W-20, qy + 15 + i * 8, { align: 'right' });
-    doc.setFont('helvetica', 'normal');
+    doc.text(row[1], sx + sw - 4, y, { align: 'right' });
   });
 
-  /* Notes */
+  /* Nota neutra (sin montos $): el precio real se solicita por WhatsApp */
   doc.setTextColor(...ash);
   doc.setFontSize(7);
-  doc.text('* Estimado orientativo. El costo final puede variar según diseño, tela y acabados.', 15, 198);
+  doc.text('Ficha de referencia para cotización. Solicita tu precio real por WhatsApp.', sx, sy + 5 + allSpecs.length * 8.5 + 4);
 
   /* Footer */
   doc.setFillColor(...gold);

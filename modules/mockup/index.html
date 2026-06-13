@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/base.css?v=20260612m">
+<link rel="stylesheet" href="../../css/base.css?v=20260612n">
 <link rel="icon" type="image/png" href="../../imagenes/favicon.png">
 <style>
 /* ═══════════════════════════════════════════════════════
@@ -1147,12 +1147,27 @@ canvas#mc.can-rotate { cursor: crosshair; }
 
 <!-- ═══ SCRIPTS ═══════════════════════════════════════════ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="../../js/whatsapp.js?v=20260612m"></script>
-<script src="../../js/leads.js?v=20260612m"></script>
+<script src="../../js/whatsapp.js?v=20260612n"></script>
+<script src="../../js/leads.js?v=20260612n"></script>
 
 <script>
 /* ════════════════════════════════════════════════════
    ACOSER STUDIO PREMIUM — Core Engine
+   ────────────────────────────────────────────────────
+   Render 2.5D procedural (sin librerías 3D ni assets externos):
+   · Prenda: SVG por capas rasterizado a canvas, con silueta ondulada
+     por feTurbulence + feDisplacementMap (bordes de tela, no rígidos).
+   · Logo: warp por mapa de desplazamiento (estilo Photoshop "Displace")
+     con interpolación bilineal — el diseño se deforma con las arrugas —
+     más sombras de la tela en multiply y luces en screen sobre el logo.
+   · El mapa de alturas, el sombreado y las luces comparten la misma
+     geometría de arrugas (getWrinkles), por lo que deformación y
+     sombras quedan alineadas por construcción.
+   Licencias: 100 % código propio ACOSER. Referencia conceptual de la
+   técnica (sin copiar código): J. Baloch, "Realistic Fabric Wrinkles
+   in Real-Time" (dev.to/javedblch). Se evaluaron configuradores 3D
+   three.js MIT y modelos GLB "free": descartados por procedencia de
+   modelos sin licencia clara y peso; esta vía es 0 KB de assets.
    ════════════════════════════════════════════════════ */
 
 const CW = 500, CH = 580;
@@ -1580,6 +1595,232 @@ ${shadingFrag(g, view, 0)}
 </svg>`;
 }
 
+/* ── PASE DE LUCES (screen) ──
+   Solo crestas y brillos de la tela sobre fondo negro: con composite
+   "screen" el negro es neutro y el logo recibe la misma luz que la
+   prenda (las crestas de las arrugas iluminan también el diseño). */
+function buildLightsSvg(g, view) {
+  const d = GARMENT_D[g][view];
+  const [wtx, wty] = wrinkleOffset(view);
+  let w = '';
+  getWrinkles(g).forEach(([wd, o, ww]) => {
+    w += `<path d="${wd}" transform="translate(0,-4)" fill="none" stroke="#fff" stroke-width="${ww - 2}" opacity="${Math.min(.4, o * 2.2).toFixed(2)}" filter="url(#b4)"/>`;
+  });
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 580" width="500" height="580">
+<defs>
+<filter id="b4" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4"/></filter>
+<radialGradient id="chestL"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+<clipPath id="sil"><path d="${d}"/></clipPath>
+</defs>
+<rect x="0" y="0" width="500" height="580" fill="#000"/>
+<g clip-path="url(#sil)">
+<ellipse cx="205" cy="195" rx="150" ry="125" fill="url(#chestL)"/>
+<g transform="translate(${wtx},${wty})">${w}</g>
+</g>
+</svg>`;
+}
+
+/* ── MAPA DE ALTURAS DE LA TELA (warp 2.5D) ──
+   Gris 128 = tela plana; claro = cresta; oscuro = valle. Misma geometría
+   de arrugas que el sombreado → el desplazamiento del logo queda
+   físicamente alineado con las sombras que se multiplican encima.
+   Técnica: displacement map estilo Photoshop "Displace" con
+   interpolación bilineal, implementación propia en canvas 2D.
+   Referencia conceptual (sin código de terceros): J. Baloch,
+   "Realistic Fabric Wrinkles in Real-Time: Building Displacement Maps"
+   (dev.to/javedblch, 2024) y el displacement mapping clásico de
+   Photoshop. Sin librerías ni assets externos para este efecto. */
+function buildHeightSvg(g, view) {
+  const hood = g === 'hoodie';
+  const armY = hood ? 252 : 224;
+  const sideX = hood ? 138 : 136;
+  const [wtx, wty] = wrinkleOffset(view);
+  let w = '';
+  getWrinkles(g).forEach(([wd, o, ww]) => {
+    w += `<path d="${wd}" transform="translate(0,-4)" fill="none" stroke="#fff" stroke-width="${ww - 1}" opacity=".5" filter="url(#hb)"/>`;
+    w += `<path d="${wd}" fill="none" stroke="#000" stroke-width="${ww + 1}" opacity=".48" filter="url(#hb)"/>`;
+  });
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 580" width="500" height="580">
+<defs>
+<filter id="hb" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3.5"/></filter>
+<filter id="hb2" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="10"/></filter>
+<linearGradient id="hsl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".34"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
+<linearGradient id="hsr" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".34"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
+</defs>
+<rect x="0" y="0" width="500" height="580" fill="rgb(128,128,128)"/>
+<ellipse cx="225" cy="225" rx="120" ry="105" fill="#fff" opacity=".14" filter="url(#hb2)"/>
+<rect x="${sideX}" y="${armY - 30}" width="40" height="${540 - armY + 30}" fill="url(#hsl)"/>
+<rect x="${500 - sideX - 40}" y="${armY - 30}" width="40" height="${540 - armY + 30}" fill="url(#hsr)"/>
+<ellipse cx="${sideX + 10}" cy="${armY}" rx="16" ry="46" fill="#000" opacity=".25" filter="url(#hb2)"/>
+<ellipse cx="${500 - sideX - 10}" cy="${armY}" rx="16" ry="46" fill="#000" opacity=".25" filter="url(#hb2)"/>
+<g transform="translate(${wtx},${wty})">${w}</g>
+</svg>`;
+}
+
+/* Rasteriza el height map a luminancias (Uint8) cacheadas por
+   prenda/vista. No depende del color: se genera una sola vez. */
+const HEIGHT_CACHE = {}, HEIGHT_LOADING = {};
+function loadHeightMap(g, view) {
+  const key = g + '_' + view;
+  if (HEIGHT_CACHE[key] || HEIGHT_LOADING[key]) return;
+  HEIGHT_LOADING[key] = true;
+  const img = new Image();
+  img.onload = () => {
+    try {
+      const oc = document.createElement('canvas');
+      oc.width = CW; oc.height = CH;
+      const octx = oc.getContext('2d', { willReadFrequently: true });
+      octx.drawImage(img, 0, 0, CW, CH);
+      const id = octx.getImageData(0, 0, CW, CH);
+      const lum = new Uint8ClampedArray(CW * CH);
+      for (let i = 0, j = 0; i < lum.length; i++, j += 4) lum[i] = id.data[j];
+      HEIGHT_CACHE[key] = { lum };
+      render();
+    } catch (e) { /* fallo de lectura: se degrada a render plano */ }
+    HEIGHT_LOADING[key] = false;
+  };
+  img.onerror = () => { HEIGHT_LOADING[key] = false; };
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(buildHeightSvg(g, view));
+}
+
+/* ── MOTOR DE WARP 2.5D ──
+   El logo se rasteriza plano en una capa offscreen y cada píxel destino
+   samplea su origen desplazado según la altura de la tela (bilineal).
+   Luego, SOLO sobre los píxeles del logo (máscara destination-in), se
+   multiplican las sombras de la tela y se suman sus luces en "screen":
+   el diseño ondula con las arrugas y queda fundido en la prenda. */
+const WARP_X = 7, WARP_Y = 10; /* px máx de desplazamiento (h=255/0) */
+let _logoCv, _logoCx, _warpCv, _warpCx, _maskCv, _maskCx;
+function ensureWarpLayers() {
+  if (_logoCv) return;
+  _logoCv = document.createElement('canvas'); _logoCv.width = CW; _logoCv.height = CH;
+  _logoCx = _logoCv.getContext('2d', { willReadFrequently: true });
+  _warpCv = document.createElement('canvas'); _warpCv.width = CW; _warpCv.height = CH;
+  _warpCx = _warpCv.getContext('2d');
+  _maskCv = document.createElement('canvas'); _maskCv.width = CW; _maskCv.height = CH;
+  _maskCx = _maskCv.getContext('2d');
+}
+
+/* Durante drag/sliders se usa un camino rápido sin pixel-warp (60 fps)
+   y al soltar (120 ms idle) se re-renderiza con el warp completo. */
+let _liteTimer = null;
+function interactiveRender() {
+  S.lite = true;
+  render();
+  clearTimeout(_liteTimer);
+  _liteTimer = setTimeout(() => { S.lite = false; render(); }, 120);
+}
+
+function drawWarpedDesign(d, oKey, lKey) {
+  const dw = d.w * d.scale, dh = d.h * d.scale;
+  const hm = HEIGHT_CACHE[S.garment + '_' + S.view];
+  const ovF = GARMENT_CACHE[oKey], ltF = GARMENT_CACHE[lKey];
+  if (!hm || S.lite) {
+    /* Camino rápido: logo plano + sombras/luces enmascaradas con el
+       propio logo (drawImage puro, sin getImageData). También es el
+       fallback mientras carga el height map. */
+    ensureWarpLayers();
+    _warpCx.save();
+    _warpCx.setTransform(1, 0, 0, 1, 0, 0);
+    _warpCx.clearRect(0, 0, CW, CH);
+    _warpCx.translate(d.x, d.y);
+    _warpCx.rotate(d.rot * Math.PI / 180);
+    if (d.flipH) _warpCx.scale(-1, 1);
+    _warpCx.drawImage(d.img, -dw / 2, -dh / 2, dw, dh);
+    if (ovF) {
+      _warpCx.setTransform(1, 0, 0, 1, 0, 0);
+      _warpCx.globalCompositeOperation = 'multiply';
+      _warpCx.globalAlpha = .6;
+      _warpCx.drawImage(ovF, 0, 0, CW, CH);
+      if (ltF) {
+        _warpCx.globalCompositeOperation = 'screen';
+        _warpCx.globalAlpha = .32;
+        _warpCx.drawImage(ltF, 0, 0, CW, CH);
+      }
+      /* Recortar al alpha del logo re-dibujándolo en destination-in */
+      _warpCx.globalCompositeOperation = 'destination-in';
+      _warpCx.globalAlpha = 1;
+      _warpCx.translate(d.x, d.y);
+      _warpCx.rotate(d.rot * Math.PI / 180);
+      if (d.flipH) _warpCx.scale(-1, 1);
+      _warpCx.drawImage(d.img, -dw / 2, -dh / 2, dw, dh);
+    }
+    _warpCx.restore();
+    ctx.save();
+    ctx.globalAlpha = d.opacity;
+    ctx.drawImage(_warpCv, 0, 0);
+    ctx.restore();
+    return;
+  }
+  ensureWarpLayers();
+  /* 1. Logo plano en capa propia */
+  _logoCx.clearRect(0, 0, CW, CH);
+  _logoCx.save();
+  _logoCx.translate(d.x, d.y);
+  _logoCx.rotate(d.rot * Math.PI / 180);
+  if (d.flipH) _logoCx.scale(-1, 1);
+  _logoCx.drawImage(d.img, -dw / 2, -dh / 2, dw, dh);
+  _logoCx.restore();
+  /* 2. BBox del logo rotado + margen para el desplazamiento */
+  const rad = d.rot * Math.PI / 180;
+  const ac = Math.abs(Math.cos(rad)), as = Math.abs(Math.sin(rad));
+  const hw = (dw * ac + dh * as) / 2, hh = (dw * as + dh * ac) / 2;
+  const M = Math.max(WARP_X, WARP_Y) + 4;
+  const bx = Math.max(0, Math.floor(d.x - hw - M));
+  const by = Math.max(0, Math.floor(d.y - hh - M));
+  const bw = Math.min(CW, Math.ceil(d.x + hw + M)) - bx;
+  const bh = Math.min(CH, Math.ceil(d.y + hh + M)) - by;
+  if (bw <= 0 || bh <= 0) return;
+  /* 3. Desplazamiento con interpolación bilineal */
+  const src = _logoCx.getImageData(bx, by, bw, bh);
+  const out = _warpCx.createImageData(bw, bh);
+  const sd = src.data, od = out.data, lum = hm.lum;
+  for (let y = 0; y < bh; y++) {
+    const rowL = (by + y) * CW + bx;
+    for (let x = 0; x < bw; x++) {
+      const t = (lum[rowL + x] - 128) / 127;
+      let sx = x + t * WARP_X, sy = y + t * WARP_Y;
+      if (sx < 0) sx = 0; else if (sx > bw - 1.001) sx = bw - 1.001;
+      if (sy < 0) sy = 0; else if (sy > bh - 1.001) sy = bh - 1.001;
+      const x0 = sx | 0, y0 = sy | 0, xf = sx - x0, yf = sy - y0;
+      const i00 = (y0 * bw + x0) * 4, i10 = i00 + 4, i01 = i00 + bw * 4, i11 = i01 + 4;
+      const w00 = (1 - xf) * (1 - yf), w10 = xf * (1 - yf), w01 = (1 - xf) * yf, w11 = xf * yf;
+      const o = (y * bw + x) * 4;
+      od[o]     = sd[i00]     * w00 + sd[i10]     * w10 + sd[i01]     * w01 + sd[i11]     * w11;
+      od[o + 1] = sd[i00 + 1] * w00 + sd[i10 + 1] * w10 + sd[i01 + 1] * w01 + sd[i11 + 1] * w11;
+      od[o + 2] = sd[i00 + 2] * w00 + sd[i10 + 2] * w10 + sd[i01 + 2] * w01 + sd[i11 + 2] * w11;
+      od[o + 3] = sd[i00 + 3] * w00 + sd[i10 + 3] * w10 + sd[i01 + 3] * w01 + sd[i11 + 3] * w11;
+    }
+  }
+  _warpCx.putImageData(out, 0, 0);
+  /* 4. Sombras (multiply) + luces (screen) SOLO sobre el logo:
+        la máscara destination-in evita manchar la prenda alrededor */
+  const ov = GARMENT_CACHE[oKey];
+  const lt = GARMENT_CACHE[lKey];
+  if (ov) {
+    _maskCx.clearRect(0, 0, CW, CH);
+    _maskCx.drawImage(_warpCv, 0, 0, bw, bh, 0, 0, bw, bh);
+    _warpCx.save();
+    _warpCx.globalCompositeOperation = 'multiply';
+    _warpCx.globalAlpha = .6;
+    _warpCx.drawImage(ov, bx, by, bw, bh, 0, 0, bw, bh);
+    if (lt) {
+      _warpCx.globalCompositeOperation = 'screen';
+      _warpCx.globalAlpha = .32;
+      _warpCx.drawImage(lt, bx, by, bw, bh, 0, 0, bw, bh);
+    }
+    _warpCx.globalCompositeOperation = 'destination-in';
+    _warpCx.globalAlpha = 1;
+    _warpCx.drawImage(_maskCv, 0, 0, bw, bh, 0, 0, bw, bh);
+    _warpCx.restore();
+  }
+  /* 5. Componer sobre la prenda (respeta la opacidad del usuario) */
+  ctx.save();
+  ctx.globalAlpha = d.opacity;
+  ctx.drawImage(_warpCv, 0, 0, bw, bh, bx, by, bw, bh);
+  ctx.restore();
+}
+
 function loadGarmentImg(key, builder) {
   if (GARMENT_LOADING[key]) return;
   GARMENT_LOADING[key] = true;
@@ -1615,11 +1856,17 @@ function render() {
   } else {
     ctx.drawImage(GARMENT_CACHE[gKey], 0, 0, CW, CH);
   }
-  /* Overlay de sombreado para integrar el logo (se precarga aparte) */
+  /* Capas de integración del logo (se precargan aparte, sin color):
+     sombras multiply + luces screen + mapa de alturas del warp */
   const oKey = S.garment + '_' + S.view + '_overlay';
   if (!GARMENT_CACHE[oKey] && !GARMENT_LOADING[oKey]) {
     loadGarmentImg(oKey, () => buildOverlaySvg(S.garment, S.view));
   }
+  const lKey = S.garment + '_' + S.view + '_lights';
+  if (!GARMENT_CACHE[lKey] && !GARMENT_LOADING[lKey]) {
+    loadGarmentImg(lKey, () => buildLightsSvg(S.garment, S.view));
+  }
+  loadHeightMap(S.garment, S.view);
 
   /* Clip for design */
   ctx.save();
@@ -1663,35 +1910,10 @@ function render() {
   /* Design — uses active view's independent state */
   if (D().img) {
     const d = D();
-    ctx.save();
-    ctx.globalAlpha = d.opacity;
-    ctx.translate(d.x, d.y);
-    ctx.rotate(d.rot * Math.PI / 180);
-    if (d.flipH) ctx.scale(-1, 1);
-    const dw = d.w * d.scale;
-    const dh = d.h * d.scale;
-    ctx.drawImage(d.img, -dw/2, -dh/2, dw, dh);
-    ctx.restore();
-
-    /* Integración con la tela: el sombreado de la prenda se multiplica
-       sobre el logo (solo dentro de su rect) para que se funda con los
-       pliegues. No toca la lógica de drag: es solo orden de pintado. */
-    const ov = GARMENT_CACHE[oKey];
-    if (ov) {
-      ctx.save();
-      const rad = d.rot * Math.PI / 180;
-      ctx.translate(d.x, d.y);
-      ctx.rotate(rad);
-      ctx.beginPath();
-      ctx.rect(-dw / 2, -dh / 2, dw, dh);
-      ctx.rotate(-rad);
-      ctx.translate(-d.x, -d.y);
-      ctx.clip();
-      ctx.globalCompositeOperation = 'multiply';
-      ctx.globalAlpha = .5;
-      ctx.drawImage(ov, 0, 0, CW, CH);
-      ctx.restore();
-    }
+    /* Warp 2.5D: el logo se deforma con las arrugas de la tela y recibe
+       sus sombras (multiply) y luces (screen). La lógica de drag no
+       cambia: las coordenadas siguen siendo las del diseño plano. */
+    drawWarpedDesign(d, oKey, lKey);
 
     /* Selection handles */
     ctx.save();
@@ -1865,7 +2087,7 @@ function onMouseMove(e) {
   if (S.dragging) {
     D().x = p.x - S.dragOffX;
     D().y = p.y - S.dragOffY;
-    render();
+    interactiveRender();
     calcQuote();
   }
 }
@@ -1880,7 +2102,7 @@ function onWheel(e) {
   D().scale = Math.max(0.05, Math.min(5, D().scale + delta));
   document.getElementById('scaleSlider').value = Math.round(D().scale * 100);
   document.getElementById('scaleLabel').textContent = Math.round(D().scale * 100) + '%';
-  render();
+  interactiveRender();
   calcQuote();
 }
 
@@ -1909,7 +2131,7 @@ function onTouchMove(e) {
     const p = canvasPoint(e.touches[0]);
     D().x = p.x - S.dragOffX;
     D().y = p.y - S.dragOffY;
-    render();
+    interactiveRender();
   } else if (e.touches.length === 2) {
     const dist = Math.hypot(
       e.touches[1].clientX - e.touches[0].clientX,
@@ -1918,7 +2140,7 @@ function onTouchMove(e) {
     const delta = (dist - lastTouchDist) * 0.008;
     D().scale = Math.max(0.05, Math.min(5, D().scale + delta));
     lastTouchDist = dist;
-    render();
+    interactiveRender();
   }
 }
 
@@ -1937,9 +2159,10 @@ function setGarment(type, btn) {
 
 function setColor(hex, name, dot) {
   S.color = hex; S.colorName = name;
-  /* Invalidar solo las capas que dependen del color (los overlays de
-     sombreado son independientes del color y se conservan) */
-  for (const k in GARMENT_CACHE) { if (!k.endsWith('_overlay')) delete GARMENT_CACHE[k]; }
+  /* Invalidar solo las capas que dependen del color (overlay de sombras,
+     luces y height maps son independientes del color y se conservan;
+     las keys de color contienen el hex con '#') */
+  for (const k in GARMENT_CACHE) { if (k.includes('#')) delete GARMENT_CACHE[k]; }
   document.querySelectorAll('.color-swatch').forEach(d => d.classList.remove('active'));
   dot.classList.add('active');
   document.getElementById('colorNameTag').textContent = name;
@@ -2025,17 +2248,17 @@ function handleDrop(e) {
 function onScaleChange(v) {
   D().scale = parseInt(v) / 100;
   document.getElementById('scaleLabel').textContent = v + '%';
-  render(); calcQuote();
+  interactiveRender(); calcQuote();
 }
 function onRotChange(v) {
   D().rot = parseInt(v);
   document.getElementById('rotLabel').textContent = v + '°';
-  render();
+  interactiveRender();
 }
 function onOpacityChange(v) {
   D().opacity = parseInt(v) / 100;
   document.getElementById('opacityLabel').textContent = v + '%';
-  render();
+  interactiveRender();
 }
 
 function centerDesign() {
@@ -2230,7 +2453,15 @@ function calcQuote() {
 }
 
 /* ── DOWNLOAD ── */
+/* Garantiza que el canvas capturado lleve el warp completo (por si la
+   captura ocurre dentro de la ventana "lite" de una interacción). */
+function ensureFullRender() {
+  clearTimeout(_liteTimer);
+  S.lite = false;
+  render();
+}
 function downloadPNG() {
+  ensureFullRender();
   const link = document.createElement('a');
   link.download = `acoser-studio-${S.garment}-${S.colorName.replace(/ /g,'-')}.png`;
   link.href = cvs.toDataURL('image/png');
@@ -2238,6 +2469,7 @@ function downloadPNG() {
   ACOSER_LEADS.capturar({ fuente: 'mockup-studio', accion: 'download-png', garment: S.garment, color: S.colorName }, { email: false });
 }
 function downloadJPG() {
+  ensureFullRender();
   const link = document.createElement('a');
   link.download = `acoser-studio-${S.garment}-${S.colorName.replace(/ /g,'-')}.jpg`;
   link.href = cvs.toDataURL('image/jpeg', 0.92);
@@ -2247,6 +2479,7 @@ function downloadJPG() {
 /* ── PDF ── */
 function generatePDF() {
   if (!window.jspdf) { showToast('Cargando generador de PDF...'); return; }
+  ensureFullRender();
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 

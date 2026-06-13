@@ -6,7 +6,7 @@
 
 const ACOSER_WA = (function () {
 
-  const NUMERO = '573005206285';
+  const NUMERO = '573042009677';
 
   /* ── Generador base de URL WhatsApp ── */
   function buildUrl(mensaje) {

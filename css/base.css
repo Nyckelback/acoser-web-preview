@@ -821,6 +821,11 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
 .footer-top { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 5rem; padding-bottom: 6vh; border-bottom: 1px solid var(--dust); }
 .footer-brand-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; letter-spacing: .32em; color: var(--cream); font-weight: 400; text-transform: uppercase; display: block; margin-bottom: .3rem; }
 .footer-brand-sub { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .55em; color: var(--gold); text-transform: uppercase; font-weight: 300; display: block; margin-bottom: 1.5rem; }
+
+/* Logo completo en el footer (igual que el superior): máquina + ACOSER + Taller Textil */
+.footer-logo-full { height: 100px; width: auto; display: block; margin-bottom: 1.3rem; opacity: .97; }
+[data-theme="light"] .footer-logo-full { content: url('../imagenes/logo-light.png'); }
+@media (max-width: 768px) { .footer-logo-full { height: 84px; } }
 .footer-logo { height: 40px; width: auto; display: block; margin-bottom: .25rem; opacity: .95; }
 .footer-brand-desc { font-size: .92rem; color: var(--fog); line-height: 1.85; font-weight: 400; max-width: 300px; }
 .footer-links a { word-break: break-word; }

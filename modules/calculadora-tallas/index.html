@@ -651,8 +651,8 @@ html,body{height:100%;overflow:hidden;background:var(--s-bg);color:var(--s-cream
   </div>
 </div>
 
-<script src="../../js/whatsapp.js?v=20260612o"></script>
-<script src="../../js/leads.js?v=20260612o"></script>
+<script src="../../js/whatsapp.js?v=20260612p"></script>
+<script src="../../js/leads.js?v=20260612p"></script>
 <script>
 /* ══════════════════════════════════════════
    ACOSER Guía de Tallas Studio — v3 Premium
@@ -902,7 +902,7 @@ function cotizarWA() {
   const cat = DATA[ST.cat];
   const sp = cat.d[ST.size];
   const msg = `👕 *Guía de Tallas ACOSER*\n━━━━━━━━━━━━━━\n📂 Categoría: ${cat.label}\n📏 Talla: ${ST.size}\n↔️ Ancho: ${sp.ancho} cm\n↕️ Largo: ${sp.largo} cm\n💪 Manga: ${sp.manga} cm\n🖨️ Área impresión: ${sp.pw}×${sp.ph} cm\n✅ Diseño recomendado: ${sp.rec} cm ancho\n━━━━━━━━━━━━━━\nQuiero cotizar con estas especificaciones.`;
-  window.open('https://wa.me/573005206285?text='+encodeURIComponent(msg),'_blank');
+  window.open('https://wa.me/573042009677?text='+encodeURIComponent(msg),'_blank');
   try { ACOSER_LEADS.capturar({fuente:'guia-tallas',accion:'cotizar-wa',talla:ST.size,cat:ST.cat}); } catch(e){}
 }
 

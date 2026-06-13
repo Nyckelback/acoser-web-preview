@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/base.css?v=20260612p">
+<link rel="stylesheet" href="../../css/base.css?v=20260612q">
 <link rel="icon" type="image/png" href="../../imagenes/favicon.png">
 <style>
 /* ═══════════════════════════════════════════════════════
@@ -259,6 +259,27 @@ canvas#mc {
 canvas#mc.can-drag { cursor: grab; }
 canvas#mc.dragging { cursor: grabbing; }
 canvas#mc.can-rotate { cursor: crosshair; }
+
+/* Capa 3D: arrastrar para rotar la prenda */
+canvas#mc3d { cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+canvas#mc3d:active { cursor: grabbing; }
+
+/* Badge de modo de render 3D */
+.render-mode-badge {
+  position: absolute; top: 1.1rem; right: 1.1rem; z-index: 6;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
+  font-weight: 500; color: var(--s-gold);
+  background: rgba(200,169,106,.10);
+  border: 1px solid var(--s-border2);
+  padding: .22rem .55rem; border-radius: 5px;
+  display: flex; align-items: center; gap: .35rem;
+  pointer-events: none; backdrop-filter: blur(8px);
+}
+.render-mode-badge::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--s-gold); box-shadow: 0 0 6px var(--s-gold);
+}
 
 /* Floating zoom controls */
 .zoom-controls {
@@ -839,7 +860,12 @@ canvas#mc.can-rotate { cursor: crosshair; }
 
       <div class="canvas-wrap" id="canvasWrap">
         <canvas id="mc" width="500" height="580"></canvas>
+        <!-- Capa 3D real (three.js). Se muestra encima del 2.5D solo cuando
+             WebGL está disponible y la prenda activa tiene modelo 3D. -->
+        <canvas id="mc3d" width="500" height="580" style="display:none;position:absolute;inset:0;width:100%;height:100%;"></canvas>
       </div>
+      <!-- Indicador de modo de render (3D real vs vista 2.5D) -->
+      <div class="render-mode-badge" id="renderModeBadge" style="display:none;">3D</div>
 
       <!-- Floating zoom controls -->
       <div class="zoom-controls">
@@ -1147,8 +1173,8 @@ canvas#mc.can-rotate { cursor: crosshair; }
 
 <!-- ═══ SCRIPTS ═══════════════════════════════════════════ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="../../js/whatsapp.js?v=20260612p"></script>
-<script src="../../js/leads.js?v=20260612p"></script>
+<script src="../../js/whatsapp.js?v=20260612q"></script>
+<script src="../../js/leads.js?v=20260612q"></script>
 
 <script>
 /* ════════════════════════════════════════════════════

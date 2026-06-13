@@ -651,7 +651,7 @@ html,body{height:100%;overflow:hidden;background:var(--s-bg);color:var(--s-cream
   </div>
 </div>
 
-<script src="../../js/whatsapp.js?v=20260612q"></script>
+<script src="../../js/whatsapp.js?v=20260612u"></script>
 <script src="../../js/leads.js?v=20260612q"></script>
 <script>
 /* ══════════════════════════════════════════
@@ -901,7 +901,7 @@ function switchTab(tab, btn) {
 function cotizarWA() {
   const cat = DATA[ST.cat];
   const sp = cat.d[ST.size];
-  const msg = `👕 *Guía de Tallas ACOSER*\n━━━━━━━━━━━━━━\n📂 Categoría: ${cat.label}\n📏 Talla: ${ST.size}\n↔️ Ancho: ${sp.ancho} cm\n↕️ Largo: ${sp.largo} cm\n💪 Manga: ${sp.manga} cm\n🖨️ Área impresión: ${sp.pw}×${sp.ph} cm\n✅ Diseño recomendado: ${sp.rec} cm ancho\n━━━━━━━━━━━━━━\nQuiero cotizar con estas especificaciones.`;
+  const msg = `*Guía de Tallas · ACOSER*\n\n*Categoría:* ${cat.label}\n*Talla:* ${ST.size}\n*Ancho:* ${sp.ancho} cm\n*Largo:* ${sp.largo} cm\n*Manga:* ${sp.manga} cm\n*Área de impresión:* ${sp.pw}x${sp.ph} cm\n*Diseño recomendado:* ${sp.rec} cm de ancho\n\nQuiero cotizar con estas especificaciones.\n\nEnviado desde acoser-web.vercel.app`;
   window.open('https://wa.me/573042009677?text='+encodeURIComponent(msg),'_blank');
   try { ACOSER_LEADS.capturar({fuente:'guia-tallas',accion:'cotizar-wa',talla:ST.size,cat:ST.cat}); } catch(e){}
 }

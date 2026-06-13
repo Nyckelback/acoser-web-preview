@@ -8,7 +8,7 @@
 const ACOSER_WA = (function () {
 
   const NUMERO = '573042009677';
-  const SITIO  = 'acoser-web.vercel.app';
+  const SITIO  = 'acoser.co';
 
   /* ── Generador base de URL WhatsApp ── */
   function buildUrl(lineas) {

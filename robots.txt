@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://acoser-web.vercel.app/sitemap.xml
+Sitemap: https://acoser.co/sitemap.xml

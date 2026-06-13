@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/base.css?v=20260612q">
+<link rel="stylesheet" href="../../css/base.css?v=20260612t">
 <link rel="icon" type="image/png" href="../../imagenes/favicon.png">
 <style>
 /* ═══════════════════════════════════════════════════════
@@ -259,27 +259,6 @@ canvas#mc {
 canvas#mc.can-drag { cursor: grab; }
 canvas#mc.dragging { cursor: grabbing; }
 canvas#mc.can-rotate { cursor: crosshair; }
-
-/* Capa 3D: arrastrar para rotar la prenda */
-canvas#mc3d { cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
-canvas#mc3d:active { cursor: grabbing; }
-
-/* Badge de modo de render 3D */
-.render-mode-badge {
-  position: absolute; top: 1.1rem; right: 1.1rem; z-index: 6;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
-  font-weight: 500; color: var(--s-gold);
-  background: rgba(200,169,106,.10);
-  border: 1px solid var(--s-border2);
-  padding: .22rem .55rem; border-radius: 5px;
-  display: flex; align-items: center; gap: .35rem;
-  pointer-events: none; backdrop-filter: blur(8px);
-}
-.render-mode-badge::before {
-  content: ''; width: 5px; height: 5px; border-radius: 50%;
-  background: var(--s-gold); box-shadow: 0 0 6px var(--s-gold);
-}
 
 /* Floating zoom controls */
 .zoom-controls {
@@ -860,12 +839,7 @@ canvas#mc3d:active { cursor: grabbing; }
 
       <div class="canvas-wrap" id="canvasWrap">
         <canvas id="mc" width="500" height="580"></canvas>
-        <!-- Capa 3D real (three.js). Se muestra encima del 2.5D solo cuando
-             WebGL está disponible y la prenda activa tiene modelo 3D. -->
-        <canvas id="mc3d" width="500" height="580" style="display:none;position:absolute;inset:0;width:100%;height:100%;"></canvas>
       </div>
-      <!-- Indicador de modo de render (3D real vs vista 2.5D) -->
-      <div class="render-mode-badge" id="renderModeBadge" style="display:none;">3D</div>
 
       <!-- Floating zoom controls -->
       <div class="zoom-controls">
@@ -1173,488 +1147,22 @@ canvas#mc3d:active { cursor: grabbing; }
 
 <!-- ═══ SCRIPTS ═══════════════════════════════════════════ -->
 
-<!-- ───────────────────────────────────────────────────────────
-     CAPA 3D REAL — three.js (camiseta rotable con decal)
-     ───────────────────────────────────────────────────────────
-     · three@0.160.0 (licencia MIT) vía jsDelivr, versión fijada.
-       OrbitControls y DecalGeometry desde /examples/jsm del mismo paquete.
-     · Modelo: malla de camiseta GENERADA PROCEDURALMENTE en three.js
-       (paneles frente/espalda curvados + hombros/mangas, con pliegues por
-       ruido de valor). Decisión deliberada: evita descargar un GLB de
-       procedencia/licencia dudosa y peso variable, y elimina un fetch en
-       runtime que podría fallar por CORS. 0 KB de assets de modelo.
-       (El prompt autoriza esta vía: "geometría de camiseta generada
-       proceduralmente … es aceptable y evita dependencias pesadas").
-     · Mapa normal + rugosidad de tela: generados con canvas+ruido (código
-       propio ACOSER, sin assets externos) → la tela se ve auténtica y el
-       color de los swatches tiñe el material conservando el sombreado.
-     · El diseño subido se proyecta como DecalGeometry sobre pecho/espalda;
-       al rotar la cámara queda pegado a la tela y recibe su iluminación.
-     · preserveDrawingBuffer:true → renderer.domElement.toDataURL() para
-       la descarga PNG/JPG y la ficha PDF.
-     · Fallback robusto: si no hay WebGL o three.js no carga, window.MC3D
-       queda inactivo y la página sigue 100 % en el render 2.5D existente.
-     · Solo CAMISETA es 3D en esta versión (no se encontró modelo CC0
-       liviano y digno para polo/hoodie/uniforme; esas prendas conservan
-       el render 2.5D y la UI lo indica con el badge "3D" solo en camiseta).
--->
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
-<script type="module">
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { DecalGeometry } from 'three/addons/geometries/DecalGeometry.js';
-
-/* ── Test de WebGL: si falla, no activamos MC3D (cae a 2.5D) ── */
-function webglOK() {
-  try {
-    const c = document.createElement('canvas');
-    return !!(window.WebGLRenderingContext &&
-      (c.getContext('webgl2') || c.getContext('webgl') || c.getContext('experimental-webgl')));
-  } catch (e) { return false; }
-}
-
-/* ── Ruido de valor 2D (determinista, sin assets) ──
-   Usado para pliegues de la malla y para los mapas de tela. */
-function makeNoise(seed) {
-  const p = new Uint8Array(512);
-  let s = seed >>> 0;
-  const rnd = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
-  const perm = []; for (let i = 0; i < 256; i++) perm[i] = i;
-  for (let i = 255; i > 0; i--) { const j = (rnd() * (i + 1)) | 0; const tmp = perm[i]; perm[i] = perm[j]; perm[j] = tmp; }
-  for (let i = 0; i < 512; i++) p[i] = perm[i & 255];
-  const fade = t => t * t * t * (t * (t * 6 - 15) + 10);
-  const lerp = (a, b, t) => a + (b - a) * t;
-  const grad = (h, x, y) => { const u = h & 1 ? x : -x, v = h & 2 ? y : -y; return u + v; };
-  return (x, y) => {
-    const X = Math.floor(x) & 255, Y = Math.floor(y) & 255;
-    x -= Math.floor(x); y -= Math.floor(y);
-    const u = fade(x), v = fade(y);
-    const a = p[X] + Y, b = p[X + 1] + Y;
-    return lerp(
-      lerp(grad(p[a], x, y), grad(p[b], x - 1, y), u),
-      lerp(grad(p[a + 1], x, y - 1), grad(p[b + 1], x - 1, y - 1), u), v);
-  };
-}
-
-/* ════════════════════════════════════════════════════════════
-   MC3D — controlador de la escena 3D de la camiseta
-   ════════════════════════════════════════════════════════════ */
-const MC3D = (function () {
-  let renderer, scene, camera, controls, shirt, shirtMat;
-  let keyLight, fillLight, rimLight;
-  let decalFront = null, decalBack = null;
-  let designTex = { front: null, back: null };
-  let designState = { front: null, back: null }; /* {scale,rot} guardado */
-  let canvas3d, container;
-  let ready = false, active = false, rafPending = false, camAnim = null;
-  let currentView = 'front';
-  const NEED_RENDER = { v: true };
-
-  /* Geometría de la camiseta (torso curvo + hombros + mangas cortas),
-     generada como un único BufferGeometry indexado, con pliegues por ruido.
-     UV: panel frontal en V∈[0.5,1], trasero en V∈[0,0.5] (espejo). */
-  function buildShirtGeometry() {
-    const NX = 48, NY = 64;             /* resolución de cada panel */
-    const W = 1.0, H = 1.34;            /* medio-ancho y alto del torso */
-    const noise = makeNoise(7);
-    const positions = [], uvs = [], indices = [];
-    let vbase = 0;
-
-    /* Perfil del torso: medio-ancho según la altura (hombros→cintura→bajo).
-       t: 0 = hombros (arriba), 1 = ruedo (abajo). */
-    function halfWidth(t) {
-      const shoulder = 1.0, waist = 0.86, hem = 0.96;
-      if (t < 0.34) return THREE.MathUtils.lerp(shoulder, waist, t / 0.34);
-      return THREE.MathUtils.lerp(waist, hem, (t - 0.34) / 0.66);
-    }
-    /* Profundidad (eje Z) del torso: bulto frontal/trasero tipo cilindro. */
-    function depthAt(u) { return Math.cos(u * Math.PI) * 0.34; } /* u∈[-1,1] */
-
-    /* Pliegues: desplazamiento normal por octavas de ruido + arrugas
-       verticales suaves; más marcado hacia los lados y el ruedo. */
-    function fold(u, t, side) {
-      const n = noise(u * 2.4 + side * 5.0, t * 3.4) * 0.5
-              + noise(u * 5.1 + side * 9.0, t * 7.2) * 0.25;
-      const vWrink = Math.sin(u * 9.0 + side) * 0.012 * (0.4 + t);
-      const edge = Math.pow(Math.abs(u), 2.0) * 0.05;   /* costuras laterales */
-      const hemFold = t > 0.86 ? (t - 0.86) * 0.5 : 0;  /* caída del ruedo */
-      return n * 0.045 + vWrink + edge + hemFold * 0.06;
-    }
-
-    /* Construye un panel (frente o espalda). zSign +1 frente, -1 espalda. */
-    function panel(zSign) {
-      const start = vbase;
-      for (let j = 0; j <= NY; j++) {
-        const t = j / NY;
-        const hw = halfWidth(t) * W;
-        const y = (0.5 - t) * H * 2;
-        for (let i = 0; i <= NX; i++) {
-          const u = (i / NX) * 2 - 1;          /* -1..1 a lo ancho */
-          const x = u * hw;
-          let z = depthAt(u) * zSign;
-          z += Math.sin(t * Math.PI) * 0.05 * zSign;  /* abombado vertical */
-          z += fold(u, t, zSign > 0 ? 0 : 1) * zSign;
-          positions.push(x, y, z);
-          const uu = zSign > 0 ? (i / NX) : (1 - i / NX);
-          const vv = zSign > 0 ? (0.5 + t * 0.5) : (t * 0.5);
-          uvs.push(uu, vv);
-          vbase++;
-        }
-      }
-      for (let j = 0; j < NY; j++) {
-        for (let i = 0; i < NX; i++) {
-          const a = start + j * (NX + 1) + i;
-          const b = a + 1, c = a + (NX + 1), d = c + 1;
-          if (zSign > 0) { indices.push(a, c, b, b, c, d); }
-          else           { indices.push(a, b, c, b, d, c); } /* winding inverso */
-        }
-      }
-    }
-    panel(1);   /* frente */
-    panel(-1);  /* espalda */
-
-    /* Mangas cortas: dos quads curvos a cada lado de los hombros. */
-    function sleeve(sideSign) {
-      const start = vbase;
-      const SX = 10, SY = 10;
-      const shx = halfWidth(0.02) * W * sideSign;
-      for (let j = 0; j <= SY; j++) {
-        const t = j / SY;                      /* 0 hombro → 1 borde manga */
-        for (let i = 0; i <= SX; i++) {
-          const u = i / SX;                    /* 0 frente → 1 espalda */
-          const ang = (u - 0.5) * Math.PI;     /* envuelve el brazo */
-          const r = 0.30 * (1 - t * 0.25);
-          const x = shx + sideSign * t * 0.42;
-          const y = (0.5 - 0.02) * H * 2 - t * 0.30 - Math.abs(u - 0.5) * 0.10;
-          const z = Math.sin(ang) * r;
-          positions.push(x, y, z);
-          uvs.push(u, 0.5);                    /* manga toma color base */
-          vbase++;
-        }
-      }
-      for (let j = 0; j < SY; j++) {
-        for (let i = 0; i < SX; i++) {
-          const a = start + j * (SX + 1) + i;
-          const b = a + 1, c = a + (SX + 1), dd = c + 1;
-          if (sideSign > 0) indices.push(a, c, b, b, c, dd);
-          else indices.push(a, b, c, b, dd, c);
-        }
-      }
-    }
-    sleeve(1); sleeve(-1);
-
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
-    geo.setIndex(indices);
-    geo.computeVertexNormals();
-    geo.computeBoundingSphere();
-    return geo;
-  }
-
-  /* Mapa de tela: normal map + roughness en un canvas con ruido (CC0). */
-  function buildFabricTextures() {
-    const SZ = 512;
-    const c = document.createElement('canvas'); c.width = c.height = SZ;
-    const cx = c.getContext('2d');
-    const img = cx.createImageData(SZ, SZ);
-    const n = makeNoise(31);
-    const height = new Float32Array(SZ * SZ);
-    for (let y = 0; y < SZ; y++) for (let x = 0; x < SZ; x++) {
-      const weave = (Math.sin(x * 0.9) + Math.sin(y * 0.9)) * 0.5;
-      const grain = n(x * 0.25, y * 0.25) * 0.6 + n(x * 0.7, y * 0.7) * 0.3;
-      height[y * SZ + x] = weave * 0.5 + grain;
-    }
-    for (let y = 0; y < SZ; y++) for (let x = 0; x < SZ; x++) {
-      const xl = height[y * SZ + ((x - 1 + SZ) % SZ)];
-      const xr = height[y * SZ + ((x + 1) % SZ)];
-      const yt = height[((y - 1 + SZ) % SZ) * SZ + x];
-      const yb = height[((y + 1) % SZ) * SZ + x];
-      let nx = (xl - xr), ny = (yt - yb), nz = 1.0;
-      const len = Math.hypot(nx, ny, nz);
-      nx /= len; ny /= len; nz /= len;
-      const i = (y * SZ + x) * 4;
-      img.data[i]     = (nx * 0.5 + 0.5) * 255;
-      img.data[i + 1] = (ny * 0.5 + 0.5) * 255;
-      img.data[i + 2] = (nz * 0.5 + 0.5) * 255;
-      img.data[i + 3] = 255;
-    }
-    cx.putImageData(img, 0, 0);
-    const normalMap = new THREE.CanvasTexture(c);
-    normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping;
-    normalMap.repeat.set(6, 8);
-    normalMap.anisotropy = 4;
-
-    const r = document.createElement('canvas'); r.width = r.height = SZ;
-    const rx = r.getContext('2d');
-    const rimg = rx.createImageData(SZ, SZ);
-    for (let y = 0; y < SZ; y++) for (let x = 0; x < SZ; x++) {
-      const v = 200 + n(x * 0.3, y * 0.3) * 40;
-      const i = (y * SZ + x) * 4;
-      rimg.data[i] = rimg.data[i + 1] = rimg.data[i + 2] = Math.max(150, Math.min(255, v));
-      rimg.data[i + 3] = 255;
-    }
-    rx.putImageData(rimg, 0, 0);
-    const roughMap = new THREE.CanvasTexture(r);
-    roughMap.wrapS = roughMap.wrapT = THREE.RepeatWrapping;
-    roughMap.repeat.set(6, 8);
-    return { normalMap, roughMap };
-  }
-
-  function buildScene() {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-    camera.position.set(0, 0, 6.2);
-
-    /* Iluminación de estudio: key + fill + rim (negros legibles sobre #0c0b09) */
-    const amb = new THREE.AmbientLight(0xffffff, 0.55); scene.add(amb);
-    keyLight = new THREE.DirectionalLight(0xfff4e2, 2.1);
-    keyLight.position.set(-3, 4, 5); scene.add(keyLight);
-    fillLight = new THREE.DirectionalLight(0xbcd2ff, 0.9);
-    fillLight.position.set(4, 0, 3); scene.add(fillLight);
-    rimLight = new THREE.DirectionalLight(0xe0c080, 1.4);
-    rimLight.position.set(0, 2, -5); scene.add(rimLight);
-    const under = new THREE.DirectionalLight(0xffffff, 0.25);
-    under.position.set(0, -4, 2); scene.add(under);
-
-    const { normalMap, roughMap } = buildFabricTextures();
-    shirtMat = new THREE.MeshStandardMaterial({
-      color: 0x111111,
-      roughness: 0.92, metalness: 0.0,
-      normalMap, normalScale: new THREE.Vector2(0.6, 0.6),
-      roughnessMap: roughMap,
-      side: THREE.DoubleSide,
-    });
-    shirt = new THREE.Mesh(buildShirtGeometry(), shirtMat);
-    scene.add(shirt);
-  }
-
-  function setupControls() {
-    controls = new OrbitControls(camera, canvas3d);
-    controls.enablePan = false;
-    controls.enableZoom = true;
-    controls.minDistance = 4.5;
-    controls.maxDistance = 9;
-    controls.minPolarAngle = Math.PI * 0.28;   /* no voltear de cabeza */
-    controls.maxPolarAngle = Math.PI * 0.72;
-    controls.rotateSpeed = 0.8;
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.08;
-    controls.target.set(0, 0, 0);
-    controls.addEventListener('change', () => requestRender());
-  }
-
-  function requestRender() {
-    NEED_RENDER.v = true;
-    if (rafPending) return;
-    rafPending = true;
-    requestAnimationFrame(loop);
-  }
-  function loop() {
-    rafPending = false;
-    let cont = false;
-    if (controls && controls.enableDamping) cont = controls.update() || cont;
-    if (camAnim) { cont = stepCamAnim() || cont; }
-    if (NEED_RENDER.v || cont) {
-      renderer.render(scene, camera);
-      NEED_RENDER.v = false;
-    }
-    if (cont) { rafPending = true; requestAnimationFrame(loop); }
-  }
-
-  function resize() {
-    if (!renderer || !container) return;
-    const r = container.getBoundingClientRect();
-    const w = Math.max(1, r.width), h = Math.max(1, r.height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setSize(w, h, false);
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-    requestRender();
-  }
-
-  /* ── Decal: proyecta una imagen sobre el pecho (frente) o espalda ── */
-  function makeDecalMaterial(tex) {
-    return new THREE.MeshStandardMaterial({
-      map: tex,
-      transparent: true,
-      depthTest: true, depthWrite: false,
-      polygonOffset: true, polygonOffsetFactor: -4,
-      roughness: 0.7, metalness: 0.0,
-      normalMap: shirtMat.normalMap, normalScale: new THREE.Vector2(0.25, 0.25),
-    });
-  }
-  function rebuildDecal(view) {
-    const tex = designTex[view];
-    const old = view === 'front' ? decalFront : decalBack;
-    if (old) { scene.remove(old); old.geometry.dispose(); old.material.dispose(); }
-    if (view === 'front') decalFront = null; else decalBack = null;
-    if (!tex) { requestRender(); return; }
-
-    const st = designState[view] || { scale: 1, rot: 0 };
-    const zSign = view === 'front' ? 1 : -1;
-    const pos = new THREE.Vector3(0, 0.18, zSign * 0.9);
-    const dir = new THREE.Vector3(0, 0, zSign);
-    const orientation = new THREE.Euler();
-    const m = new THREE.Matrix4();
-    m.lookAt(new THREE.Vector3(0, 0, 0), dir, new THREE.Vector3(0, 1, 0));
-    orientation.setFromRotationMatrix(m);
-    orientation.z += st.rot * Math.PI / 180;
-
-    const ar = (tex.image && tex.image.width && tex.image.height)
-      ? tex.image.width / tex.image.height : 1;
-    const base = 0.95 * st.scale;
-    const sizeX = ar >= 1 ? base : base * ar;
-    const sizeY = ar >= 1 ? base / ar : base;
-    const size = new THREE.Vector3(sizeX, sizeY, 0.6);
-
-    const geo = new DecalGeometry(shirt, pos, orientation, size);
-    const mesh = new THREE.Mesh(geo, makeDecalMaterial(tex));
-    scene.add(mesh);
-    if (view === 'front') decalFront = mesh; else decalBack = mesh;
-    requestRender();
-  }
-
-  /* ── Animación de cámara para botones Frente/Espalda ── */
-  function stepCamAnim() {
-    if (!camAnim) return false;
-    camAnim.t = Math.min(1, camAnim.t + 0.06);
-    const e = camAnim.t < 0.5 ? 2 * camAnim.t * camAnim.t
-                              : 1 - Math.pow(-2 * camAnim.t + 2, 2) / 2;
-    const az = THREE.MathUtils.lerp(camAnim.from, camAnim.to, e);
-    const d = 6.2;
-    camera.position.set(Math.sin(az) * d, 0, Math.cos(az) * d);
-    camera.lookAt(0, 0, 0);
-    controls.update();
-    if (camAnim.t >= 1) { camAnim = null; return false; }
-    return true;
-  }
-  function animateToView(view) {
-    const cur = Math.atan2(camera.position.x, camera.position.z);
-    const target = view === 'front' ? 0 : Math.PI;
-    let from = cur, to = target;
-    while (to - from > Math.PI) to -= Math.PI * 2;
-    while (from - to > Math.PI) to += Math.PI * 2;
-    camAnim = { from, to, t: 0 };
-    requestRender();
-  }
-
-  /* ════════ API PÚBLICA ════════ */
-  return {
-    available: false,
-    init() {
-      if (!webglOK()) { this.available = false; return false; }
-      try {
-        canvas3d = document.getElementById('mc3d');
-        container = document.getElementById('canvasWrap');
-        renderer = new THREE.WebGLRenderer({
-          canvas: canvas3d, antialias: true, alpha: true,
-          preserveDrawingBuffer: true, premultipliedAlpha: false,
-        });
-        renderer.setClearColor(0x000000, 0);
-        renderer.outputColorSpace = THREE.SRGBColorSpace;
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.05;
-        buildScene();
-        setupControls();
-        resize();
-        if ('ResizeObserver' in window) {
-          new ResizeObserver(() => resize()).observe(container);
-        }
-        window.addEventListener('resize', resize);
-        ready = true; this.available = true;
-        requestRender();
-        return true;
-      } catch (e) {
-        console.warn('[MC3D] init falló, usando 2.5D:', e);
-        this.available = false; ready = false;
-        return false;
-      }
-    },
-    isReady() { return ready; },
-    isActive() { return active; },
-    show() {
-      if (!ready) return;
-      active = true;
-      canvas3d.style.display = 'block';
-      const badge = document.getElementById('renderModeBadge');
-      if (badge) badge.style.display = 'flex';
-      resize(); requestRender();
-    },
-    hide() {
-      active = false;
-      if (canvas3d) canvas3d.style.display = 'none';
-      const badge = document.getElementById('renderModeBadge');
-      if (badge) badge.style.display = 'none';
-    },
-    setColor(hex) {
-      if (!ready) return;
-      shirtMat.color.set(hex);
-      requestRender();
-    },
-    setView(view) {
-      currentView = view;
-      if (!ready) return;
-      animateToView(view);
-    },
-    setDesign(view, img, scale, rot) {
-      if (!ready) return;
-      if (designTex[view]) { designTex[view].dispose(); designTex[view] = null; }
-      if (!img) { designState[view] = null; rebuildDecal(view); return; }
-      const tex = new THREE.Texture(img);
-      tex.colorSpace = THREE.SRGBColorSpace;
-      tex.needsUpdate = true;
-      designTex[view] = tex;
-      designState[view] = { scale: scale || 1, rot: rot || 0 };
-      rebuildDecal(view);
-    },
-    updateDesignTransform(view, scale, rot) {
-      if (!ready || !designTex[view]) return;
-      designState[view] = { scale: scale || 1, rot: rot || 0 };
-      rebuildDecal(view);
-    },
-    toDataURL(type, quality) {
-      if (!ready) return null;
-      renderer.render(scene, camera);
-      return canvas3d.toDataURL(type || 'image/png', quality);
-    },
-  };
-})();
-
-window.MC3D = MC3D;
-try { MC3D.init(); } catch (e) { console.warn('[MC3D] no disponible:', e); }
-window.dispatchEvent(new Event('mc3d-ready'));
-</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="../../js/whatsapp.js?v=20260612q"></script>
-<script src="../../js/leads.js?v=20260612q"></script>
+<script src="../../js/whatsapp.js?v=20260612t"></script>
+<script src="../../js/leads.js?v=20260612t"></script>
 
 <script>
 /* ════════════════════════════════════════════════════
-   ACOSER STUDIO PREMIUM — Core Engine
+   ACOSER STUDIO — Core Engine (render limpio)
    ────────────────────────────────────────────────────
-   Render 2.5D procedural (sin librerías 3D ni assets externos):
-   · Prenda: SVG por capas rasterizado a canvas, con silueta ondulada
-     por feTurbulence + feDisplacementMap (bordes de tela, no rígidos).
-   · Logo: warp por mapa de desplazamiento (estilo Photoshop "Displace")
-     con interpolación bilineal — el diseño se deforma con las arrugas —
-     más sombras de la tela en multiply y luces en screen sobre el logo.
-   · El mapa de alturas, el sombreado y las luces comparten la misma
-     geometría de arrugas (getWrinkles), por lo que deformación y
-     sombras quedan alineadas por construcción.
-   Licencias: 100 % código propio ACOSER. Referencia conceptual de la
-   técnica (sin copiar código): J. Baloch, "Realistic Fabric Wrinkles
-   in Real-Time" (dev.to/javedblch). Se evaluaron configuradores 3D
-   three.js MIT y modelos GLB "free": descartados por procedencia de
-   modelos sin licencia clara y peso; esta vía es 0 KB de assets.
+   Render plano line-art sobre canvas 2D, al estilo del t-shirt de la
+   Guía de Tallas: silueta limpia con sombra de estudio, cuerpo
+   recoloreable, degradado de volumen MUY sutil (luz izquierda → sombra
+   derecha) y cuello. Sin 3D, sin simulación de tela, sin displacement.
+   El diseño subido se dibuja PLANO sobre el área de estampado (solo
+   posición, escala, rotación, opacidad), recortado al área imprimible.
+   100 % código propio ACOSER, 0 dependencias de render, 0 assets nuevos.
    ════════════════════════════════════════════════════ */
 
 const CW = 500, CH = 580;
@@ -1683,43 +1191,6 @@ const S = {
 };
 /* Active view design shortcut */
 function D() { return S.designs[S.view]; }
-
-/* ════════════════════════════════════════════════════════════
-   PUENTE 2.5D ⇆ 3D
-   ────────────────────────────────────────────────────────────
-   El motor 2.5D sigue siendo la fuente de verdad del estado (S). La
-   capa 3D (window.MC3D, three.js) es OPCIONAL: si existe, está
-   disponible (WebGL ok) y la prenda activa tiene modelo 3D (camiseta),
-   se muestra encima del canvas 2.5D y se sincroniza con S. Si no, todo
-   funciona exactamente como antes en 2.5D. Estas funciones son aditivas:
-   nunca rompen el camino 2.5D. */
-function has3D() {
-  return !!(window.MC3D && MC3D.available && MC3D.isReady());
-}
-function is3DGarment() {
-  return S.garment === 'tshirt' && has3D();
-}
-/* Empuja TODO el estado relevante al motor 3D (color + diseños). */
-function push3DState() {
-  if (!has3D()) return;
-  MC3D.setColor(S.color);
-  ['front', 'back'].forEach(v => {
-    const d = S.designs[v];
-    MC3D.setDesign(v, d.img || null, d.scale, d.rot);
-  });
-}
-/* Activa/desactiva la capa 3D según la prenda y sincroniza el estado.
-   Llamar tras cualquier cambio de prenda/color/vista/diseño. */
-function sync3DMode() {
-  if (!has3D()) return;
-  if (is3DGarment()) {
-    push3DState();
-    MC3D.setView(S.view);
-    MC3D.show();
-  } else {
-    MC3D.hide();
-  }
-}
 
 /* ── SIZE DATA ── */
 const SIZES = {
@@ -1834,515 +1305,119 @@ function getLuminance(hex) {
   return 0.299*r + 0.587*g + 0.114*b;
 }
 
-/* ── GARMENT SVG ENGINE — render realista por capas ──
-   Cada prenda se rasteriza como SVG (data URI → Image → drawImage).
-   Capas: halo de estudio → sombra de contacto → BASE de color (única capa
-   que cambia con el color elegido) → detalles de confección → sombreado
-   (negro/blanco con stop-opacity: técnica que sobrevive a la rasterización
-   y a la exportación PNG sin depender de mix-blend-mode) → textura de tela
-   (feTurbulence) → rim light para telas oscuras. */
+/* ── GARMENT RENDER LIMPIO ──
+   Cada prenda se rasteriza como un SVG line-art simple (data URI → Image
+   → drawImage), cacheado por prenda/vista/color. Capas, en orden:
+   (1) sombra de estudio bajo la prenda (feDropShadow),
+   (2) cuerpo relleno con el color elegido,
+   (3) degradado de volumen MUY sutil (luz izquierda → sombra derecha),
+   (4) cuello + un par de pliegues sutiles en las mangas,
+   (5) detalles mínimos por prenda (botonadura, capucha, bolsillo, etc.),
+   (6) borde sutil: oscuro en telas claras / claro en telas oscuras.
+   Sin 3D, sin feTurbulence/displacement, sin warp. Plano y legible. */
 let GARMENT_CACHE = {};
 let GARMENT_LOADING = {};
 
-/* ── GEOMETRÍA DE ARRUGAS — fuente única ──
-   Estas curvas alimentan (a) el sombreado visual de la prenda,
-   (b) el overlay multiply que oscurece el logo, (c) el pase de luces
-   "screen" sobre el logo y (d) el MAPA DE ALTURAS del warp 2.5D.
-   Al compartir geometría, la deformación del diseño y las sombras de
-   la tela quedan alineadas por construcción. */
-function wrinkleOffset(view) { return view === 'back' ? [4, 6] : [0, 0]; }
-function getWrinkles(g) {
-  const hood = g === 'hoodie';
-  const W = [
-    ['M158,296 C198,286 240,300 282,292', .13, 8],
-    ['M170,366 C214,378 262,366 330,374', .12, 9],
-    ['M156,448 C208,438 286,454 346,442', .13, 9],
-    ['M204,212 C232,220 270,216 296,208', .10, 6],
-    ['M150,260 C158,310 152,358 158,406', .11, 7],
-    ['M350,262 C342,312 350,360 344,408', .11, 7],
-    /* Drape extra: tela suelta con caída natural, sin rigidez */
-    ['M168,330 C212,322 256,336 304,326', .09, 7],
-    ['M214,258 C248,266 288,260 320,254', .08, 6],
-    ['M164,418 C172,398 166,378 172,356', .09, 6],
-    ['M336,428 C330,406 338,384 332,360', .09, 6],
-  ];
-  /* Arruga baja: en hoodie sube para no caer sobre la banda rib */
-  W.push(hood
-    ? ['M188,470 C232,462 286,472 330,464', .09, 7]
-    : ['M186,498 C232,490 288,502 334,492', .10, 8]);
-  return W;
-}
-
-/* Sombreado orgánico, independiente del color de la prenda.
-   boost amplifica las luces blancas cuando la tela es oscura;
-   con boost=0 queda solo la parte oscura (overlay multiply del logo). */
-function shadingFrag(g, view, boost) {
-  const f = view === 'front';
-  const hood = g === 'hoodie';
-  const hemY = hood ? 500 : (g === 'uniform' ? 532 : 528);
-  const armY = hood ? 252 : 224;
-  const sideX = hood ? 138 : 136;
-  let s = '';
-  /* Luz principal arriba-izquierda + sombra global abajo-derecha */
-  s += `<rect x="0" y="0" width="500" height="580" fill="url(#dlight)"/>`;
-  s += `<ellipse cx="205" cy="195" rx="150" ry="125" fill="url(#chest)" opacity="${(.55 * boost).toFixed(2)}"/>`;
-  /* Sombra bajo el cuello */
-  s += f
-    ? `<ellipse cx="250" cy="${hood ? 152 : 126}" rx="58" ry="15" fill="#000" opacity=".13" filter="url(#b8)"/>`
-    : `<ellipse cx="250" cy="102" rx="64" ry="12" fill="#000" opacity=".11" filter="url(#b8)"/>`;
-  /* Axilas */
-  s += `<ellipse cx="${sideX + 8}" cy="${armY}" rx="15" ry="44" fill="#000" opacity=".20" filter="url(#b8)" transform="rotate(-14 ${sideX + 8} ${armY})"/>`;
-  s += `<ellipse cx="${500 - sideX - 8}" cy="${armY}" rx="15" ry="44" fill="#000" opacity=".20" filter="url(#b8)" transform="rotate(14 ${500 - sideX - 8} ${armY})"/>`;
-  /* Costados */
-  s += `<rect x="${sideX}" y="${armY - 20}" width="34" height="${hemY - armY + 20}" fill="url(#sideL)"/>`;
-  s += `<rect x="${500 - sideX - 34}" y="${armY - 20}" width="34" height="${hemY - armY + 20}" fill="url(#sideR)"/>`;
-  if (hood) {
-    /* Cara interna de la manga larga + pliegues de manga */
-    s += `<path d="M120,264 L106,346 C102,372 98,392 94,408" fill="none" stroke="#000" stroke-width="13" opacity=".13" filter="url(#b6)"/>`;
-    s += `<path d="M380,264 L394,346 C398,372 402,392 406,408" fill="none" stroke="#000" stroke-width="13" opacity=".13" filter="url(#b6)"/>`;
-    s += `<path d="M70,170 C84,176 96,170 106,176" fill="none" stroke="#000" stroke-width="7" opacity=".12" filter="url(#b4)"/>`;
-    s += `<path d="M60,272 C74,278 88,272 100,278" fill="none" stroke="#000" stroke-width="7" opacity=".11" filter="url(#b4)"/>`;
-    s += `<path d="M430,170 C416,176 404,170 394,176" fill="none" stroke="#000" stroke-width="7" opacity=".12" filter="url(#b4)"/>`;
-    s += `<path d="M440,272 C426,278 412,272 400,278" fill="none" stroke="#000" stroke-width="7" opacity=".11" filter="url(#b4)"/>`;
-    s += `<path d="M92,104 C112,94 132,88 150,86" fill="none" stroke="#fff" stroke-width="9" opacity="${(.10 * boost).toFixed(2)}" filter="url(#b6)"/>`;
-  } else {
-    /* Sombra dentro de las mangas (sisa) */
-    s += `<path d="M136,238 C136,212 120,196 104,190" fill="none" stroke="#000" stroke-width="12" opacity=".15" filter="url(#b6)"/>`;
-    s += `<path d="M364,238 C364,212 380,196 396,190" fill="none" stroke="#000" stroke-width="12" opacity=".15" filter="url(#b6)"/>`;
-    /* Luz sobre los hombros */
-    s += `<path d="M72,100 C96,88 120,80 140,78" fill="none" stroke="#fff" stroke-width="9" opacity="${(.10 * boost).toFixed(2)}" filter="url(#b6)"/>`;
-    s += `<path d="M428,100 C404,88 380,80 360,78" fill="none" stroke="#fff" stroke-width="9" opacity="${(.06 * boost).toFixed(2)}" filter="url(#b6)"/>`;
-  }
-  /* Arrugas orgánicas: valle oscuro + cresta clara desplazada
-     (geometría compartida con el height map del warp 2.5D) */
-  const wb = Math.min(boost, 1.25); /* crestas blancas más sutiles que las luces globales */
-  const [wtx, wty] = wrinkleOffset(view);
-  s += `<g transform="translate(${wtx},${wty})">`;
-  getWrinkles(g).forEach(([wd, o, w]) => {
-    s += `<path d="${wd}" transform="translate(0,-4)" fill="none" stroke="#fff" stroke-width="${w - 2}" opacity="${(o * .6 * wb).toFixed(2)}" filter="url(#b4)"/>`;
-    s += `<path d="${wd}" fill="none" stroke="#000" stroke-width="${w}" opacity="${o}" filter="url(#b4)"/>`;
-  });
-  s += `</g>`;
-  return s;
-}
-
-/* Detalles de confección por prenda: cuellos, tapetas, costuras, bolsillos */
+/* Detalles mínimos de confección por prenda (trazos sutiles, sin volumen
+   de tela). En vista trasera: silueta limpia + etiqueta de cuello. */
 function detailsFrag(g, view, P) {
   const f = view === 'front';
-  const seam   = d => `<path d="${d}" fill="none" stroke="${P.seam}" stroke-width=".9"/>`;
-  const stitch = d => `<path d="${d}" fill="none" stroke="${P.stitch}" stroke-width=".9" stroke-dasharray="3,2.8"/>`;
-  const btn = (x, y) => `<circle cx="${x}" cy="${y}" r="3.3" fill="${P.btn}" stroke="rgba(0,0,0,.28)" stroke-width=".7"/><circle cx="${x}" cy="${y}" r="1.2" fill="none" stroke="rgba(0,0,0,.25)" stroke-width=".5"/>`;
-  const ribBand = (d, w) => `<path d="${d}" fill="none" stroke="${P.tone}" stroke-width="${w}" stroke-linecap="round"/><path d="${d}" fill="none" stroke="${P.ribTex}" stroke-width="${w - 2}" stroke-dasharray="1.6,3.4" stroke-linecap="butt"/>`;
+  const stroke = P.line, soft = P.soft;
+  const seam = (d, w) => `<path d="${d}" fill="none" stroke="${stroke}" stroke-width="${w||1.4}" stroke-linecap="round"/>`;
+  const btn  = (x, y) => `<circle cx="${x}" cy="${y}" r="3.2" fill="none" stroke="${stroke}" stroke-width="1.4"/>`;
+  /* Etiqueta de cuello (vista trasera, todas las prendas) */
+  const neckLabel = (y) => `<rect x="238" y="${y}" width="24" height="15" rx="2" fill="none" stroke="${soft}" stroke-width="1.2"/><line x1="243" y1="${y+5}" x2="257" y2="${y+5}" stroke="${soft}" stroke-width="1"/><line x1="243" y1="${y+9.5}" x2="253" y2="${y+9.5}" stroke="${soft}" stroke-width="1"/>`;
   let s = '';
 
   if (g === 'tshirt') {
     if (f) {
-      s += ribBand('M196,66 C208,84 230,100 250,104 C270,100 292,84 304,66', 9);
-      s += seam('M199,75 C211,91 232,105 250,109 C268,105 289,91 301,75');
-      s += seam('M196,66 L132,72') + seam('M304,66 L368,72');
+      s += `<path d="M196,66 C208,84 230,100 250,104 C270,100 292,84 304,66" fill="none" stroke="${stroke}" stroke-width="6" stroke-linecap="round"/>`;
     } else {
-      s += ribBand('M192,68 C210,74 230,78 250,78 C270,78 290,74 308,68', 8);
-      s += `<rect x="239" y="84" width="22" height="14" rx="1.5" fill="${P.label}"/><line x1="242" y1="90" x2="258" y2="90" stroke="#8a857c" stroke-width=".8" opacity=".65"/><line x1="242" y1="93.5" x2="254" y2="93.5" stroke="#8a857c" stroke-width=".8" opacity=".5"/>`;
-      s += seam('M192,68 L132,72') + seam('M308,68 L368,72');
+      s += `<path d="M192,68 C210,74 230,78 250,78 C270,78 290,74 308,68" fill="none" stroke="${stroke}" stroke-width="6" stroke-linecap="round"/>`;
+      s += neckLabel(86);
     }
-    s += stitch('M137,526 C190,532 310,532 363,526') + stitch('M137,532.5 C190,538.5 310,538.5 363,532.5');
-    s += stitch('M64,160 C55,145 56,118 64,104') + stitch('M436,160 C445,145 444,118 436,104');
   }
 
   if (g === 'polo') {
     if (f) {
-      s += `<ellipse cx="250" cy="102" rx="46" ry="13" fill="#000" opacity=".15" filter="url(#b6)"/>`;
-      /* Tapeta con botones */
-      s += `<rect x="242" y="58" width="16" height="94" fill="${P.tone}" opacity=".30"/>`;
-      s += stitch('M243,62 L243,150') + stitch('M257,62 L257,150') + seam('M250,66 L250,148');
-      s += btn(250, 98) + btn(250, 124) + btn(250, 146);
-      /* Cuello: dos solapas con notch central */
-      s += `<path d="M197,64 C199,53 209,47 223,46 L249,48 L249,58 L243,98 C229,90 211,78 203,71 C199,68 197,66 197,64 Z" fill="${P.tone}" stroke="${P.seam}" stroke-width="1"/>`;
-      s += `<path d="M303,64 C301,53 291,47 277,46 L251,48 L251,58 L257,98 C271,90 289,78 297,71 C301,68 303,66 303,64 Z" fill="${P.tone}" stroke="${P.seam}" stroke-width="1"/>`;
-      s += `<path d="M199,60 C204,51 212,48 224,47 L248,49" fill="none" stroke="#fff" stroke-width="1.6" opacity="${P.dk ? .14 : .07}"/>`;
-      s += seam('M197,64 L132,72') + seam('M303,64 L368,72');
+      /* Tapeta con botones + cuello de dos solapas */
+      s += seam('M250,66 L250,150', 1.4);
+      s += btn(250, 104) + btn(250, 132);
+      s += `<path d="M197,64 C199,53 209,47 223,46 L249,48 L249,58 L243,98 C229,90 211,78 203,71 C199,68 197,66 197,64 Z" fill="none" stroke="${stroke}" stroke-width="1.6"/>`;
+      s += `<path d="M303,64 C301,53 291,47 277,46 L251,48 L251,58 L257,98 C271,90 289,78 297,71 C301,68 303,66 303,64 Z" fill="none" stroke="${stroke}" stroke-width="1.6"/>`;
     } else {
-      s += ribBand('M194,62 C214,54 286,54 306,62', 9);
-      s += `<rect x="239" y="76" width="22" height="14" rx="1.5" fill="${P.label}"/>`;
-      s += seam('M194,62 L132,72') + seam('M306,62 L368,72');
+      s += `<path d="M194,62 C214,54 286,54 306,62" fill="none" stroke="${stroke}" stroke-width="6" stroke-linecap="round"/>`;
+      s += neckLabel(78);
     }
-    /* Puños rib en ambas vistas */
-    s += ribBand('M64,162 C55,146 56,118 64,103', 8);
-    s += ribBand('M436,162 C445,146 444,118 436,103', 8);
-    s += stitch('M137,526 C190,532 310,532 363,526') + stitch('M137,532.5 C190,538.5 310,538.5 363,532.5');
   }
 
   if (g === 'hoodie') {
-    /* Banda de ruedo rib */
-    s += `<rect x="138" y="508" width="224" height="32" fill="${P.tone}" opacity=".25"/>`;
-    s += `<path d="M138,524 L362,524" stroke="${P.ribTex}" stroke-width="30" stroke-dasharray="2.4,4.6" fill="none"/>`;
-    s += seam('M138,508 L362,508');
-    /* Puños rib */
-    s += `<path d="M50,397 L92,407" stroke="${P.tone}" stroke-width="26" opacity=".35" fill="none"/>`;
-    s += `<path d="M50,397 L92,407" stroke="${P.ribTex}" stroke-width="22" stroke-dasharray="2.4,4.6" fill="none"/>`;
-    s += `<path d="M450,397 L408,407" stroke="${P.tone}" stroke-width="26" opacity=".35" fill="none"/>`;
-    s += `<path d="M450,397 L408,407" stroke="${P.ribTex}" stroke-width="22" stroke-dasharray="2.4,4.6" fill="none"/>`;
-    s += seam('M55,386 L98,396') + seam('M445,386 L402,396');
+    /* Banda de ruedo (línea sutil) */
+    s += seam('M138,508 L362,508', 1.4);
     if (f) {
-      /* Capucha: cavidad interior, borde con volumen, luz superior */
-      s += `<path d="M250,34 C283,36 306,52 309,72 C305,96 283,110 250,114 C217,110 195,96 191,72 C194,52 217,36 250,34 Z" fill="#000" opacity=".30" filter="url(#b4)"/>`;
-      s += `<path d="M250,118 C222,114 200,102 192,80 C190,72 191,66 193,60" fill="none" stroke="${P.tone}" stroke-width="6"/>`;
-      s += `<path d="M250,118 C278,114 300,102 308,80 C310,72 309,66 307,60" fill="none" stroke="${P.tone}" stroke-width="6"/>`;
-      s += stitch('M250,124 C218,120 192,106 184,78') + stitch('M250,124 C282,120 308,106 316,78');
-      s += `<path d="M196,40 C212,24 232,16 250,16 C268,16 288,24 304,40" fill="none" stroke="#fff" stroke-width="8" opacity="${P.dk ? .12 : .06}" filter="url(#b6)"/>`;
-      /* Ojales y cordones */
-      s += `<circle cx="234" cy="112" r="2.6" fill="#000" opacity=".4"/><circle cx="266" cy="112" r="2.6" fill="#000" opacity=".4"/>`;
-      s += `<path d="M234,114 C231,140 236,162 231,186" fill="none" stroke="rgba(0,0,0,.30)" stroke-width="5.6" stroke-linecap="round"/>`;
-      s += `<path d="M234,114 C231,140 236,162 231,186" fill="none" stroke="${P.cord}" stroke-width="4.4" stroke-linecap="round"/>`;
-      s += `<path d="M266,114 C269,140 264,162 269,186" fill="none" stroke="rgba(0,0,0,.30)" stroke-width="5.6" stroke-linecap="round"/>`;
-      s += `<path d="M266,114 C269,140 264,162 269,186" fill="none" stroke="${P.cord}" stroke-width="4.4" stroke-linecap="round"/>`;
-      /* Bolsillo canguro con costuras */
-      s += `<path d="M198,412 L214,396 L286,396 L302,412 L302,468 C302,474 297,478 290,478 L210,478 C203,478 198,474 198,468 Z" fill="#000" opacity="${P.lt ? .05 : .07}"/>`;
-      s += stitch('M198,412 L214,396 L286,396 L302,412 L302,468 C302,474 297,478 290,478 L210,478 C203,478 198,474 198,468 Z');
-      s += `<path d="M214,398 L286,398" stroke="#000" opacity=".12" stroke-width="3" filter="url(#b4)" fill="none"/>`;
-      s += seam('M214,396 L198,412 L198,468') + seam('M286,396 L302,412 L302,468');
-      s += seam('M197,76 L138,86') + seam('M303,76 L362,86');
+      /* Capucha + cordones + bolsillo canguro */
+      s += `<path d="M250,118 C218,114 192,100 186,76 M250,118 C282,114 308,100 314,76" fill="none" stroke="${stroke}" stroke-width="1.6"/>`;
+      s += `<circle cx="236" cy="114" r="2.4" fill="none" stroke="${stroke}" stroke-width="1.2"/><circle cx="264" cy="114" r="2.4" fill="none" stroke="${stroke}" stroke-width="1.2"/>`;
+      s += `<path d="M236,116 C233,142 238,162 233,186" fill="none" stroke="${stroke}" stroke-width="2.4" stroke-linecap="round"/>`;
+      s += `<path d="M264,116 C267,142 262,162 267,186" fill="none" stroke="${stroke}" stroke-width="2.4" stroke-linecap="round"/>`;
+      s += `<path d="M198,412 L214,396 L286,396 L302,412 L302,468 C302,474 297,478 290,478 L210,478 C203,478 198,474 198,468 Z" fill="none" stroke="${stroke}" stroke-width="1.6"/>`;
     } else {
       /* Capucha caída sobre la espalda */
-      s += `<ellipse cx="250" cy="124" rx="56" ry="10" fill="#000" opacity=".18" filter="url(#b6)"/>`;
-      s += `<path d="M250,34 C290,36 312,58 304,88 C296,114 272,126 250,128 C228,126 204,114 196,88 C188,58 210,36 250,34 Z" fill="${P.color}" stroke="${P.seam}" stroke-width="1"/>`;
-      s += `<ellipse cx="244" cy="62" rx="40" ry="18" fill="#fff" opacity="${P.dk ? .10 : .05}" filter="url(#b8)"/>`;
-      s += stitch('M250,38 L250,124');
-      s += seam('M197,76 L138,86') + seam('M303,76 L362,86');
+      s += `<path d="M250,34 C290,36 312,58 304,88 C296,114 272,126 250,128 C228,126 204,114 196,88 C188,58 210,36 250,34 Z" fill="none" stroke="${stroke}" stroke-width="1.6"/>`;
+      s += neckLabel(138);
     }
   }
 
   if (g === 'uniform') {
     if (f) {
-      s += `<ellipse cx="250" cy="94" rx="40" ry="11" fill="#000" opacity=".15" filter="url(#b6)"/>`;
-      /* Tapeta de botones completa */
-      s += `<rect x="243" y="58" width="14" height="478" fill="${P.tone}" opacity=".22"/>`;
-      s += stitch('M243.5,62 L243.5,534') + stitch('M256.5,62 L256.5,534');
-      [88,152,216,280,344,408,472,514].forEach(y => { s += btn(250, y); });
-      /* Cuello camisero con puntas */
-      s += `<path d="M214,52 C226,45 274,45 286,52" fill="none" stroke="${P.seam}" stroke-width="1"/>`;
-      s += `<path d="M209,57 C213,47 227,42 248,42 L250,58 L244,94 C230,86 217,73 209,57 Z" fill="${P.tone}" stroke="${P.seam}" stroke-width="1"/>`;
-      s += `<path d="M291,57 C287,47 273,42 252,42 L250,58 L256,94 C270,86 283,73 291,57 Z" fill="${P.tone}" stroke="${P.seam}" stroke-width="1"/>`;
-      s += `<path d="M212,52 C222,45 240,43 249,43" fill="none" stroke="#fff" stroke-width="1.4" opacity="${P.dk ? .13 : .06}"/>`;
-      /* Bolsillo de pecho */
-      s += `<path d="M162,168 L214,168 L214,216 C214,221 210,224 205,224 L171,224 C166,224 162,221 162,216 Z" fill="#000" opacity=".05"/>`;
-      s += stitch('M162,168 L214,168 L214,216 C214,221 210,224 205,224 L171,224 C166,224 162,221 162,216 Z');
-      s += seam('M162,174.5 L214,174.5');
-      s += `<path d="M163,170 L213,170" stroke="#000" opacity=".10" stroke-width="2.5" filter="url(#b4)" fill="none"/>`;
-      s += seam('M209,57 L132,72') + seam('M291,57 L368,72');
+      /* Botonadura completa + cuello camisero + bolsillo */
+      s += seam('M250,58 L250,534', 1.4);
+      [96,160,224,288,352,416,480].forEach(y => { s += btn(250, y); });
+      s += `<path d="M209,57 C213,47 227,42 248,42 L250,58 L244,94 C230,86 217,73 209,57 Z" fill="none" stroke="${stroke}" stroke-width="1.6"/>`;
+      s += `<path d="M291,57 C287,47 273,42 252,42 L250,58 L256,94 C270,86 283,73 291,57 Z" fill="none" stroke="${stroke}" stroke-width="1.6"/>`;
+      s += `<path d="M162,168 L214,168 L214,216 C214,221 210,224 205,224 L171,224 C166,224 162,221 162,216 Z" fill="none" stroke="${stroke}" stroke-width="1.4"/>`;
     } else {
-      s += ribBand('M196,60 C214,52 286,52 304,60', 8);
-      s += `<rect x="239" y="74" width="22" height="14" rx="1.5" fill="${P.label}"/>`;
-      /* Canesú (yoke) */
-      s += seam('M136,126 C190,138 310,138 364,126') + stitch('M136,131 C190,143 310,143 364,131');
-      s += seam('M196,60 L132,72') + seam('M304,60 L368,72');
+      s += `<path d="M196,60 C214,52 286,52 304,60" fill="none" stroke="${stroke}" stroke-width="6" stroke-linecap="round"/>`;
+      s += `<path d="M136,126 C190,138 310,138 364,126" fill="none" stroke="${soft}" stroke-width="1.4"/>`;
+      s += neckLabel(78);
     }
-    s += stitch('M137,530 L363,530') + stitch('M137,535.5 L363,535.5');
-    s += stitch('M64,160 C55,145 56,118 64,104') + stitch('M436,160 C445,145 444,118 436,104');
   }
   return s;
 }
 
+/* SVG limpio de la prenda, estilo Guía de Tallas (viewBox 0 0 500 580).
+   Una sola capa que cambia con el color = el cuerpo (fill). */
 function buildGarmentSvg(g, view, color) {
   const lum = getLuminance(color);
-  const dk = lum < 80, lt = lum > 180, vd = lum < 40;
-  const P = {
-    color, dk, lt,
-    tone:   dk ? lighten(color, 18) : darken(color, 16),
-    seam:   lt ? 'rgba(0,0,0,.16)'  : dk ? 'rgba(255,255,255,.13)' : 'rgba(0,0,0,.17)',
-    stitch: lt ? 'rgba(0,0,0,.22)'  : dk ? 'rgba(255,255,255,.17)' : 'rgba(0,0,0,.24)',
-    ribTex: dk ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.07)',
-    btn:    dk ? lighten(color, 36) : darken(color, 30),
-    cord:   dk ? lighten(color, 42) : darken(color, 24),
-    label:  'rgba(244,240,232,.92)',
-  };
-  const rim   = lt ? 'rgba(0,0,0,.20)' : dk ? `rgba(255,255,255,${vd ? .14 : .11})` : 'rgba(0,0,0,.22)';
-  const hi    = dk ? .15 : (lt ? .055 : .085);
-  const sh    = lt ? .12 : .18;
-  const boost = dk ? 1.9 : 1;
-  const texC  = dk ? 1 : 0;
-  const texOp = dk ? .08 : .055;
-  const halo  = dk ? .065 : .04;
+  const dk = lum < 80, lt = lum > 200;
   const d = GARMENT_D[g][view];
-  /* Seed determinista por prenda/vista: cada silueta ondula distinto */
-  const seed = ({ tshirt: 3, polo: 11, hoodie: 23, uniform: 31 })[g] + (view === 'back' ? 7 : 0);
+  /* Paleta de trazos según luminancia: en oscuros, líneas claras; en
+     claros, líneas oscuras — para que los detalles se lean siempre. */
+  const P = {
+    line: dk ? 'rgba(255,255,255,.20)' : 'rgba(0,0,0,.22)',
+    soft: dk ? 'rgba(255,255,255,.14)' : 'rgba(0,0,0,.15)',
+  };
+  /* Borde de la silueta: en telas claras un borde oscuro sutil; en telas
+     oscuras un rim claro para que se despegue del lienzo. */
+  const rim = lt ? 'rgba(0,0,0,.16)' : dk ? 'rgba(255,255,255,.16)' : 'rgba(0,0,0,.14)';
+  /* Pliegues sutiles de manga, según la prenda */
+  const sleeves = (g === 'hoodie')
+    ? `<line x1="92" y1="150" x2="78" y2="250" stroke="${P.soft}" stroke-width="1.4" stroke-linecap="round"/><line x1="408" y1="150" x2="422" y2="250" stroke="${P.soft}" stroke-width="1.4" stroke-linecap="round"/>`
+    : `<line x1="96" y1="118" x2="66" y2="170" stroke="${P.soft}" stroke-width="1.4" stroke-linecap="round"/><line x1="404" y1="118" x2="434" y2="170" stroke="${P.soft}" stroke-width="1.4" stroke-linecap="round"/>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 580" width="500" height="580">
 <defs>
-<filter id="cloth" x="-8%" y="-8%" width="116%" height="116%"><feTurbulence type="fractalNoise" baseFrequency="0.011 0.017" numOctaves="2" seed="${seed}" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="6.5" xChannelSelector="R" yChannelSelector="G"/></filter>
-<linearGradient id="dlight" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="${hi}"/><stop offset=".45" stop-color="#ffffff" stop-opacity="0"/><stop offset=".72" stop-color="#000000" stop-opacity="${(sh * .45).toFixed(3)}"/><stop offset="1" stop-color="#000000" stop-opacity="${sh}"/></linearGradient>
-<radialGradient id="chest"><stop offset="0" stop-color="#fff" stop-opacity=".26"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
-<radialGradient id="halo"><stop offset="0" stop-color="#fff" stop-opacity="${halo}"/><stop offset=".6" stop-color="#fff" stop-opacity="${halo*.35}"/><stop offset=".88" stop-color="#fff" stop-opacity="0"/></radialGradient>
-<linearGradient id="sideL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".15"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
-<linearGradient id="sideR" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".15"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
-<filter id="b4" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4"/></filter>
-<filter id="b6" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="6"/></filter>
-<filter id="b8" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="8"/></filter>
-<filter id="b12" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="12"/></filter>
-<filter id="tex" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 ${texC}  0 0 0 0 ${texC}  0 0 0 0 ${texC}  0 0 0 .9 0"/></filter>
+<filter id="sfx" x="-25%" y="-15%" width="150%" height="140%"><feDropShadow dx="0" dy="9" stdDeviation="13" flood-color="rgba(0,0,0,.45)"/></filter>
+<linearGradient id="vol" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity=".07"/><stop offset=".5" stop-color="#ffffff" stop-opacity="0"/><stop offset="1" stop-color="#000000" stop-opacity=".09"/></linearGradient>
 <clipPath id="sil"><path d="${d}"/></clipPath>
 </defs>
-<ellipse cx="250" cy="265" rx="195" ry="230" fill="url(#halo)"/>
-<ellipse cx="250" cy="556" rx="158" ry="11" fill="#000" opacity=".42" filter="url(#b12)"/>
-<g filter="url(#cloth)">
-<path d="${d}" fill="${color}"/>
+<path d="${d}" fill="${color}" filter="url(#sfx)"/>
 <g clip-path="url(#sil)">
 ${detailsFrag(g, view, P)}
-${shadingFrag(g, view, boost)}
-<rect x="0" y="0" width="500" height="580" filter="url(#tex)" opacity="${texOp}"/>
-${dk ? `<path d="${d}" fill="none" stroke="#fff" stroke-opacity=".06" stroke-width="7"/>` : ''}
+${sleeves}
+<rect x="0" y="0" width="500" height="580" fill="url(#vol)"/>
 </g>
 <path d="${d}" fill="none" stroke="${rim}" stroke-width="1.6"/>
-</g>
 </svg>`;
-}
-
-/* Overlay de sombreado puro (sin color): se multiplica sobre el logo
-   para que el diseño "se funda" con los pliegues de la tela. */
-function buildOverlaySvg(g, view) {
-  const d = GARMENT_D[g][view];
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 580" width="500" height="580">
-<defs>
-<linearGradient id="dlight" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".16"/></linearGradient>
-<radialGradient id="chest"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
-<linearGradient id="sideL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".15"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
-<linearGradient id="sideR" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".15"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
-<filter id="b4" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4"/></filter>
-<filter id="b6" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="6"/></filter>
-<filter id="b8" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="8"/></filter>
-<filter id="tex" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0"/></filter>
-<clipPath id="sil"><path d="${d}"/></clipPath>
-</defs>
-<g clip-path="url(#sil)">
-${shadingFrag(g, view, 0)}
-<rect x="0" y="0" width="500" height="580" filter="url(#tex)" opacity=".05"/>
-</g>
-</svg>`;
-}
-
-/* ── PASE DE LUCES (screen) ──
-   Solo crestas y brillos de la tela sobre fondo negro: con composite
-   "screen" el negro es neutro y el logo recibe la misma luz que la
-   prenda (las crestas de las arrugas iluminan también el diseño). */
-function buildLightsSvg(g, view) {
-  const d = GARMENT_D[g][view];
-  const [wtx, wty] = wrinkleOffset(view);
-  let w = '';
-  getWrinkles(g).forEach(([wd, o, ww]) => {
-    w += `<path d="${wd}" transform="translate(0,-4)" fill="none" stroke="#fff" stroke-width="${ww - 2}" opacity="${Math.min(.4, o * 2.2).toFixed(2)}" filter="url(#b4)"/>`;
-  });
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 580" width="500" height="580">
-<defs>
-<filter id="b4" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4"/></filter>
-<radialGradient id="chestL"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
-<clipPath id="sil"><path d="${d}"/></clipPath>
-</defs>
-<rect x="0" y="0" width="500" height="580" fill="#000"/>
-<g clip-path="url(#sil)">
-<ellipse cx="205" cy="195" rx="150" ry="125" fill="url(#chestL)"/>
-<g transform="translate(${wtx},${wty})">${w}</g>
-</g>
-</svg>`;
-}
-
-/* ── MAPA DE ALTURAS DE LA TELA (warp 2.5D) ──
-   Gris 128 = tela plana; claro = cresta; oscuro = valle. Misma geometría
-   de arrugas que el sombreado → el desplazamiento del logo queda
-   físicamente alineado con las sombras que se multiplican encima.
-   Técnica: displacement map estilo Photoshop "Displace" con
-   interpolación bilineal, implementación propia en canvas 2D.
-   Referencia conceptual (sin código de terceros): J. Baloch,
-   "Realistic Fabric Wrinkles in Real-Time: Building Displacement Maps"
-   (dev.to/javedblch, 2024) y el displacement mapping clásico de
-   Photoshop. Sin librerías ni assets externos para este efecto. */
-function buildHeightSvg(g, view) {
-  const hood = g === 'hoodie';
-  const armY = hood ? 252 : 224;
-  const sideX = hood ? 138 : 136;
-  const [wtx, wty] = wrinkleOffset(view);
-  let w = '';
-  getWrinkles(g).forEach(([wd, o, ww]) => {
-    w += `<path d="${wd}" transform="translate(0,-4)" fill="none" stroke="#fff" stroke-width="${ww - 1}" opacity=".5" filter="url(#hb)"/>`;
-    w += `<path d="${wd}" fill="none" stroke="#000" stroke-width="${ww + 1}" opacity=".48" filter="url(#hb)"/>`;
-  });
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 580" width="500" height="580">
-<defs>
-<filter id="hb" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3.5"/></filter>
-<filter id="hb2" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="10"/></filter>
-<linearGradient id="hsl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".34"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
-<linearGradient id="hsr" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".34"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
-</defs>
-<rect x="0" y="0" width="500" height="580" fill="rgb(128,128,128)"/>
-<ellipse cx="225" cy="225" rx="120" ry="105" fill="#fff" opacity=".14" filter="url(#hb2)"/>
-<rect x="${sideX}" y="${armY - 30}" width="40" height="${540 - armY + 30}" fill="url(#hsl)"/>
-<rect x="${500 - sideX - 40}" y="${armY - 30}" width="40" height="${540 - armY + 30}" fill="url(#hsr)"/>
-<ellipse cx="${sideX + 10}" cy="${armY}" rx="16" ry="46" fill="#000" opacity=".25" filter="url(#hb2)"/>
-<ellipse cx="${500 - sideX - 10}" cy="${armY}" rx="16" ry="46" fill="#000" opacity=".25" filter="url(#hb2)"/>
-<g transform="translate(${wtx},${wty})">${w}</g>
-</svg>`;
-}
-
-/* Rasteriza el height map a luminancias (Uint8) cacheadas por
-   prenda/vista. No depende del color: se genera una sola vez. */
-const HEIGHT_CACHE = {}, HEIGHT_LOADING = {};
-function loadHeightMap(g, view) {
-  const key = g + '_' + view;
-  if (HEIGHT_CACHE[key] || HEIGHT_LOADING[key]) return;
-  HEIGHT_LOADING[key] = true;
-  const img = new Image();
-  img.onload = () => {
-    try {
-      const oc = document.createElement('canvas');
-      oc.width = CW; oc.height = CH;
-      const octx = oc.getContext('2d', { willReadFrequently: true });
-      octx.drawImage(img, 0, 0, CW, CH);
-      const id = octx.getImageData(0, 0, CW, CH);
-      const lum = new Uint8ClampedArray(CW * CH);
-      for (let i = 0, j = 0; i < lum.length; i++, j += 4) lum[i] = id.data[j];
-      HEIGHT_CACHE[key] = { lum };
-      render();
-    } catch (e) { /* fallo de lectura: se degrada a render plano */ }
-    HEIGHT_LOADING[key] = false;
-  };
-  img.onerror = () => { HEIGHT_LOADING[key] = false; };
-  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(buildHeightSvg(g, view));
-}
-
-/* ── MOTOR DE WARP 2.5D ──
-   El logo se rasteriza plano en una capa offscreen y cada píxel destino
-   samplea su origen desplazado según la altura de la tela (bilineal).
-   Luego, SOLO sobre los píxeles del logo (máscara destination-in), se
-   multiplican las sombras de la tela y se suman sus luces en "screen":
-   el diseño ondula con las arrugas y queda fundido en la prenda. */
-const WARP_X = 7, WARP_Y = 10; /* px máx de desplazamiento (h=255/0) */
-let _logoCv, _logoCx, _warpCv, _warpCx, _maskCv, _maskCx;
-function ensureWarpLayers() {
-  if (_logoCv) return;
-  _logoCv = document.createElement('canvas'); _logoCv.width = CW; _logoCv.height = CH;
-  _logoCx = _logoCv.getContext('2d', { willReadFrequently: true });
-  _warpCv = document.createElement('canvas'); _warpCv.width = CW; _warpCv.height = CH;
-  _warpCx = _warpCv.getContext('2d');
-  _maskCv = document.createElement('canvas'); _maskCv.width = CW; _maskCv.height = CH;
-  _maskCx = _maskCv.getContext('2d');
-}
-
-/* Durante drag/sliders se usa un camino rápido sin pixel-warp (60 fps)
-   y al soltar (120 ms idle) se re-renderiza con el warp completo. */
-let _liteTimer = null;
-function interactiveRender() {
-  S.lite = true;
-  render();
-  clearTimeout(_liteTimer);
-  _liteTimer = setTimeout(() => { S.lite = false; render(); }, 120);
-}
-
-function drawWarpedDesign(d, oKey, lKey) {
-  const dw = d.w * d.scale, dh = d.h * d.scale;
-  const hm = HEIGHT_CACHE[S.garment + '_' + S.view];
-  const ovF = GARMENT_CACHE[oKey], ltF = GARMENT_CACHE[lKey];
-  if (!hm || S.lite) {
-    /* Camino rápido: logo plano + sombras/luces enmascaradas con el
-       propio logo (drawImage puro, sin getImageData). También es el
-       fallback mientras carga el height map. */
-    ensureWarpLayers();
-    _warpCx.save();
-    _warpCx.setTransform(1, 0, 0, 1, 0, 0);
-    _warpCx.clearRect(0, 0, CW, CH);
-    _warpCx.translate(d.x, d.y);
-    _warpCx.rotate(d.rot * Math.PI / 180);
-    if (d.flipH) _warpCx.scale(-1, 1);
-    _warpCx.drawImage(d.img, -dw / 2, -dh / 2, dw, dh);
-    if (ovF) {
-      _warpCx.setTransform(1, 0, 0, 1, 0, 0);
-      _warpCx.globalCompositeOperation = 'multiply';
-      _warpCx.globalAlpha = .6;
-      _warpCx.drawImage(ovF, 0, 0, CW, CH);
-      if (ltF) {
-        _warpCx.globalCompositeOperation = 'screen';
-        _warpCx.globalAlpha = .32;
-        _warpCx.drawImage(ltF, 0, 0, CW, CH);
-      }
-      /* Recortar al alpha del logo re-dibujándolo en destination-in */
-      _warpCx.globalCompositeOperation = 'destination-in';
-      _warpCx.globalAlpha = 1;
-      _warpCx.translate(d.x, d.y);
-      _warpCx.rotate(d.rot * Math.PI / 180);
-      if (d.flipH) _warpCx.scale(-1, 1);
-      _warpCx.drawImage(d.img, -dw / 2, -dh / 2, dw, dh);
-    }
-    _warpCx.restore();
-    ctx.save();
-    ctx.globalAlpha = d.opacity;
-    ctx.drawImage(_warpCv, 0, 0);
-    ctx.restore();
-    return;
-  }
-  ensureWarpLayers();
-  /* 1. Logo plano en capa propia */
-  _logoCx.clearRect(0, 0, CW, CH);
-  _logoCx.save();
-  _logoCx.translate(d.x, d.y);
-  _logoCx.rotate(d.rot * Math.PI / 180);
-  if (d.flipH) _logoCx.scale(-1, 1);
-  _logoCx.drawImage(d.img, -dw / 2, -dh / 2, dw, dh);
-  _logoCx.restore();
-  /* 2. BBox del logo rotado + margen para el desplazamiento */
-  const rad = d.rot * Math.PI / 180;
-  const ac = Math.abs(Math.cos(rad)), as = Math.abs(Math.sin(rad));
-  const hw = (dw * ac + dh * as) / 2, hh = (dw * as + dh * ac) / 2;
-  const M = Math.max(WARP_X, WARP_Y) + 4;
-  const bx = Math.max(0, Math.floor(d.x - hw - M));
-  const by = Math.max(0, Math.floor(d.y - hh - M));
-  const bw = Math.min(CW, Math.ceil(d.x + hw + M)) - bx;
-  const bh = Math.min(CH, Math.ceil(d.y + hh + M)) - by;
-  if (bw <= 0 || bh <= 0) return;
-  /* 3. Desplazamiento con interpolación bilineal */
-  const src = _logoCx.getImageData(bx, by, bw, bh);
-  const out = _warpCx.createImageData(bw, bh);
-  const sd = src.data, od = out.data, lum = hm.lum;
-  for (let y = 0; y < bh; y++) {
-    const rowL = (by + y) * CW + bx;
-    for (let x = 0; x < bw; x++) {
-      const t = (lum[rowL + x] - 128) / 127;
-      let sx = x + t * WARP_X, sy = y + t * WARP_Y;
-      if (sx < 0) sx = 0; else if (sx > bw - 1.001) sx = bw - 1.001;
-      if (sy < 0) sy = 0; else if (sy > bh - 1.001) sy = bh - 1.001;
-      const x0 = sx | 0, y0 = sy | 0, xf = sx - x0, yf = sy - y0;
-      const i00 = (y0 * bw + x0) * 4, i10 = i00 + 4, i01 = i00 + bw * 4, i11 = i01 + 4;
-      const w00 = (1 - xf) * (1 - yf), w10 = xf * (1 - yf), w01 = (1 - xf) * yf, w11 = xf * yf;
-      const o = (y * bw + x) * 4;
-      od[o]     = sd[i00]     * w00 + sd[i10]     * w10 + sd[i01]     * w01 + sd[i11]     * w11;
-      od[o + 1] = sd[i00 + 1] * w00 + sd[i10 + 1] * w10 + sd[i01 + 1] * w01 + sd[i11 + 1] * w11;
-      od[o + 2] = sd[i00 + 2] * w00 + sd[i10 + 2] * w10 + sd[i01 + 2] * w01 + sd[i11 + 2] * w11;
-      od[o + 3] = sd[i00 + 3] * w00 + sd[i10 + 3] * w10 + sd[i01 + 3] * w01 + sd[i11 + 3] * w11;
-    }
-  }
-  _warpCx.putImageData(out, 0, 0);
-  /* 4. Sombras (multiply) + luces (screen) SOLO sobre el logo:
-        la máscara destination-in evita manchar la prenda alrededor */
-  const ov = GARMENT_CACHE[oKey];
-  const lt = GARMENT_CACHE[lKey];
-  if (ov) {
-    _maskCx.clearRect(0, 0, CW, CH);
-    _maskCx.drawImage(_warpCv, 0, 0, bw, bh, 0, 0, bw, bh);
-    _warpCx.save();
-    _warpCx.globalCompositeOperation = 'multiply';
-    _warpCx.globalAlpha = .6;
-    _warpCx.drawImage(ov, bx, by, bw, bh, 0, 0, bw, bh);
-    if (lt) {
-      _warpCx.globalCompositeOperation = 'screen';
-      _warpCx.globalAlpha = .32;
-      _warpCx.drawImage(lt, bx, by, bw, bh, 0, 0, bw, bh);
-    }
-    _warpCx.globalCompositeOperation = 'destination-in';
-    _warpCx.globalAlpha = 1;
-    _warpCx.drawImage(_maskCv, 0, 0, bw, bh, 0, 0, bw, bh);
-    _warpCx.restore();
-  }
-  /* 5. Componer sobre la prenda (respeta la opacidad del usuario) */
-  ctx.save();
-  ctx.globalAlpha = d.opacity;
-  ctx.drawImage(_warpCv, 0, 0, bw, bh, bx, by, bw, bh);
-  ctx.restore();
 }
 
 function loadGarmentImg(key, builder) {
@@ -2362,16 +1437,7 @@ function render() {
   const sil = silPath(S.garment, S.view);
   const pa = (S.view === 'front' ? g.printArea.front : g.printArea.back);
 
-  /* ── GARMENT: SVG por capas rasterizado sobre el canvas ── */
-  /* Sombra exterior (canvas: un filtro SVG se recortaría en el borde) */
-  ctx.save();
-  ctx.shadowColor = 'rgba(0,0,0,.25)';
-  ctx.shadowBlur = 22;
-  ctx.shadowOffsetY = 10;
-  ctx.fillStyle = '#16140f';
-  ctx.fill(sil);
-  ctx.restore();
-
+  /* ── GARMENT: SVG limpio rasterizado sobre el canvas ── */
   const gKey = S.garment + '_' + S.view + '_' + S.color;
   if (!GARMENT_CACHE[gKey]) {
     loadGarmentImg(gKey, () => buildGarmentSvg(S.garment, S.view, S.color));
@@ -2380,17 +1446,6 @@ function render() {
   } else {
     ctx.drawImage(GARMENT_CACHE[gKey], 0, 0, CW, CH);
   }
-  /* Capas de integración del logo (se precargan aparte, sin color):
-     sombras multiply + luces screen + mapa de alturas del warp */
-  const oKey = S.garment + '_' + S.view + '_overlay';
-  if (!GARMENT_CACHE[oKey] && !GARMENT_LOADING[oKey]) {
-    loadGarmentImg(oKey, () => buildOverlaySvg(S.garment, S.view));
-  }
-  const lKey = S.garment + '_' + S.view + '_lights';
-  if (!GARMENT_CACHE[lKey] && !GARMENT_LOADING[lKey]) {
-    loadGarmentImg(lKey, () => buildLightsSvg(S.garment, S.view));
-  }
-  loadHeightMap(S.garment, S.view);
 
   /* Clip for design */
   ctx.save();
@@ -2434,10 +1489,20 @@ function render() {
   /* Design — uses active view's independent state */
   if (D().img) {
     const d = D();
-    /* Warp 2.5D: el logo se deforma con las arrugas de la tela y recibe
-       sus sombras (multiply) y luces (screen). La lógica de drag no
-       cambia: las coordenadas siguen siendo las del diseño plano. */
-    drawWarpedDesign(d, oKey, lKey);
+    /* Diseño PLANO sobre la prenda: solo posición, escala, rotación y
+       opacidad. Recortado al área de impresión para no salirse de la
+       zona imprimible (clip rectangular dentro del clip de la silueta). */
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(pa.x, pa.y, pa.w, pa.h);
+    ctx.clip();
+    ctx.globalAlpha = d.opacity;
+    ctx.translate(d.x, d.y);
+    ctx.rotate(d.rot * Math.PI / 180);
+    if (d.flipH) ctx.scale(-1, 1);
+    const dw = d.w * d.scale, dh = d.h * d.scale;
+    ctx.drawImage(d.img, -dw / 2, -dh / 2, dw, dh);
+    ctx.restore();
 
     /* Selection handles */
     ctx.save();
@@ -2493,6 +1558,10 @@ function render() {
   ctx.fillText(S.view === 'front' ? 'ACOSER' : 'ACOSER', CW - 14, CH - 14);
   ctx.restore();
 }
+
+/* El render es ligero (drawImage plano), así que durante drag/sliders
+   basta con re-renderizar directamente: no hay camino "lite" separado. */
+function interactiveRender() { render(); }
 
 function checkPrintAreaWarning(pa) {
   if (!D().img) return;
@@ -2575,10 +1644,6 @@ function init() {
   updateSizeCard();
   calcQuote();
   render();
-  /* Activa la camiseta 3D si WebGL está disponible (camiseta es la prenda
-     inicial). Si MC3D no cargó aún, lo reintentamos al evento mc3d-ready. */
-  sync3DMode();
-  window.addEventListener('mc3d-ready', sync3DMode);
 }
 
 /* ── MOUSE INTERACTION ── */
@@ -2683,20 +1748,17 @@ function setGarment(type, btn) {
   btn.querySelector('.garment-icon').setAttribute('stroke', 'var(--s-gold)');
   document.getElementById('specGarmentName').textContent = GARMENTS[type].name;
   render();
-  sync3DMode();
 }
 
 function setColor(hex, name, dot) {
   S.color = hex; S.colorName = name;
-  /* Invalidar solo las capas que dependen del color (overlay de sombras,
-     luces y height maps son independientes del color y se conservan;
-     las keys de color contienen el hex con '#') */
+  /* Invalidar solo las capas cacheadas que dependen del color
+     (las keys de color contienen el hex con '#') */
   for (const k in GARMENT_CACHE) { if (k.includes('#')) delete GARMENT_CACHE[k]; }
   document.querySelectorAll('.color-swatch').forEach(d => d.classList.remove('active'));
   dot.classList.add('active');
   document.getElementById('colorNameTag').textContent = name;
   render();
-  if (is3DGarment()) MC3D.setColor(hex);
 }
 
 function setView(view, btn) {
@@ -2723,7 +1785,6 @@ function setView(view, btn) {
   const copyLbl = document.getElementById('copyBtnLabel');
   if (copyLbl) copyLbl.textContent = view === 'front' ? 'Copiar diseño a Espalda' : 'Copiar diseño a Frente';
   render();
-  if (is3DGarment()) MC3D.setView(view);
 }
 
 function uploadDesign(input) {
@@ -2758,7 +1819,6 @@ function uploadDesign(input) {
       if (copyLbl) copyLbl.textContent = S.view === 'front' ? 'Copiar diseño a Espalda' : 'Copiar diseño a Frente';
       try { ACOSER_LEADS.capturar({ fuente: 'mockup-studio', accion: 'upload-design' }, { email: false }); } catch(e){}
       render(); calcQuote();
-      if (is3DGarment()) MC3D.setDesign(S.view, d.img, d.scale, d.rot);
     };
     img.src = e.target.result;
   };
@@ -2781,13 +1841,11 @@ function onScaleChange(v) {
   D().scale = parseInt(v) / 100;
   document.getElementById('scaleLabel').textContent = v + '%';
   interactiveRender(); calcQuote();
-  if (is3DGarment()) MC3D.updateDesignTransform(S.view, D().scale, D().rot);
 }
 function onRotChange(v) {
   D().rot = parseInt(v);
   document.getElementById('rotLabel').textContent = v + '°';
   interactiveRender();
-  if (is3DGarment()) MC3D.updateDesignTransform(S.view, D().scale, D().rot);
 }
 function onOpacityChange(v) {
   D().opacity = parseInt(v) / 100;
@@ -2817,7 +1875,6 @@ function resetDesignTransform() {
   document.getElementById('opacitySlider').value = 100;
   document.getElementById('opacityLabel').textContent = '100%';
   centerDesign();
-  if (is3DGarment()) MC3D.updateDesignTransform(S.view, D().scale, D().rot);
 }
 function removeDesign() {
   D().img = null;
@@ -2828,7 +1885,6 @@ function removeDesign() {
   if (copyRow) copyRow.style.display = 'none';
   document.getElementById('printWarning').classList.remove('visible');
   render();
-  if (is3DGarment()) MC3D.setDesign(S.view, null);
 }
 
 /* ── ZOOM ── */
@@ -2989,39 +2045,25 @@ function calcQuote() {
 }
 
 /* ── DOWNLOAD ── */
-/* Garantiza que el canvas capturado lleve el warp completo (por si la
-   captura ocurre dentro de la ventana "lite" de una interacción). */
+/* Re-renderiza el canvas para garantizar que la captura esté al día. */
 function ensureFullRender() {
-  clearTimeout(_liteTimer);
-  S.lite = false;
   render();
 }
-/* Devuelve el dataURL de la escena visible. Si la camiseta 3D está activa,
-   captura el canvas WebGL (preserveDrawingBuffer); para JPG (sin alfa) se
-   compone sobre el fondo de estudio #0c0b09. Si no, captura el 2.5D. */
+/* Devuelve el dataURL del canvas 2D limpio. Para PNG se conserva el alfa
+   (sombra de estudio sobre fondo transparente); para JPG (sin alfa) se
+   aplana sobre un fondo claro neutro para que la prenda se lea bien. */
 function captureDataURL(type, quality) {
   type = type || 'image/png';
-  if (is3DGarment() && MC3D.isActive()) {
-    const url = MC3D.toDataURL('image/png');
-    if (url) {
-      if (type === 'image/png') return url;
-      /* JPG: aplanar el alfa sobre fondo de estudio */
-      const tmp = document.createElement('canvas');
-      tmp.width = cvs.width; tmp.height = cvs.height;
-      const tcx = tmp.getContext('2d');
-      tcx.fillStyle = '#0c0b09';
-      tcx.fillRect(0, 0, tmp.width, tmp.height);
-      const im = new Image();
-      /* El dataURL ya está decodificado en el mismo canvas; dibujamos
-         sincrónicamente vía un canvas intermedio no es posible con Image
-         async, así que reusamos el propio canvas WebGL directamente. */
-      const src = document.getElementById('mc3d');
-      tcx.drawImage(src, 0, 0, tmp.width, tmp.height);
-      return tmp.toDataURL(type, quality);
-    }
-  }
   ensureFullRender();
-  return cvs.toDataURL(type, quality);
+  if (type === 'image/png') return cvs.toDataURL(type, quality);
+  /* JPG: aplanar sobre fondo claro neutro */
+  const tmp = document.createElement('canvas');
+  tmp.width = cvs.width; tmp.height = cvs.height;
+  const tcx = tmp.getContext('2d');
+  tcx.fillStyle = '#f3f1ec';
+  tcx.fillRect(0, 0, tmp.width, tmp.height);
+  tcx.drawImage(cvs, 0, 0);
+  return tmp.toDataURL(type, quality);
 }
 function downloadPNG() {
   ensureFullRender();
@@ -3235,7 +2277,6 @@ function copyDesignToOtherView() {
   dst.scale = src.scale; dst.rot = src.rot;
   dst.opacity = src.opacity; dst.flipH = src.flipH;
   showToast('Diseño copiado a ' + (other === 'front' ? 'frente' : 'espalda'));
-  if (is3DGarment()) MC3D.setDesign(other, dst.img, dst.scale, dst.rot);
 }
 
 window.addEventListener('load', init);

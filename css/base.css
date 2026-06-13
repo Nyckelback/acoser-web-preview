@@ -821,7 +821,7 @@ footer { background: var(--ink2); border-top: 1px solid var(--dust); padding: 8v
 .footer-top { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 5rem; padding-bottom: 6vh; border-bottom: 1px solid var(--dust); }
 .footer-brand-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; letter-spacing: .32em; color: var(--cream); font-weight: 400; text-transform: uppercase; display: block; margin-bottom: .3rem; }
 .footer-brand-sub { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .55em; color: var(--gold); text-transform: uppercase; font-weight: 300; display: block; margin-bottom: 1.5rem; }
-.footer-logo { height: 36px; width: auto; display: block; margin-bottom: .7rem; opacity: .95; }
+.footer-logo { height: 40px; width: auto; display: block; margin-bottom: .25rem; opacity: .95; }
 .footer-brand-desc { font-size: .92rem; color: var(--fog); line-height: 1.85; font-weight: 400; max-width: 300px; }
 .footer-links a { word-break: break-word; }
 .footer-col-head { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .3em; text-transform: uppercase; color: var(--bone); font-weight: 400; display: block; margin-bottom: 2rem; }

@@ -1172,6 +1172,467 @@ canvas#mc3d:active { cursor: grabbing; }
 </div>
 
 <!-- ═══ SCRIPTS ═══════════════════════════════════════════ -->
+
+<!-- ───────────────────────────────────────────────────────────
+     CAPA 3D REAL — three.js (camiseta rotable con decal)
+     ───────────────────────────────────────────────────────────
+     · three@0.160.0 (licencia MIT) vía jsDelivr, versión fijada.
+       OrbitControls y DecalGeometry desde /examples/jsm del mismo paquete.
+     · Modelo: malla de camiseta GENERADA PROCEDURALMENTE en three.js
+       (paneles frente/espalda curvados + hombros/mangas, con pliegues por
+       ruido de valor). Decisión deliberada: evita descargar un GLB de
+       procedencia/licencia dudosa y peso variable, y elimina un fetch en
+       runtime que podría fallar por CORS. 0 KB de assets de modelo.
+       (El prompt autoriza esta vía: "geometría de camiseta generada
+       proceduralmente … es aceptable y evita dependencias pesadas").
+     · Mapa normal + rugosidad de tela: generados con canvas+ruido (código
+       propio ACOSER, sin assets externos) → la tela se ve auténtica y el
+       color de los swatches tiñe el material conservando el sombreado.
+     · El diseño subido se proyecta como DecalGeometry sobre pecho/espalda;
+       al rotar la cámara queda pegado a la tela y recibe su iluminación.
+     · preserveDrawingBuffer:true → renderer.domElement.toDataURL() para
+       la descarga PNG/JPG y la ficha PDF.
+     · Fallback robusto: si no hay WebGL o three.js no carga, window.MC3D
+       queda inactivo y la página sigue 100 % en el render 2.5D existente.
+     · Solo CAMISETA es 3D en esta versión (no se encontró modelo CC0
+       liviano y digno para polo/hoodie/uniforme; esas prendas conservan
+       el render 2.5D y la UI lo indica con el badge "3D" solo en camiseta).
+-->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { DecalGeometry } from 'three/addons/geometries/DecalGeometry.js';
+
+/* ── Test de WebGL: si falla, no activamos MC3D (cae a 2.5D) ── */
+function webglOK() {
+  try {
+    const c = document.createElement('canvas');
+    return !!(window.WebGLRenderingContext &&
+      (c.getContext('webgl2') || c.getContext('webgl') || c.getContext('experimental-webgl')));
+  } catch (e) { return false; }
+}
+
+/* ── Ruido de valor 2D (determinista, sin assets) ──
+   Usado para pliegues de la malla y para los mapas de tela. */
+function makeNoise(seed) {
+  const p = new Uint8Array(512);
+  let s = seed >>> 0;
+  const rnd = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+  const perm = []; for (let i = 0; i < 256; i++) perm[i] = i;
+  for (let i = 255; i > 0; i--) { const j = (rnd() * (i + 1)) | 0; const tmp = perm[i]; perm[i] = perm[j]; perm[j] = tmp; }
+  for (let i = 0; i < 512; i++) p[i] = perm[i & 255];
+  const fade = t => t * t * t * (t * (t * 6 - 15) + 10);
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const grad = (h, x, y) => { const u = h & 1 ? x : -x, v = h & 2 ? y : -y; return u + v; };
+  return (x, y) => {
+    const X = Math.floor(x) & 255, Y = Math.floor(y) & 255;
+    x -= Math.floor(x); y -= Math.floor(y);
+    const u = fade(x), v = fade(y);
+    const a = p[X] + Y, b = p[X + 1] + Y;
+    return lerp(
+      lerp(grad(p[a], x, y), grad(p[b], x - 1, y), u),
+      lerp(grad(p[a + 1], x, y - 1), grad(p[b + 1], x - 1, y - 1), u), v);
+  };
+}
+
+/* ════════════════════════════════════════════════════════════
+   MC3D — controlador de la escena 3D de la camiseta
+   ════════════════════════════════════════════════════════════ */
+const MC3D = (function () {
+  let renderer, scene, camera, controls, shirt, shirtMat;
+  let keyLight, fillLight, rimLight;
+  let decalFront = null, decalBack = null;
+  let designTex = { front: null, back: null };
+  let designState = { front: null, back: null }; /* {scale,rot} guardado */
+  let canvas3d, container;
+  let ready = false, active = false, rafPending = false, camAnim = null;
+  let currentView = 'front';
+  const NEED_RENDER = { v: true };
+
+  /* Geometría de la camiseta (torso curvo + hombros + mangas cortas),
+     generada como un único BufferGeometry indexado, con pliegues por ruido.
+     UV: panel frontal en V∈[0.5,1], trasero en V∈[0,0.5] (espejo). */
+  function buildShirtGeometry() {
+    const NX = 48, NY = 64;             /* resolución de cada panel */
+    const W = 1.0, H = 1.34;            /* medio-ancho y alto del torso */
+    const noise = makeNoise(7);
+    const positions = [], uvs = [], indices = [];
+    let vbase = 0;
+
+    /* Perfil del torso: medio-ancho según la altura (hombros→cintura→bajo).
+       t: 0 = hombros (arriba), 1 = ruedo (abajo). */
+    function halfWidth(t) {
+      const shoulder = 1.0, waist = 0.86, hem = 0.96;
+      if (t < 0.34) return THREE.MathUtils.lerp(shoulder, waist, t / 0.34);
+      return THREE.MathUtils.lerp(waist, hem, (t - 0.34) / 0.66);
+    }
+    /* Profundidad (eje Z) del torso: bulto frontal/trasero tipo cilindro. */
+    function depthAt(u) { return Math.cos(u * Math.PI) * 0.34; } /* u∈[-1,1] */
+
+    /* Pliegues: desplazamiento normal por octavas de ruido + arrugas
+       verticales suaves; más marcado hacia los lados y el ruedo. */
+    function fold(u, t, side) {
+      const n = noise(u * 2.4 + side * 5.0, t * 3.4) * 0.5
+              + noise(u * 5.1 + side * 9.0, t * 7.2) * 0.25;
+      const vWrink = Math.sin(u * 9.0 + side) * 0.012 * (0.4 + t);
+      const edge = Math.pow(Math.abs(u), 2.0) * 0.05;   /* costuras laterales */
+      const hemFold = t > 0.86 ? (t - 0.86) * 0.5 : 0;  /* caída del ruedo */
+      return n * 0.045 + vWrink + edge + hemFold * 0.06;
+    }
+
+    /* Construye un panel (frente o espalda). zSign +1 frente, -1 espalda. */
+    function panel(zSign) {
+      const start = vbase;
+      for (let j = 0; j <= NY; j++) {
+        const t = j / NY;
+        const hw = halfWidth(t) * W;
+        const y = (0.5 - t) * H * 2;
+        for (let i = 0; i <= NX; i++) {
+          const u = (i / NX) * 2 - 1;          /* -1..1 a lo ancho */
+          const x = u * hw;
+          let z = depthAt(u) * zSign;
+          z += Math.sin(t * Math.PI) * 0.05 * zSign;  /* abombado vertical */
+          z += fold(u, t, zSign > 0 ? 0 : 1) * zSign;
+          positions.push(x, y, z);
+          const uu = zSign > 0 ? (i / NX) : (1 - i / NX);
+          const vv = zSign > 0 ? (0.5 + t * 0.5) : (t * 0.5);
+          uvs.push(uu, vv);
+          vbase++;
+        }
+      }
+      for (let j = 0; j < NY; j++) {
+        for (let i = 0; i < NX; i++) {
+          const a = start + j * (NX + 1) + i;
+          const b = a + 1, c = a + (NX + 1), d = c + 1;
+          if (zSign > 0) { indices.push(a, c, b, b, c, d); }
+          else           { indices.push(a, b, c, b, d, c); } /* winding inverso */
+        }
+      }
+    }
+    panel(1);   /* frente */
+    panel(-1);  /* espalda */
+
+    /* Mangas cortas: dos quads curvos a cada lado de los hombros. */
+    function sleeve(sideSign) {
+      const start = vbase;
+      const SX = 10, SY = 10;
+      const shx = halfWidth(0.02) * W * sideSign;
+      for (let j = 0; j <= SY; j++) {
+        const t = j / SY;                      /* 0 hombro → 1 borde manga */
+        for (let i = 0; i <= SX; i++) {
+          const u = i / SX;                    /* 0 frente → 1 espalda */
+          const ang = (u - 0.5) * Math.PI;     /* envuelve el brazo */
+          const r = 0.30 * (1 - t * 0.25);
+          const x = shx + sideSign * t * 0.42;
+          const y = (0.5 - 0.02) * H * 2 - t * 0.30 - Math.abs(u - 0.5) * 0.10;
+          const z = Math.sin(ang) * r;
+          positions.push(x, y, z);
+          uvs.push(u, 0.5);                    /* manga toma color base */
+          vbase++;
+        }
+      }
+      for (let j = 0; j < SY; j++) {
+        for (let i = 0; i < SX; i++) {
+          const a = start + j * (SX + 1) + i;
+          const b = a + 1, c = a + (SX + 1), dd = c + 1;
+          if (sideSign > 0) indices.push(a, c, b, b, c, dd);
+          else indices.push(a, b, c, b, dd, c);
+        }
+      }
+    }
+    sleeve(1); sleeve(-1);
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+    geo.setIndex(indices);
+    geo.computeVertexNormals();
+    geo.computeBoundingSphere();
+    return geo;
+  }
+
+  /* Mapa de tela: normal map + roughness en un canvas con ruido (CC0). */
+  function buildFabricTextures() {
+    const SZ = 512;
+    const c = document.createElement('canvas'); c.width = c.height = SZ;
+    const cx = c.getContext('2d');
+    const img = cx.createImageData(SZ, SZ);
+    const n = makeNoise(31);
+    const height = new Float32Array(SZ * SZ);
+    for (let y = 0; y < SZ; y++) for (let x = 0; x < SZ; x++) {
+      const weave = (Math.sin(x * 0.9) + Math.sin(y * 0.9)) * 0.5;
+      const grain = n(x * 0.25, y * 0.25) * 0.6 + n(x * 0.7, y * 0.7) * 0.3;
+      height[y * SZ + x] = weave * 0.5 + grain;
+    }
+    for (let y = 0; y < SZ; y++) for (let x = 0; x < SZ; x++) {
+      const xl = height[y * SZ + ((x - 1 + SZ) % SZ)];
+      const xr = height[y * SZ + ((x + 1) % SZ)];
+      const yt = height[((y - 1 + SZ) % SZ) * SZ + x];
+      const yb = height[((y + 1) % SZ) * SZ + x];
+      let nx = (xl - xr), ny = (yt - yb), nz = 1.0;
+      const len = Math.hypot(nx, ny, nz);
+      nx /= len; ny /= len; nz /= len;
+      const i = (y * SZ + x) * 4;
+      img.data[i]     = (nx * 0.5 + 0.5) * 255;
+      img.data[i + 1] = (ny * 0.5 + 0.5) * 255;
+      img.data[i + 2] = (nz * 0.5 + 0.5) * 255;
+      img.data[i + 3] = 255;
+    }
+    cx.putImageData(img, 0, 0);
+    const normalMap = new THREE.CanvasTexture(c);
+    normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping;
+    normalMap.repeat.set(6, 8);
+    normalMap.anisotropy = 4;
+
+    const r = document.createElement('canvas'); r.width = r.height = SZ;
+    const rx = r.getContext('2d');
+    const rimg = rx.createImageData(SZ, SZ);
+    for (let y = 0; y < SZ; y++) for (let x = 0; x < SZ; x++) {
+      const v = 200 + n(x * 0.3, y * 0.3) * 40;
+      const i = (y * SZ + x) * 4;
+      rimg.data[i] = rimg.data[i + 1] = rimg.data[i + 2] = Math.max(150, Math.min(255, v));
+      rimg.data[i + 3] = 255;
+    }
+    rx.putImageData(rimg, 0, 0);
+    const roughMap = new THREE.CanvasTexture(r);
+    roughMap.wrapS = roughMap.wrapT = THREE.RepeatWrapping;
+    roughMap.repeat.set(6, 8);
+    return { normalMap, roughMap };
+  }
+
+  function buildScene() {
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+    camera.position.set(0, 0, 6.2);
+
+    /* Iluminación de estudio: key + fill + rim (negros legibles sobre #0c0b09) */
+    const amb = new THREE.AmbientLight(0xffffff, 0.55); scene.add(amb);
+    keyLight = new THREE.DirectionalLight(0xfff4e2, 2.1);
+    keyLight.position.set(-3, 4, 5); scene.add(keyLight);
+    fillLight = new THREE.DirectionalLight(0xbcd2ff, 0.9);
+    fillLight.position.set(4, 0, 3); scene.add(fillLight);
+    rimLight = new THREE.DirectionalLight(0xe0c080, 1.4);
+    rimLight.position.set(0, 2, -5); scene.add(rimLight);
+    const under = new THREE.DirectionalLight(0xffffff, 0.25);
+    under.position.set(0, -4, 2); scene.add(under);
+
+    const { normalMap, roughMap } = buildFabricTextures();
+    shirtMat = new THREE.MeshStandardMaterial({
+      color: 0x111111,
+      roughness: 0.92, metalness: 0.0,
+      normalMap, normalScale: new THREE.Vector2(0.6, 0.6),
+      roughnessMap: roughMap,
+      side: THREE.DoubleSide,
+    });
+    shirt = new THREE.Mesh(buildShirtGeometry(), shirtMat);
+    scene.add(shirt);
+  }
+
+  function setupControls() {
+    controls = new OrbitControls(camera, canvas3d);
+    controls.enablePan = false;
+    controls.enableZoom = true;
+    controls.minDistance = 4.5;
+    controls.maxDistance = 9;
+    controls.minPolarAngle = Math.PI * 0.28;   /* no voltear de cabeza */
+    controls.maxPolarAngle = Math.PI * 0.72;
+    controls.rotateSpeed = 0.8;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.target.set(0, 0, 0);
+    controls.addEventListener('change', () => requestRender());
+  }
+
+  function requestRender() {
+    NEED_RENDER.v = true;
+    if (rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(loop);
+  }
+  function loop() {
+    rafPending = false;
+    let cont = false;
+    if (controls && controls.enableDamping) cont = controls.update() || cont;
+    if (camAnim) { cont = stepCamAnim() || cont; }
+    if (NEED_RENDER.v || cont) {
+      renderer.render(scene, camera);
+      NEED_RENDER.v = false;
+    }
+    if (cont) { rafPending = true; requestAnimationFrame(loop); }
+  }
+
+  function resize() {
+    if (!renderer || !container) return;
+    const r = container.getBoundingClientRect();
+    const w = Math.max(1, r.width), h = Math.max(1, r.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    requestRender();
+  }
+
+  /* ── Decal: proyecta una imagen sobre el pecho (frente) o espalda ── */
+  function makeDecalMaterial(tex) {
+    return new THREE.MeshStandardMaterial({
+      map: tex,
+      transparent: true,
+      depthTest: true, depthWrite: false,
+      polygonOffset: true, polygonOffsetFactor: -4,
+      roughness: 0.7, metalness: 0.0,
+      normalMap: shirtMat.normalMap, normalScale: new THREE.Vector2(0.25, 0.25),
+    });
+  }
+  function rebuildDecal(view) {
+    const tex = designTex[view];
+    const old = view === 'front' ? decalFront : decalBack;
+    if (old) { scene.remove(old); old.geometry.dispose(); old.material.dispose(); }
+    if (view === 'front') decalFront = null; else decalBack = null;
+    if (!tex) { requestRender(); return; }
+
+    const st = designState[view] || { scale: 1, rot: 0 };
+    const zSign = view === 'front' ? 1 : -1;
+    const pos = new THREE.Vector3(0, 0.18, zSign * 0.9);
+    const dir = new THREE.Vector3(0, 0, zSign);
+    const orientation = new THREE.Euler();
+    const m = new THREE.Matrix4();
+    m.lookAt(new THREE.Vector3(0, 0, 0), dir, new THREE.Vector3(0, 1, 0));
+    orientation.setFromRotationMatrix(m);
+    orientation.z += st.rot * Math.PI / 180;
+
+    const ar = (tex.image && tex.image.width && tex.image.height)
+      ? tex.image.width / tex.image.height : 1;
+    const base = 0.95 * st.scale;
+    const sizeX = ar >= 1 ? base : base * ar;
+    const sizeY = ar >= 1 ? base / ar : base;
+    const size = new THREE.Vector3(sizeX, sizeY, 0.6);
+
+    const geo = new DecalGeometry(shirt, pos, orientation, size);
+    const mesh = new THREE.Mesh(geo, makeDecalMaterial(tex));
+    scene.add(mesh);
+    if (view === 'front') decalFront = mesh; else decalBack = mesh;
+    requestRender();
+  }
+
+  /* ── Animación de cámara para botones Frente/Espalda ── */
+  function stepCamAnim() {
+    if (!camAnim) return false;
+    camAnim.t = Math.min(1, camAnim.t + 0.06);
+    const e = camAnim.t < 0.5 ? 2 * camAnim.t * camAnim.t
+                              : 1 - Math.pow(-2 * camAnim.t + 2, 2) / 2;
+    const az = THREE.MathUtils.lerp(camAnim.from, camAnim.to, e);
+    const d = 6.2;
+    camera.position.set(Math.sin(az) * d, 0, Math.cos(az) * d);
+    camera.lookAt(0, 0, 0);
+    controls.update();
+    if (camAnim.t >= 1) { camAnim = null; return false; }
+    return true;
+  }
+  function animateToView(view) {
+    const cur = Math.atan2(camera.position.x, camera.position.z);
+    const target = view === 'front' ? 0 : Math.PI;
+    let from = cur, to = target;
+    while (to - from > Math.PI) to -= Math.PI * 2;
+    while (from - to > Math.PI) to += Math.PI * 2;
+    camAnim = { from, to, t: 0 };
+    requestRender();
+  }
+
+  /* ════════ API PÚBLICA ════════ */
+  return {
+    available: false,
+    init() {
+      if (!webglOK()) { this.available = false; return false; }
+      try {
+        canvas3d = document.getElementById('mc3d');
+        container = document.getElementById('canvasWrap');
+        renderer = new THREE.WebGLRenderer({
+          canvas: canvas3d, antialias: true, alpha: true,
+          preserveDrawingBuffer: true, premultipliedAlpha: false,
+        });
+        renderer.setClearColor(0x000000, 0);
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.05;
+        buildScene();
+        setupControls();
+        resize();
+        if ('ResizeObserver' in window) {
+          new ResizeObserver(() => resize()).observe(container);
+        }
+        window.addEventListener('resize', resize);
+        ready = true; this.available = true;
+        requestRender();
+        return true;
+      } catch (e) {
+        console.warn('[MC3D] init falló, usando 2.5D:', e);
+        this.available = false; ready = false;
+        return false;
+      }
+    },
+    isReady() { return ready; },
+    isActive() { return active; },
+    show() {
+      if (!ready) return;
+      active = true;
+      canvas3d.style.display = 'block';
+      const badge = document.getElementById('renderModeBadge');
+      if (badge) badge.style.display = 'flex';
+      resize(); requestRender();
+    },
+    hide() {
+      active = false;
+      if (canvas3d) canvas3d.style.display = 'none';
+      const badge = document.getElementById('renderModeBadge');
+      if (badge) badge.style.display = 'none';
+    },
+    setColor(hex) {
+      if (!ready) return;
+      shirtMat.color.set(hex);
+      requestRender();
+    },
+    setView(view) {
+      currentView = view;
+      if (!ready) return;
+      animateToView(view);
+    },
+    setDesign(view, img, scale, rot) {
+      if (!ready) return;
+      if (designTex[view]) { designTex[view].dispose(); designTex[view] = null; }
+      if (!img) { designState[view] = null; rebuildDecal(view); return; }
+      const tex = new THREE.Texture(img);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.needsUpdate = true;
+      designTex[view] = tex;
+      designState[view] = { scale: scale || 1, rot: rot || 0 };
+      rebuildDecal(view);
+    },
+    updateDesignTransform(view, scale, rot) {
+      if (!ready || !designTex[view]) return;
+      designState[view] = { scale: scale || 1, rot: rot || 0 };
+      rebuildDecal(view);
+    },
+    toDataURL(type, quality) {
+      if (!ready) return null;
+      renderer.render(scene, camera);
+      return canvas3d.toDataURL(type || 'image/png', quality);
+    },
+  };
+})();
+
+window.MC3D = MC3D;
+try { MC3D.init(); } catch (e) { console.warn('[MC3D] no disponible:', e); }
+window.dispatchEvent(new Event('mc3d-ready'));
+</script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="../../js/whatsapp.js?v=20260612q"></script>
 <script src="../../js/leads.js?v=20260612q"></script>
@@ -1222,6 +1683,43 @@ const S = {
 };
 /* Active view design shortcut */
 function D() { return S.designs[S.view]; }
+
+/* ════════════════════════════════════════════════════════════
+   PUENTE 2.5D ⇆ 3D
+   ────────────────────────────────────────────────────────────
+   El motor 2.5D sigue siendo la fuente de verdad del estado (S). La
+   capa 3D (window.MC3D, three.js) es OPCIONAL: si existe, está
+   disponible (WebGL ok) y la prenda activa tiene modelo 3D (camiseta),
+   se muestra encima del canvas 2.5D y se sincroniza con S. Si no, todo
+   funciona exactamente como antes en 2.5D. Estas funciones son aditivas:
+   nunca rompen el camino 2.5D. */
+function has3D() {
+  return !!(window.MC3D && MC3D.available && MC3D.isReady());
+}
+function is3DGarment() {
+  return S.garment === 'tshirt' && has3D();
+}
+/* Empuja TODO el estado relevante al motor 3D (color + diseños). */
+function push3DState() {
+  if (!has3D()) return;
+  MC3D.setColor(S.color);
+  ['front', 'back'].forEach(v => {
+    const d = S.designs[v];
+    MC3D.setDesign(v, d.img || null, d.scale, d.rot);
+  });
+}
+/* Activa/desactiva la capa 3D según la prenda y sincroniza el estado.
+   Llamar tras cualquier cambio de prenda/color/vista/diseño. */
+function sync3DMode() {
+  if (!has3D()) return;
+  if (is3DGarment()) {
+    push3DState();
+    MC3D.setView(S.view);
+    MC3D.show();
+  } else {
+    MC3D.hide();
+  }
+}
 
 /* ── SIZE DATA ── */
 const SIZES = {
@@ -2077,6 +2575,10 @@ function init() {
   updateSizeCard();
   calcQuote();
   render();
+  /* Activa la camiseta 3D si WebGL está disponible (camiseta es la prenda
+     inicial). Si MC3D no cargó aún, lo reintentamos al evento mc3d-ready. */
+  sync3DMode();
+  window.addEventListener('mc3d-ready', sync3DMode);
 }
 
 /* ── MOUSE INTERACTION ── */
@@ -2181,6 +2683,7 @@ function setGarment(type, btn) {
   btn.querySelector('.garment-icon').setAttribute('stroke', 'var(--s-gold)');
   document.getElementById('specGarmentName').textContent = GARMENTS[type].name;
   render();
+  sync3DMode();
 }
 
 function setColor(hex, name, dot) {
@@ -2193,6 +2696,7 @@ function setColor(hex, name, dot) {
   dot.classList.add('active');
   document.getElementById('colorNameTag').textContent = name;
   render();
+  if (is3DGarment()) MC3D.setColor(hex);
 }
 
 function setView(view, btn) {
@@ -2219,6 +2723,7 @@ function setView(view, btn) {
   const copyLbl = document.getElementById('copyBtnLabel');
   if (copyLbl) copyLbl.textContent = view === 'front' ? 'Copiar diseño a Espalda' : 'Copiar diseño a Frente';
   render();
+  if (is3DGarment()) MC3D.setView(view);
 }
 
 function uploadDesign(input) {
@@ -2253,6 +2758,7 @@ function uploadDesign(input) {
       if (copyLbl) copyLbl.textContent = S.view === 'front' ? 'Copiar diseño a Espalda' : 'Copiar diseño a Frente';
       try { ACOSER_LEADS.capturar({ fuente: 'mockup-studio', accion: 'upload-design' }, { email: false }); } catch(e){}
       render(); calcQuote();
+      if (is3DGarment()) MC3D.setDesign(S.view, d.img, d.scale, d.rot);
     };
     img.src = e.target.result;
   };
@@ -2275,11 +2781,13 @@ function onScaleChange(v) {
   D().scale = parseInt(v) / 100;
   document.getElementById('scaleLabel').textContent = v + '%';
   interactiveRender(); calcQuote();
+  if (is3DGarment()) MC3D.updateDesignTransform(S.view, D().scale, D().rot);
 }
 function onRotChange(v) {
   D().rot = parseInt(v);
   document.getElementById('rotLabel').textContent = v + '°';
   interactiveRender();
+  if (is3DGarment()) MC3D.updateDesignTransform(S.view, D().scale, D().rot);
 }
 function onOpacityChange(v) {
   D().opacity = parseInt(v) / 100;
@@ -2309,6 +2817,7 @@ function resetDesignTransform() {
   document.getElementById('opacitySlider').value = 100;
   document.getElementById('opacityLabel').textContent = '100%';
   centerDesign();
+  if (is3DGarment()) MC3D.updateDesignTransform(S.view, D().scale, D().rot);
 }
 function removeDesign() {
   D().img = null;
@@ -2319,6 +2828,7 @@ function removeDesign() {
   if (copyRow) copyRow.style.display = 'none';
   document.getElementById('printWarning').classList.remove('visible');
   render();
+  if (is3DGarment()) MC3D.setDesign(S.view, null);
 }
 
 /* ── ZOOM ── */
@@ -2486,11 +2996,38 @@ function ensureFullRender() {
   S.lite = false;
   render();
 }
+/* Devuelve el dataURL de la escena visible. Si la camiseta 3D está activa,
+   captura el canvas WebGL (preserveDrawingBuffer); para JPG (sin alfa) se
+   compone sobre el fondo de estudio #0c0b09. Si no, captura el 2.5D. */
+function captureDataURL(type, quality) {
+  type = type || 'image/png';
+  if (is3DGarment() && MC3D.isActive()) {
+    const url = MC3D.toDataURL('image/png');
+    if (url) {
+      if (type === 'image/png') return url;
+      /* JPG: aplanar el alfa sobre fondo de estudio */
+      const tmp = document.createElement('canvas');
+      tmp.width = cvs.width; tmp.height = cvs.height;
+      const tcx = tmp.getContext('2d');
+      tcx.fillStyle = '#0c0b09';
+      tcx.fillRect(0, 0, tmp.width, tmp.height);
+      const im = new Image();
+      /* El dataURL ya está decodificado en el mismo canvas; dibujamos
+         sincrónicamente vía un canvas intermedio no es posible con Image
+         async, así que reusamos el propio canvas WebGL directamente. */
+      const src = document.getElementById('mc3d');
+      tcx.drawImage(src, 0, 0, tmp.width, tmp.height);
+      return tmp.toDataURL(type, quality);
+    }
+  }
+  ensureFullRender();
+  return cvs.toDataURL(type, quality);
+}
 function downloadPNG() {
   ensureFullRender();
   const link = document.createElement('a');
   link.download = `acoser-studio-${S.garment}-${S.colorName.replace(/ /g,'-')}.png`;
-  link.href = cvs.toDataURL('image/png');
+  link.href = captureDataURL('image/png');
   link.click();
   ACOSER_LEADS.capturar({ fuente: 'mockup-studio', accion: 'download-png', garment: S.garment, color: S.colorName }, { email: false });
 }
@@ -2498,7 +3035,7 @@ function downloadJPG() {
   ensureFullRender();
   const link = document.createElement('a');
   link.download = `acoser-studio-${S.garment}-${S.colorName.replace(/ /g,'-')}.jpg`;
-  link.href = cvs.toDataURL('image/jpeg', 0.92);
+  link.href = captureDataURL('image/jpeg', 0.92);
   link.click();
 }
 
@@ -2553,8 +3090,8 @@ function generatePDF() {
   doc.setLineWidth(0.4);
   doc.line(15, 41, W-15, 41);
 
-  /* Mockup image */
-  const imgData = cvs.toDataURL('image/jpeg', 0.9);
+  /* Mockup image (3D si está activo, si no el render 2.5D) */
+  const imgData = captureDataURL('image/jpeg', 0.9);
   doc.addImage(imgData, 'JPEG', 15, 46, 82, 95);
 
   /* Gold border around image */
@@ -2698,6 +3235,7 @@ function copyDesignToOtherView() {
   dst.scale = src.scale; dst.rot = src.rot;
   dst.opacity = src.opacity; dst.flipH = src.flipH;
   showToast('Diseño copiado a ' + (other === 'front' ? 'frente' : 'espalda'));
+  if (is3DGarment()) MC3D.setDesign(other, dst.img, dst.scale, dst.rot);
 }
 
 window.addEventListener('load', init);

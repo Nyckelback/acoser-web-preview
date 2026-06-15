@@ -889,7 +889,7 @@ canvas#mc.can-rotate { cursor: crosshair; }
           <circle cx="6.5" cy="9" r=".4" fill="#e07a62"/>
         </svg>
         <span id="warningText">El diseño supera el área recomendada</span>
-        <button style="background:rgba(192,97,74,.15);border:none;color:#e07a62;font-family:'Barlow Condensed',sans-serif;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;padding:.25rem .6rem;border-radius:4px;cursor:pointer;margin-left:.5rem;" onclick="centerDesign()">Centrar</button>
+        <button style="background:rgba(192,97,74,.15);border:none;color:#e07a62;font-family:'Barlow Condensed',sans-serif;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;padding:.25rem .6rem;border-radius:4px;cursor:pointer;margin-left:.5rem;" onclick="fitDesign()">Acomodar</button>
       </div>
     </div>
 
@@ -949,9 +949,9 @@ canvas#mc.can-rotate { cursor: crosshair; }
 
             <!-- Quick actions -->
             <div class="ctrl-row">
-              <button class="ctrl-btn-pill" onclick="centerDesign()">
-                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><line x1="5.5" y1="1" x2="5.5" y2="10"/><line x1="1" y1="5.5" x2="10" y2="5.5"/></svg>
-                Centrar
+              <button class="ctrl-btn-pill" onclick="fitDesign()" title="Ajusta el tamaño al área y centra">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="1.5" y="1.5" width="8" height="8" rx="1"/><path d="M4 4l-1.5-1.5M7 4l1.5-1.5M4 7l-1.5 1.5M7 7l1.5 1.5"/></svg>
+                Ajustar
               </button>
               <button class="ctrl-btn-pill" onclick="flipDesign()">
                 <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M1 5.5h9M3 3l-2 2.5 2 2.5M8 3l2 2.5-2 2.5"/></svg>
@@ -1841,12 +1841,18 @@ function uploadDesign(input) {
     const img = new Image();
     img.onload = () => {
       const pa = GARMENTS[S.garment].printArea[S.view];
-      const maxW = pa.w * 0.85;
       const aspect = img.naturalWidth / img.naturalHeight;
       const d = D();
       d.img = img;
-      d.w = maxW;
-      d.h = maxW / aspect;
+      /* Encajar (contain) dentro del área: el diseño nunca debe salirse por
+         defecto. Se ajusta al 85 % del ancho Y del alto del área recomendada,
+         conservando la proporción → así un escudo cuadrado sobre un área más
+         ancha que alta (p. ej. la gorra 104×84) queda dentro, no desbordado. */
+      let bw = pa.w * 0.85;
+      let bh = bw / aspect;
+      if (bh > pa.h * 0.85) { bh = pa.h * 0.85; bw = bh * aspect; }
+      d.w = bw;
+      d.h = bh;
       d.x = pa.x + pa.w / 2;
       d.y = pa.y + pa.h / 2;
       d.scale = 1; d.rot = 0; d.opacity = 1; d.flipH = false;
@@ -1904,6 +1910,30 @@ function centerDesign() {
   D().x = pa.x + pa.w / 2;
   D().y = pa.y + pa.h / 2;
   render();
+}
+/* Acomodar de un toque: escala el diseño para CABER dentro del área
+   recomendada (contain, conservando proporción), endereza la rotación y lo
+   centra. Es el botón "Acomodar" del aviso y del panel: deja el mockup limpio
+   sin que el usuario tenga que pelear con el slider. */
+function fitDesign() {
+  if (!D().img) return;
+  const pa = GARMENTS[S.garment].printArea[S.view];
+  const d = D();
+  const frac = 0.9; /* 90 % del área → respira un margen de seguridad */
+  const s = Math.min((pa.w * frac) / d.w, (pa.h * frac) / d.h);
+  d.scale = Math.max(0.05, Math.min(5, s));
+  d.rot = 0;
+  d.x = pa.x + pa.w / 2;
+  d.y = pa.y + pa.h / 2;
+  const ss = document.getElementById('scaleSlider');
+  const sl = document.getElementById('scaleLabel');
+  if (ss) ss.value = Math.round(d.scale * 100);
+  if (sl) sl.textContent = Math.round(d.scale * 100) + '%';
+  const rs = document.getElementById('rotSlider');
+  const rl = document.getElementById('rotLabel');
+  if (rs) rs.value = 0;
+  if (rl) rl.textContent = '0°';
+  render(); calcQuote();
 }
 function flipDesign() {
   D().flipH = !D().flipH;

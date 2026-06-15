@@ -719,6 +719,13 @@ canvas#mc.can-rotate { cursor: crosshair; }
   .studio-bar { padding: 0 .75rem; }
   .bar-brand-divider, .bar-brand-tag { display: none; }
   .bar-btn--ghost { display: none; }
+  /* El aviso de área no debe desbordar el viewport estrecho: que envuelva
+     (icono + texto + botón) dentro de un ancho seguro en vez de salirse. */
+  .print-warning-bar {
+    max-width: 92vw; white-space: normal; flex-wrap: wrap;
+    justify-content: center; text-align: center;
+    border-radius: 16px; padding: .5rem .9rem; line-height: 1.35;
+  }
 }
 </style>
 </head>
@@ -1840,6 +1847,14 @@ function uploadDesign(input) {
   reader.onload = (e) => {
     const img = new Image();
     img.onload = () => {
+      /* Guard: una imagen sin dimensiones intrínsecas (típico de un SVG
+         exportado sin viewBox ni width/height) reporta naturalWidth/Height = 0.
+         Eso haría aspect = Infinity → d.h = 0 → diseño invisible y, al pulsar
+         Acomodar, una división por 0. Se rechaza con aviso antes de tocar nada. */
+      if (!img.naturalWidth || !img.naturalHeight) {
+        showToast('Esa imagen no tiene un tamaño definido. Si es un SVG, expórtalo con viewBox o medidas, o súbelo en PNG.');
+        return;
+      }
       const pa = GARMENTS[S.garment].printArea[S.view];
       const aspect = img.naturalWidth / img.naturalHeight;
       const d = D();
@@ -1921,7 +1936,10 @@ function fitDesign() {
   const d = D();
   const frac = 0.9; /* 90 % del área → respira un margen de seguridad */
   const s = Math.min((pa.w * frac) / d.w, (pa.h * frac) / d.h);
-  d.scale = Math.max(0.05, Math.min(5, s));
+  /* Se clampa al rango REPRESENTABLE por el slider (10–200 %) para que el
+     control y el estado interno queden siempre sincronizados. Tras un upload
+     con contain-fit, s ≈ 1.06, así que en la práctica nunca recorta. */
+  d.scale = Math.max(0.1, Math.min(2, s));
   d.rot = 0;
   d.x = pa.x + pa.w / 2;
   d.y = pa.y + pa.h / 2;

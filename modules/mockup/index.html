@@ -555,6 +555,7 @@ canvas#mc.can-rotate { cursor: crosshair; }
   color: var(--s-fog); display: block;
 }
 .tech-btn.active .tech-btn-name { color: var(--s-gold); }
+.tech-btn-price { font-size: .7rem; color: var(--s-fog); display: block; margin-top: .2rem; }
 
 /* Quote result */
 .quote-result {
@@ -571,6 +572,9 @@ canvas#mc.can-rotate { cursor: crosshair; }
 }
 .quote-val { font-family: 'Inter', sans-serif; font-size: .86rem; font-weight: 600; color: var(--s-cream); }
 .quote-val.green { color: #5aba85; }
+.quote-val.gold { color: var(--s-gold); font-size: 1rem; }
+.quote-note { font-size: .72rem; color: var(--s-fog); line-height: 1.5; margin-top: .7rem; padding: .6rem .7rem; border: 1px solid var(--s-border2, rgba(200,169,106,.25)); border-radius: 6px; }
+.quote-note b { color: var(--s-cream); font-weight: 600; }
 
 /* Enterprise breakdown */
 .enterprise-section { padding: 1.1rem; }
@@ -1060,15 +1064,19 @@ canvas#mc.can-rotate { cursor: crosshair; }
             <div class="technique-selector">
               <button class="tech-btn active" id="tech-dtf" onclick="setTechnique('dtf',this)">
                 <span class="tech-btn-name">Estampado DTF</span>
+                <span class="tech-btn-price">Desde $9.500/m</span>
               </button>
               <button class="tech-btn" id="tech-bordado" onclick="setTechnique('bordado',this)">
                 <span class="tech-btn-name">Bordado</span>
+                <span class="tech-btn-price">Desde $9.500/u</span>
               </button>
               <button class="tech-btn" id="tech-sublimacion" onclick="setTechnique('sublimacion',this)">
                 <span class="tech-btn-name">Sublimación</span>
+                <span class="tech-btn-price">Desde $7.000/m</span>
               </button>
               <button class="tech-btn" id="tech-serigrafía" onclick="setTechnique('serigrafía',this)">
                 <span class="tech-btn-name">Serigrafía</span>
+                <span class="tech-btn-price">Desde $4.000/u</span>
               </button>
             </div>
           </div>
@@ -1079,11 +1087,20 @@ canvas#mc.can-rotate { cursor: crosshair; }
               <span class="quote-key">Prendas</span>
               <span class="quote-val" id="q-qty">50 uds</span>
             </div>
-            <div class="quote-row" style="border-bottom:none;">
+            <div class="quote-row">
               <span class="quote-key">Tiempo de producción</span>
               <span class="quote-val green" id="q-tiempo">5–7 días hábiles</span>
             </div>
+            <div class="quote-row">
+              <span class="quote-key">Valor estimado total</span>
+              <span class="quote-val gold" id="q-total">—</span>
+            </div>
+            <div class="quote-row" style="border-bottom:none;">
+              <span class="quote-key">Estimado por prenda</span>
+              <span class="quote-val" id="q-unit">—</span>
+            </div>
           </div>
+          <div class="quote-note"><b>Valor estimado.</b> El precio final se confirma por WhatsApp según tela, diseño y cantidad.</div>
         </div>
 
         <!-- Enterprise breakdown -->
@@ -1978,6 +1995,24 @@ function setTechnique(tech, btn) {
   btn.classList.add('active');
   calcQuote();
 }
+/* ── PRICE CONFIG ──
+   Valores de referencia (ya incluyen el margen de seguridad por variaciones de
+   cantidad/proveedor). Se muestran SIEMPRE como "valor estimado"; el precio
+   final se confirma por WhatsApp. */
+const PRICES = {
+  dtf: [
+    { min:1,   max:9,   pm:21000 },
+    { min:10,  max:49,  pm:17500 },
+    { min:50,  max:99,  pm:14500 },
+    { min:100, max:299, pm:11500 },
+    { min:300, max:Infinity, pm:9500 },
+  ],
+  bordado:    [{ min:1, max:Infinity, pm:9500 }],   // por unidad
+  sublimacion:[{ min:1, max:9, pm:18500 }, { min:10, max:49, pm:15000 }, { min:50, max:Infinity, pm:11500 }],
+  serigrafía: [{ min:1, max:9, pm:6000  }, { min:10, max:49, pm:4500  }, { min:50, max:Infinity, pm:4000 }],
+};
+function fmt(n) { return '$' + Math.round(n).toLocaleString('es-CO'); }
+
 function calcQuote() {
   const qty = parseInt(document.getElementById('qtyInput').value) || 1;
   S.qty = qty;
@@ -1985,8 +2020,19 @@ function calcQuote() {
   /* Production time */
   let dias = qty < 10 ? '3–4' : qty < 50 ? '4–6' : qty < 200 ? '7–10' : '10–15';
 
+  /* Estimado (silencioso: ya trae margen). Bordado/serigrafía por unidad;
+     DTF/sublimación por metro lineal aproximado del área de impresión. */
+  const sz = getCurrentSize();
+  const mLinear = (sz.pw * sz.ph) * qty / (60 * 100);
+  const prices = PRICES[S.technique] || PRICES.dtf;
+  const rango = prices.find(p => qty >= p.min && qty <= p.max) || prices[prices.length - 1];
+  const perUnit = (S.technique === 'bordado' || S.technique === 'serigrafía');
+  const totalCost = perUnit ? qty * rango.pm : mLinear * rango.pm;
+
   document.getElementById('q-qty').textContent = qty + (qty === 1 ? ' unidad' : ' unidades');
   document.getElementById('q-tiempo').textContent = dias + ' días hábiles';
+  document.getElementById('q-total').textContent = fmt(totalCost);
+  document.getElementById('q-unit').textContent = fmt(totalCost / qty);
 }
 
 /* ── DOWNLOAD ── */

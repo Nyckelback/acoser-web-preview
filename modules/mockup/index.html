@@ -259,8 +259,7 @@ canvas#mc {
 }
 canvas#mc.can-drag { cursor: grab; }
 canvas#mc.dragging { cursor: grabbing; }
-canvas#mc.can-rotate { cursor: grab; }
-canvas#mc.rotating { cursor: grabbing; }
+canvas#mc.can-rotate { cursor: crosshair; }
 
 /* Floating zoom controls */
 .zoom-controls {
@@ -884,14 +883,7 @@ canvas#mc.rotating { cursor: grabbing; }
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg>
         </button>
         <div class="zoom-sep"></div>
-        <button class="zoom-btn" onclick="tiltBy(-12)" title="Girar la prenda a la izquierda">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.2A4.2 4.2 0 1 0 10.6 8"/><path d="M9.3 2v2.4H6.9"/></svg>
-        </button>
-        <button class="zoom-btn" onclick="tiltBy(12)" title="Girar la prenda a la derecha">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.2A4.2 4.2 0 1 1 3.4 8"/><path d="M4.7 2v2.4H7.1"/></svg>
-        </button>
-        <div class="zoom-sep"></div>
-        <button class="zoom-btn" onclick="resetView()" title="Enderezar y reset de vista">
+        <button class="zoom-btn" onclick="resetZoom()" title="Reset zoom">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 6a4 4 0 1 1 1 2.8M2 9V6h3"/></svg>
         </button>
       </div>
@@ -1218,9 +1210,6 @@ const S = {
   qty:          50,
   technique:    'dtf',
   zoom:         1,
-  tilt:         0,        /* giro de la prenda en grados (rotateY), solo presentación */
-  tilting:      false,    /* arrastrando para girar la vista */
-  tiltStartX:   0, tiltStartVal: 0,
   dragging:     false,
   dragOffX:     0, dragOffY: 0,
   mouseX: 0, mouseY: 0,
@@ -1726,30 +1715,19 @@ function isInDesign(px, py) {
 }
 function onMouseDown(e) {
   const p = canvasPoint(e);
-  /* Solo se arrastra el diseño con la vista enderezada (tilt 0): ahí el mapeo
-     de canvas es exacto. En cualquier otro caso, el arrastre GIRA la prenda. */
-  if (S.tilt === 0 && D().img && isInDesign(p.x, p.y)) {
+  if (D().img && isInDesign(p.x, p.y)) {
     S.dragging = true;
     S.dragOffX = p.x - D().x;
     S.dragOffY = p.y - D().y;
     cvs.classList.add('dragging');
-  } else {
-    S.tilting = true;
-    S.tiltStartX = e.clientX;
-    S.tiltStartVal = S.tilt || 0;
-    cvs.classList.add('rotating');
   }
 }
 function onMouseMove(e) {
-  if (S.tilting) {
-    setTilt(S.tiltStartVal + (e.clientX - S.tiltStartX) * 0.22, false);
-    return;
-  }
   const p = canvasPoint(e);
   S.mouseX = p.x; S.mouseY = p.y;
-  const overDesign = S.tilt === 0 && D().img && isInDesign(p.x, p.y);
-  cvs.classList.toggle('can-drag', overDesign && !S.dragging);
-  cvs.classList.toggle('can-rotate', !overDesign && !S.dragging);
+  if (D().img) {
+    cvs.classList.toggle('can-drag', isInDesign(p.x, p.y) && !S.dragging);
+  }
   if (S.dragging) {
     D().x = p.x - S.dragOffX;
     D().y = p.y - S.dragOffY;
@@ -1759,8 +1737,6 @@ function onMouseMove(e) {
 }
 function onMouseUp() {
   S.dragging = false;
-  S.tilting = false;
-  cvs.classList.remove('rotating');
   cvs.classList.remove('dragging');
 }
 function onWheel(e) {
@@ -1781,17 +1757,12 @@ function onTouchStart(e) {
   if (e.touches.length === 1) {
     const t = e.touches[0];
     const p = canvasPoint(t);
-    if (S.tilt === 0 && D().img && isInDesign(p.x, p.y)) {
+    if (D().img && isInDesign(p.x, p.y)) {
       S.dragging = true;
       S.dragOffX = p.x - D().x;
       S.dragOffY = p.y - D().y;
-    } else {
-      S.tilting = true;
-      S.tiltStartX = t.clientX;
-      S.tiltStartVal = S.tilt || 0;
     }
   } else if (e.touches.length === 2) {
-    S.tilting = false;
     lastTouchDist = Math.hypot(
       e.touches[1].clientX - e.touches[0].clientX,
       e.touches[1].clientY - e.touches[0].clientY
@@ -1800,9 +1771,7 @@ function onTouchStart(e) {
 }
 function onTouchMove(e) {
   e.preventDefault();
-  if (e.touches.length === 1 && S.tilting) {
-    setTilt(S.tiltStartVal + (e.touches[0].clientX - S.tiltStartX) * 0.3, false);
-  } else if (e.touches.length === 1 && S.dragging) {
+  if (e.touches.length === 1 && S.dragging) {
     const p = canvasPoint(e.touches[0]);
     D().x = p.x - S.dragOffX;
     D().y = p.y - S.dragOffY;
@@ -1915,9 +1884,6 @@ function uploadDesign(input) {
       const copyLbl = document.getElementById('copyBtnLabel');
       if (copyLbl) copyLbl.textContent = S.view === 'front' ? 'Copiar diseño a Espalda' : 'Copiar diseño a Frente';
       try { ACOSER_LEADS.capturar({ fuente: 'mockup-studio', accion: 'upload-design' }, { email: false }); } catch(e){}
-      /* Endereza la vista al subir: el diseño solo se arrastra con tilt 0,
-         así queda editable de inmediato sin que el usuario tenga que resetear. */
-      if (S.tilt !== 0) setTilt(0, true);
       render(); calcQuote();
     };
     img.src = e.target.result;
@@ -2014,36 +1980,15 @@ function removeDesign() {
   render();
 }
 
-/* ── ZOOM + GIRO DE VISTA ── */
-/* La inclinación (rotateY) y el zoom son SOLO presentación (CSS sobre el
-   wrapper): no tocan el canvas ni las coordenadas de impresión, así que la
-   descarga/PDF salen siempre planos y nítidos, y el cálculo de área no cambia.
-   El arrastre del diseño solo opera con tilt = 0 (mapeo de canvas exacto). */
-function applyViewTransform() {
-  const t = S.tilt || 0;
-  canvasWrap.style.transform = t
-    ? `perspective(1300px) rotateY(${t}deg) scale(${S.zoom})`
-    : `scale(${S.zoom})`;
-}
+/* ── ZOOM ── */
 function setZoom(z) {
   S.zoom = Math.max(0.5, Math.min(2.5, z));
-  applyViewTransform();
+  canvasWrap.style.transform = `scale(${S.zoom})`;
   document.getElementById('zoomLabel').textContent = Math.round(S.zoom * 100) + '%';
 }
 function zoomIn() { setZoom(S.zoom + 0.1); }
 function zoomOut() { setZoom(S.zoom - 0.1); }
 function resetZoom() { setZoom(1); }
-
-function setTilt(deg, animate) {
-  S.tilt = Math.max(-32, Math.min(32, deg));
-  canvasWrap.style.transition = animate ? '' : 'none';
-  applyViewTransform();
-  if (!animate) { /* reactivar la animación tras el frame del arrastre */
-    requestAnimationFrame(() => { canvasWrap.style.transition = ''; });
-  }
-}
-function tiltBy(d) { setTilt((S.tilt || 0) + d, true); }
-function resetView() { S.zoom = 1; document.getElementById('zoomLabel').textContent = '100%'; setTilt(0, true); }
 
 /* ── TABS ── */
 function switchTab(tab, btn) {
